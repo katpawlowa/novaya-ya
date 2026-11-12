@@ -580,6 +580,47 @@
       font-weight: 700;
     }
 
+
+    /* Meal Slots inside Calorie Counter */
+    .meal-slot-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 10px 11px;
+      margin-bottom: 8px;
+    }
+    .meal-slot-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+    .meal-slot-title {
+      font-size: 0.86rem;
+      font-weight: 800;
+      color: var(--primary-deep);
+    }
+    .meal-slot-sub {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .user-chip-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .user-chip-row.active-user {
+      border-color: var(--primary);
+      background: var(--surface-2);
+    }
+
     /* Advent Calendar */
     .advent-grid {
       display: grid;
@@ -759,6 +800,7 @@
       <p id="headerSubtitle">Цель: — кг • Норма: — ккал/день</p>
     </div>
     <div class="header-actions">
+      <button class="btn-header" onclick="openAccountsModal()" title="Сменить пользователя">👥</button>
       <button class="btn-sos" onclick="openSosModal()">🆘 SOS</button>
       <button class="btn-header" onclick="openReportModal()">+ Отчет</button>
     </div>
@@ -838,10 +880,11 @@
     </div>
 
 
-    <!-- Live Daily Calorie & BJU Counter -->
+
+    <!-- Live Daily Calorie & BJU Counter Split by Meals -->
     <div class="card">
       <div class="card-title">
-        <span>🔥 Счетчик калорий и БЖУ сегодня</span>
+        <span>🔥 Калории и БЖУ по приемам пищи</span>
         <span class="badge" id="cloudSyncBadge" title="Общая база продуктов">☁️ Синхронизация...</span>
       </div>
 
@@ -874,14 +917,21 @@
         </div>
       </div>
 
-      <!-- Product Picker by Grams -->
-      <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:10px; margin-bottom:8px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; gap:6px;">
-          <span style="font-size:0.78rem; font-weight:800; color:var(--primary-deep);">🍎 Добавить из базы продуктов (<span id="productsTotalCount">42</span>)</span>
+      <!-- Dynamic Meal Slots (Завтрак, Обед, Ужин, Перекус...) -->
+      <div id="mealSlotsContainer" style="margin-bottom:10px;"></div>
+
+      <!-- Product Picker by Grams into Selected Meal -->
+      <div id="foodAdderBox" style="background:var(--surface); border:1.5px solid var(--border); border-radius:14px; padding:10px; margin-bottom:8px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; gap:6px; flex-wrap:wrap;">
+          <span style="font-size:0.78rem; font-weight:800; color:var(--primary-deep);">🍎 Добавить в прием пищи (<span id="productsTotalCount">40</span> прод.)</span>
           <div class="row" style="gap:4px;">
             <button class="btn-soft" style="padding:4px 8px; min-height:28px; font-size:0.72rem;" onclick="syncSharedProducts(true)">🔄 Обновить</button>
             <button class="btn-soft" style="padding:4px 8px; min-height:28px; font-size:0.72rem;" onclick="openProductModal()">+ Новый продукт</button>
           </div>
+        </div>
+
+        <div class="field" style="margin-bottom:6px;">
+          <select id="foodMealSlotSelect" style="min-height:38px; padding:7px 10px; font-weight:700;"></select>
         </div>
 
         <input type="text" id="foodSearchInput" placeholder="Поиск продукта (курица, творог, гречка, банан...)" oninput="renderProductSearchResults()" />
@@ -889,20 +939,23 @@
 
         <div class="row" style="margin-top:8px;">
           <div style="flex:1; min-width:120px;">
-            <div style="font-size:0.72rem; color:var(--muted); font-weight:700;" id="selectedProductLabel">Выбери продукт выше</div>
-            <div style="font-size:0.74rem; font-weight:800; color:var(--primary);" id="portionPreviewText">0 ккал • Б 0 / Ж 0 / У 0</div>
+            <div style="display:flex; align-items:center; gap:5px;">
+              <span style="font-size:0.74rem; color:var(--text); font-weight:800;" id="selectedProductLabel">Выбери продукт выше</span>
+              <button class="btn-soft" style="padding:2px 6px; min-height:22px; font-size:0.68rem;" onclick="openEditSelectedProduct()" title="Редактировать КБЖУ продукта">✏️ Изменить</button>
+            </div>
+            <div style="font-size:0.74rem; font-weight:800; color:var(--primary); margin-top:2px;" id="portionPreviewText">0 ккал • Б 0 / Ж 0 / У 0</div>
           </div>
           <input type="number" id="foodGramsInput" value="100" min="1" max="3000" style="width:88px;" oninput="updatePortionPreview()" placeholder="Граммы" />
-          <button class="btn" onclick="addSelectedProductToLog()">+ Съела</button>
+          <button class="btn" onclick="addSelectedProductToLog()">+ Добавить</button>
         </div>
       </div>
 
       <!-- Quick Manual Entry Toggle -->
-      <div style="margin-bottom:6px;">
-        <button class="btn-soft" style="width:100%;" onclick="document.getElementById('quickManualFoodBox').classList.toggle('open')" id="btnToggleQuickFood">✍️ Быстрый ввод блюда вручную (если нет в списке)</button>
+      <div>
+        <button class="btn-soft" style="width:100%;" onclick="document.getElementById('quickManualFoodBox').classList.toggle('open')">✍️ Быстрый ввод блюда вручную в выбранный прием пищи</button>
         <div class="meal-recipe" id="quickManualFoodBox" style="margin-top:6px;">
           <div class="row" style="margin-bottom:6px;">
-            <input type="text" id="qmFoodName" placeholder="Название (например: Капучино)" style="flex:2;" />
+            <input type="text" id="qmFoodName" placeholder="Название блюда" style="flex:2;" />
             <input type="number" id="qmFoodKcal" placeholder="Ккал" style="flex:1;" />
           </div>
           <div class="row" style="margin-bottom:6px;">
@@ -910,12 +963,9 @@
             <input type="number" id="qmFoodF" placeholder="Жиры (г)" style="flex:1;" />
             <input type="number" id="qmFoodC" placeholder="Углев. (г)" style="flex:1;" />
           </div>
-          <button class="btn" style="width:100%;" onclick="addQuickManualFood()">Добавить в дневник</button>
+          <button class="btn" style="width:100%;" onclick="addQuickManualFood()">Добавить в прием пищи</button>
         </div>
       </div>
-
-      <!-- Today's Food Log -->
-      <div id="todayFoodLogList"></div>
     </div>
 
     <!-- Daily Habits & Goals -->
@@ -1277,9 +1327,23 @@
           <input type="number" step="0.1" id="profGoalWeight" />
         </div>
       </div>
+      <div class="row">
+        <div class="field" style="flex:1;">
+          <label>Начальные ккал:</label>
+          <input type="number" step="10" id="profStartKcal" />
+        </div>
+        <div class="field" style="flex:1;">
+          <label>Приемов пищи:</label>
+          <select id="profMealsPerDay">
+            <option value="3">3 (Завтрак, Обед, Ужин)</option>
+            <option value="4">4 (+ Перекус)</option>
+            <option value="5">5 (+ 2 Перекуса)</option>
+          </select>
+        </div>
+      </div>
       <div class="field">
-        <label>Начальная суточная калорийность (ккал):</label>
-        <input type="number" step="10" id="profStartKcal" />
+        <label>Личный PIN-код из 4 цифр (оставь пустым, если вход без пароля):</label>
+        <input type="password" inputmode="numeric" maxlength="4" id="profPin" placeholder="4 цифры" />
       </div>
       <div class="field">
         <label>Образ жизни и активность:</label>
@@ -1327,9 +1391,10 @@
 
     <div class="card">
       <div class="card-title">
-        <span>🔄 Управление профилем</span>
+        <span>👥 Пользователи и сброс</span>
       </div>
-      <button class="btn-danger" onclick="resetFullProfile()">🗑️ Сбросить профиль и начать заново</button>
+      <button class="btn-soft" style="width:100%; margin-bottom:8px;" onclick="openAccountsModal()">👥 Сменить или добавить пользователя</button>
+      <button class="btn-danger" onclick="resetFullProfile()">🗑️ Удалить текущего пользователя</button>
     </div>
   </div>
 
@@ -1435,9 +1500,24 @@
       </select>
     </div>
 
+    <div class="row">
+      <div class="field" style="flex:1;">
+        <label>Начальные калории:</label>
+        <input type="number" step="10" id="onbStartKcal" value="" oninput="previewOnboardingSummary()" />
+      </div>
+      <div class="field" style="flex:1;">
+        <label>Приемов пищи в день:</label>
+        <select id="onbMealsPerDay">
+          <option value="3">3 (Завтрак, Обед, Ужин)</option>
+          <option value="4" selected>4 (+ Перекус)</option>
+          <option value="5">5 (+ 2 Перекуса)</option>
+        </select>
+      </div>
+    </div>
+
     <div class="field">
-      <label>Начальные калории в день (рассчитаются сами или впиши свои):</label>
-      <input type="number" step="10" id="onbStartKcal" value="" oninput="previewOnboardingSummary()" />
+      <label>Личный PIN-код из 4 цифр для входа (необязательно):</label>
+      <input type="password" inputmode="numeric" maxlength="4" id="onbPin" value="" placeholder="Например: 1234" />
     </div>
 
     <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:10px; margin-bottom:12px; font-size:0.8rem; line-height:1.45;">
@@ -1527,15 +1607,15 @@
 </div>
 
 
-<!-- CREATE SHARED PRODUCT MODAL -->
+<!-- CREATE / EDIT SHARED PRODUCT MODAL -->
 <div class="modal-backdrop" id="productModal">
   <div class="modal">
     <div class="card-title">
-      <span>🥗 Создать продукт (на 100 г)</span>
+      <span id="productModalTitle">🥗 Создать продукт (на 100 г)</span>
       <button class="btn-soft" onclick="closeProductModal()">✕</button>
     </div>
-    <p style="font-size:0.76rem; color:var(--muted); margin-bottom:10px;">
-      Укажи данные с упаковки (на 100 г). Продукт сохранится у тебя и <strong>автоматически синхронизируется</strong> со всеми участниками в облаке!
+    <p style="font-size:0.76rem; color:var(--muted); margin-bottom:10px;" id="productModalHint">
+      Укажи данные с упаковки (на 100 г). Продукт сохранится у тебя и <strong>перевыгрузится в облако</strong> для всех участников!
     </p>
     <div class="field">
       <label>Название продукта:</label>
@@ -1561,7 +1641,24 @@
         <input type="number" step="0.1" id="npC" placeholder="1.8" />
       </div>
     </div>
-    <button class="btn" style="width:100%;" onclick="saveNewSharedProduct()">☁️ Сохранить для себя и всех</button>
+    <button class="btn" style="width:100%;" id="btnSaveSharedProd" onclick="saveNewSharedProduct()">☁️ Сохранить и выгрузить в облако</button>
+    <button class="btn-danger" style="margin-top:8px; display:none;" id="btnDeleteSharedProd" onclick="deleteSharedProductFromCloud()">🗑️ Удалить этот продукт из облака</button>
+  </div>
+</div>
+
+
+<!-- MULTI-USER ACCOUNT SWITCHER & PIN AUTH MODAL -->
+<div class="modal-backdrop" id="accountsModal">
+  <div class="modal">
+    <div class="card-title">
+      <span>👥 Пользователи и вход</span>
+      <button class="btn-soft" onclick="closeAccountsModal()">✕</button>
+    </div>
+    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:10px;">
+      У каждого пользователя свой личный дневник, вес, фото и пароль (PIN). Чужие данные недоступны без входа в свой профиль.
+    </p>
+    <div id="accountsListContainer" style="margin-bottom:12px;"></div>
+    <button class="btn" style="width:100%;" onclick="startCreateNewUser()">+ Создать нового пользователя</button>
   </div>
 </div>
 
@@ -1810,37 +1907,80 @@
     return new Date().toISOString().split('T')[0];
   }
 
-  let state = JSON.parse(localStorage.getItem('novayaYaV6')) || {
-    onboarded: false,
-    theme: 'pink',
-    dietBreakActive: false,
-    cyclePhase: 'normal',
-    profile: {
-      name: '',
-      avatar: '🌸',
-      gender: 'female',
-      age: null,
-      height: null,
-      startWeight: null,
-      goalWeight: null,
-      startKcal: null,
-      activity: 1.55,
-      stepGoal: 9500,
-      waterGoal: 8,
-      workoutGoal: 2
-    },
-    history: [],
-    dailyLogs: {},
-    savingsLogs: [],
-    sharedProducts: [],
-    photos: [], // [{ date, label, dataUrl }]
-    favoriteIds: [],
-    customRecipes: { breakfast: [], lunch: [], dinner: [], treat20: [] },
-    rewards: [],
-    openedAdvent: [],
-    currentMenu: [],
-    checkedShopping: {}
+  const MEAL_DEFINITIONS = {
+    3: [
+      { key: 'breakfast', label: '🌅 Завтрак', share: 0.30 },
+      { key: 'lunch', label: '🍲 Обед', share: 0.40 },
+      { key: 'dinner', label: '🥗 Ужин', share: 0.30 }
+    ],
+    4: [
+      { key: 'breakfast', label: '🌅 Завтрак', share: 0.25 },
+      { key: 'lunch', label: '🍲 Обед', share: 0.35 },
+      { key: 'dinner', label: '🥗 Ужин', share: 0.25 },
+      { key: 'snack', label: '🍎 Перекус', share: 0.15 }
+    ],
+    5: [
+      { key: 'breakfast', label: '🌅 Завтрак', share: 0.25 },
+      { key: 'snack1', label: '🍏 Перекус 1', share: 0.10 },
+      { key: 'lunch', label: '🍲 Обед', share: 0.30 },
+      { key: 'snack2', label: '🍓 Перекус 2', share: 0.10 },
+      { key: 'dinner', label: '🥗 Ужин', share: 0.25 }
+    ]
   };
+
+  function getDefaultUserState() {
+    return {
+      onboarded: false,
+      theme: 'pink',
+      dietBreakActive: false,
+      cyclePhase: 'normal',
+      profile: {
+        name: '',
+        avatar: '🌸',
+        gender: 'female',
+        pin: '',
+        mealsPerDay: 4,
+        age: null,
+        height: null,
+        startWeight: null,
+        goalWeight: null,
+        startKcal: null,
+        activity: 1.55,
+        stepGoal: 9500,
+        waterGoal: 8,
+        workoutGoal: 2
+      },
+      history: [],
+      dailyLogs: {},
+      savingsLogs: [],
+      photos: [],
+      favoriteIds: [],
+      customRecipes: { breakfast: [], lunch: [], dinner: [], treat20: [] },
+      rewards: [],
+      openedAdvent: [],
+      currentMenu: [],
+      checkedShopping: {}
+    };
+  }
+
+  let appStore = JSON.parse(localStorage.getItem('novayaYaAccountsV7')) || null;
+  if (!appStore) {
+    // Migrate from V6 if present
+    const legacyV6 = JSON.parse(localStorage.getItem('novayaYaV6') || 'null');
+    const firstId = 'user_' + Date.now();
+    const initialUser = legacyV6 ? { ...getDefaultUserState(), ...legacyV6 } : getDefaultUserState();
+    appStore = {
+      activeUserId: firstId,
+      sharedProducts: legacyV6?.sharedProducts || [],
+      googleSheetUrl: '',
+      users: {
+        [firstId]: initialUser
+      }
+    };
+  }
+
+  let state = appStore.users[appStore.activeUserId] || getDefaultUserState();
+  state.sharedProducts = appStore.sharedProducts || [];
 
   let onbSelectedGender = 'female';
   let onbSelectedAvatar = '🌸';
@@ -1849,13 +1989,100 @@
   let workoutSecondsLeft = 15 * 60;
   let workoutInterval = null;
   let sosInterval = null;
+  let activeMealSlotKey = 'breakfast';
 
   function saveState() {
     try {
-      localStorage.setItem('novayaYaV6', JSON.stringify(state));
+      appStore.sharedProducts = state.sharedProducts || [];
+      appStore.users[appStore.activeUserId] = state;
+      localStorage.setItem('novayaYaAccountsV7', JSON.stringify(appStore));
     } catch (e) {
       alert('Память хранилища заполнена (возможно, слишком много фото). Удали старые фото для освобождения места.');
     }
+  }
+
+  // Multi-user Accounts & PIN Authorization
+  function openAccountsModal() {
+    renderAccountsList();
+    document.getElementById('accountsModal').classList.add('open');
+  }
+  function closeAccountsModal() {
+    document.getElementById('accountsModal').classList.remove('open');
+  }
+
+  function renderAccountsList() {
+    const box = document.getElementById('accountsListContainer');
+    if (!box) return;
+    box.innerHTML = '';
+    const userIds = Object.keys(appStore.users);
+    userIds.forEach(uid => {
+      const u = appStore.users[uid];
+      const isCurrent = uid === appStore.activeUserId;
+      const uName = u.profile?.name || 'Новый профиль (не заполнен)';
+      const uAvatar = u.profile?.avatar || '🌸';
+      const hasPin = !!(u.profile?.pin);
+      const latestW = u.history?.length ? `${u.history[u.history.length - 1].weight} кг` : '';
+
+      const row = document.createElement('div');
+      row.className = 'user-chip-row' + (isCurrent ? ' active-user' : '');
+      row.innerHTML = `
+        <div class="row" style="gap:10px;">
+          <span style="font-size:1.5rem;">${uAvatar}</span>
+          <div>
+            <div style="font-weight:800; font-size:0.9rem;">${uName} ${hasPin ? '🔒' : ''}</div>
+            <div style="font-size:0.72rem; color:var(--muted);">${isCurrent ? 'Активен сейчас' : 'Нажми, чтобы войти'} ${latestW ? '• ' + latestW : ''}</div>
+          </div>
+        </div>
+        <span class="badge">${isCurrent ? '✓ Выбран' : 'Войти'}</span>
+      `;
+      row.onclick = () => switchUserAccount(uid);
+      box.appendChild(row);
+    });
+  }
+
+  function switchUserAccount(uid) {
+    if (uid === appStore.activeUserId) {
+      closeAccountsModal();
+      return;
+    }
+    const targetUser = appStore.users[uid];
+    if (!targetUser) return;
+    const reqPin = (targetUser.profile?.pin || '').trim();
+    if (reqPin) {
+      const entered = prompt(`🔒 Введите 4-значный PIN-код для профиля «${targetUser.profile.name}»:`);
+      if (entered !== reqPin) {
+        alert('❌ Неверный PIN-код! Доступ к чужому профилю закрыт.');
+        return;
+      }
+    }
+    appStore.activeUserId = uid;
+    state = appStore.users[uid];
+    state.sharedProducts = appStore.sharedProducts || [];
+    saveState();
+    closeAccountsModal();
+    renderAll();
+  }
+
+  function startCreateNewUser() {
+    const newId = 'user_' + Date.now();
+    const fresh = getDefaultUserState();
+    fresh.theme = state.theme || 'pink';
+    fresh.sharedProducts = appStore.sharedProducts || [];
+    appStore.users[newId] = fresh;
+    appStore.activeUserId = newId;
+    state = fresh;
+    saveState();
+    closeAccountsModal();
+
+    ['onbName', 'onbAge', 'onbHeight', 'onbWeight', 'onbGoalWeight', 'onbActivity', 'onbStartKcal', 'onbPin'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('onbMealsPerDay').value = '4';
+    onbSelectedGender = 'female';
+    onbSelectedAvatar = '🌸';
+    previewOnboardingSummary();
+    renderAll();
   }
 
   function getFullRecipesDB() {
@@ -1995,12 +2222,7 @@
       }
     }
     if (state.dietBreakActive) {
-      return {
-        ...active,
-        kcal: active.kcal + 300,
-        c: active.c + 75,
-        isBreak: true
-      };
+      return { ...active, kcal: active.kcal + 300, c: active.c + 75, isBreak: true };
     }
     return active;
   }
@@ -2070,6 +2292,8 @@
     const weight = parseFloat(document.getElementById('onbWeight').value);
     const goalWeight = parseFloat(document.getElementById('onbGoalWeight').value);
     const activity = parseFloat(document.getElementById('onbActivity').value) || 1.55;
+    const mealsPerDay = parseInt(document.getElementById('onbMealsPerDay').value, 10) || 4;
+    const pin = (document.getElementById('onbPin').value || '').trim();
     let startKcal = parseInt(document.getElementById('onbStartKcal').value, 10);
 
     if (!name || !age || !height || !weight || !goalWeight) {
@@ -2096,6 +2320,8 @@
       name,
       avatar: onbSelectedAvatar || '🌸',
       gender: onbSelectedGender,
+      pin,
+      mealsPerDay,
       age,
       height,
       startWeight: weight,
@@ -2108,6 +2334,7 @@
     };
     state.history = [{ date: getTodayStr(), weight, chest: null, waist: null, hips: null }];
     state.dailyLogs = {};
+    state.savingsLogs = [];
     state.photos = [];
     state.favoriteIds = [];
     state.rewards = pool;
@@ -2121,45 +2348,33 @@
     saveState();
     document.getElementById('onboardingModal').classList.remove('open');
     renderAll();
-  syncSharedProducts(false);
   }
 
   function resetFullProfile() {
-    if (confirm('Точно сбросить текущий профиль и удалить все записи? Откроется окно создания нового пользователя.')) {
-      localStorage.removeItem('novayaYaV6');
-      state = {
-        onboarded: false,
-        theme: state.theme || 'pink',
-        dietBreakActive: false,
-        cyclePhase: 'normal',
-        profile: { name: '', avatar: '🌸', gender: 'female', age: null, height: null, startWeight: null, goalWeight: null, startKcal: null, activity: 1.55, stepGoal: 9500, waterGoal: 8, workoutGoal: 2 },
-        history: [],
-        dailyLogs: {},
-    savingsLogs: [],
-    sharedProducts: [],
-        photos: [],
-        favoriteIds: [],
-        customRecipes: { breakfast: [], lunch: [], dinner: [], treat20: [] },
-        rewards: [],
-        openedAdvent: [],
-        currentMenu: [],
-        checkedShopping: {}
-      };
-      ['onbName', 'onbAge', 'onbHeight', 'onbWeight', 'onbGoalWeight', 'onbActivity', 'onbStartKcal'].forEach(id => {
-        document.getElementById(id).value = '';
-      });
-      onbSelectedGender = 'female';
-      onbSelectedAvatar = '🌸';
-      previewOnboardingSummary();
+    if (confirm('Удалить текущего пользователя? Если есть другие профили, откроется выбор пользователя.')) {
+      delete appStore.users[appStore.activeUserId];
+      const remainingIds = Object.keys(appStore.users);
+      if (remainingIds.length > 0) {
+        appStore.activeUserId = remainingIds[0];
+        state = appStore.users[appStore.activeUserId];
+      } else {
+        const newId = 'user_' + Date.now();
+        const fresh = getDefaultUserState();
+        fresh.theme = state.theme || 'pink';
+        appStore.users[newId] = fresh;
+        appStore.activeUserId = newId;
+        state = fresh;
+      }
+      state.sharedProducts = appStore.sharedProducts || [];
+      saveState();
       renderAll();
-  syncSharedProducts(false);
     }
   }
 
   function ensureTodayLog() {
     const today = getTodayStr();
     if (!state.dailyLogs[today]) {
-      state.dailyLogs[today] = { steps: 0, water: 0, nutrition: null, workout: false };
+      state.dailyLogs[today] = { steps: 0, water: 0, nutrition: null, workout: false, foods: [] };
     }
     return state.dailyLogs[today];
   }
@@ -2190,14 +2405,12 @@
     state.dietBreakActive = !state.dietBreakActive;
     saveState();
     renderAll();
-  syncSharedProducts(false);
   }
 
   function setCyclePhase(phase) {
     state.cyclePhase = phase;
     saveState();
     renderAll();
-  syncSharedProducts(false);
   }
 
   function renderAll() {
@@ -2220,6 +2433,7 @@
     if (!p.startKcal) p.startKcal = 1700;
     if (!p.gender) p.gender = 'female';
     if (!p.avatar) p.avatar = '🌸';
+    if (!p.mealsPerDay) p.mealsPerDay = 4;
 
     document.getElementById('navProfileIcon').textContent = p.avatar;
     document.getElementById('profileCardIcon').textContent = p.avatar;
@@ -2249,10 +2463,8 @@
     document.getElementById('statBmiSub').textContent = `ИМТ: ${bmiObj.bmi} (${bmiObj.cat})`;
     document.getElementById('mealTargetBadge').textContent = `${currentStage.kcal} ккал`;
 
-    // Fun comparison
     document.getElementById('funCompareText').textContent = getFunWeightComparison(lost);
 
-    // Diet break timer
     const startDt = new Date(start.date);
     const weeksPassed = Math.max(0, Math.floor((Date.now() - startDt.getTime()) / (7 * 86400000)));
     const weeksUntilBreak = Math.max(0, 11 - (weeksPassed % 11));
@@ -2263,7 +2475,6 @@
     const btnBreak = document.getElementById('btnToggleDietBreak');
     btnBreak.textContent = state.dietBreakActive ? '✅ Вернуть дефицит' : '🌴 Каникулы';
 
-    // Wellness / Cycle tracker
     const wellnessCard = document.getElementById('wellnessCard');
     if (p.gender === 'male') {
       wellnessCard.style.display = 'none';
@@ -2316,7 +2527,6 @@
         todayLog.water = (todayLog.water === i) ? i - 1 : i;
         saveState();
         renderAll();
-  syncSharedProducts(false);
       };
       waterEl.appendChild(cup);
     }
@@ -2357,15 +2567,17 @@
     document.getElementById('profStartWeight').value = p.startWeight;
     document.getElementById('profGoalWeight').value = p.goalWeight;
     document.getElementById('profStartKcal').value = p.startKcal;
+    document.getElementById('profMealsPerDay').value = String(p.mealsPerDay || 4);
+    document.getElementById('profPin').value = p.pin || '';
     document.getElementById('profActivity').value = String(p.activity);
     document.getElementById('profStepGoal').value = p.stepGoal;
     document.getElementById('profWaterGoal').value = p.waterGoal;
     document.getElementById('profWorkoutGoal').value = p.workoutGoal;
     document.getElementById('profileBmiBadge').textContent = `ИМТ: ${bmiObj.bmi} (${bmiObj.cat})`;
 
+    renderCalorieTracker(currentStage);
     renderWorkoutPresetDetails();
     renderSavings();
-    renderCalorieTracker(currentStage);
     renderHeatmap();
     renderPhotoDiary();
     renderAdvent();
@@ -2377,8 +2589,7 @@
     }
   }
 
-
-
+  // Shared Products & Meal-Split Calorie Tracker
   const FIREBASE_DB_URL = "https://novaya-ya-food-default-rtdb.europe-west1.firebasedatabase.app";
 
   const DEFAULT_PRODUCTS_DB = [
@@ -2425,13 +2636,27 @@
   ];
 
   let selectedProductObj = DEFAULT_PRODUCTS_DB[0];
+  let editingProductTarget = null;
 
   function getAllProductsList() {
-    const shared = Array.isArray(state.sharedProducts) ? state.sharedProducts : [];
+    const shared = Array.isArray(appStore.sharedProducts) ? appStore.sharedProducts : [];
     const map = new Map();
-    DEFAULT_PRODUCTS_DB.forEach(p => map.set(p.name.toLowerCase(), p));
+    DEFAULT_PRODUCTS_DB.forEach(p => map.set(p.id, { ...p, isBuiltIn: true }));
     shared.forEach(p => {
-      if (p && p.name) map.set(p.name.toLowerCase(), p);
+      if (p && p.name) {
+        // If this cloud product overrides a built-in product ID, replace it
+        if (p.overridesId && map.has(p.overridesId)) {
+          map.set(p.overridesId, { ...p, firebaseKey: p.id, isCloud: true });
+        } else {
+          // Also remove any built-in with exact same name so no duplicates appear
+          for (const [k, v] of map.entries()) {
+            if (v.name.toLowerCase() === p.name.toLowerCase() && v.isBuiltIn) {
+              map.delete(k);
+            }
+          }
+          map.set(p.id, { ...p, firebaseKey: p.id, isCloud: true });
+        }
+      }
     });
     return Array.from(map.values());
   }
@@ -2446,28 +2671,65 @@
       const loaded = [];
       if (data && typeof data === 'object') {
         Object.keys(data).forEach(key => {
-          if (data[key] && data[key].name) {
-            loaded.push({ id: key, ...data[key] });
-          }
+          if (data[key] && data[key].name) loaded.push({ id: key, firebaseKey: key, ...data[key] });
         });
       }
+      appStore.sharedProducts = loaded;
       state.sharedProducts = loaded;
       saveState();
+
+      // Refresh selectedProductObj if it was updated
+      const allNow = getAllProductsList();
+      if (selectedProductObj) {
+        const refreshed = allNow.find(x => x.id === selectedProductObj.id || x.name === selectedProductObj.name);
+        if (refreshed) selectedProductObj = refreshed;
+      }
+
       renderProductSearchResults();
       const countEl = document.getElementById('productsTotalCount');
-      if (countEl) countEl.textContent = getAllProductsList().length;
+      if (countEl) countEl.textContent = allNow.length;
       if (badge) badge.textContent = `☁️ Облако (${loaded.length} общ.)`;
       if (showAlert) alert(`База синхронизирована! Загружено общих продуктов: ${loaded.length}.`);
     } catch (err) {
       if (badge) badge.textContent = '📴 Офлайн-база';
-      if (showAlert) alert('Не удалось подключиться к облаку (проверь интернет). Работает локальная база продуктов.');
+      if (showAlert) alert('Не удалось подключиться к облаку. Работает локальная база продуктов.');
     }
   }
 
-  function openProductModal() {
+  function openProductModal(prodToEdit = null) {
+    editingProductTarget = prodToEdit;
+    const titleEl = document.getElementById('productModalTitle');
+    const btnSave = document.getElementById('btnSaveSharedProd');
+    const btnDel = document.getElementById('btnDeleteSharedProd');
+
+    if (prodToEdit) {
+      titleEl.textContent = '✏️ Редактировать продукт (на 100 г)';
+      btnSave.textContent = '☁️ Сохранить исправления и перевыгрузить';
+      document.getElementById('npName').value = prodToEdit.name || '';
+      document.getElementById('npKcal').value = prodToEdit.kcal ?? '';
+      document.getElementById('npP').value = prodToEdit.p ?? '';
+      document.getElementById('npF').value = prodToEdit.f ?? '';
+      document.getElementById('npC').value = prodToEdit.c ?? '';
+      btnDel.style.display = (prodToEdit.firebaseKey && !String(prodToEdit.firebaseKey).startsWith('local_')) ? 'block' : 'none';
+    } else {
+      titleEl.textContent = '🥗 Создать продукт (на 100 г)';
+      btnSave.textContent = '☁️ Сохранить и выгрузить в облако';
+      ['npName', 'npKcal', 'npP', 'npF', 'npC'].forEach(id => document.getElementById(id).value = '');
+      btnDel.style.display = 'none';
+    }
     document.getElementById('productModal').classList.add('open');
   }
+
+  function openEditSelectedProduct() {
+    if (!selectedProductObj) {
+      alert('Сначала выбери продукт из списка!');
+      return;
+    }
+    openProductModal(selectedProductObj);
+  }
+
   function closeProductModal() {
+    editingProductTarget = null;
     document.getElementById('productModal').classList.remove('open');
   }
 
@@ -2483,44 +2745,97 @@
       return;
     }
 
-    const newProd = {
+    const payload = {
       name,
       kcal: +kcal.toFixed(1),
       p: +p.toFixed(1),
       f: +f.toFixed(1),
       c: +c.toFixed(1),
       author: state.profile.name || 'Пользователь',
-      createdAt: getTodayStr()
+      updatedAt: getTodayStr()
     };
 
-    if (!state.sharedProducts) state.sharedProducts = [];
-    state.sharedProducts.push({ id: 'local_' + Date.now(), ...newProd });
-    selectedProductObj = newProd;
-    saveState();
+    if (editingProductTarget && editingProductTarget.overridesId) {
+      payload.overridesId = editingProductTarget.overridesId;
+    } else if (editingProductTarget && editingProductTarget.isBuiltIn) {
+      payload.overridesId = editingProductTarget.id;
+    }
 
-    document.getElementById('npName').value = '';
-    document.getElementById('npKcal').value = '';
-    document.getElementById('npP').value = '';
-    document.getElementById('npF').value = '';
-    document.getElementById('npC').value = '';
+    const existingFbKey = editingProductTarget?.firebaseKey && !String(editingProductTarget.firebaseKey).startsWith('local_')
+      ? editingProductTarget.firebaseKey
+      : (payload.overridesId ? `override_${payload.overridesId}` : null);
+
+    if (!appStore.sharedProducts) appStore.sharedProducts = [];
+    if (existingFbKey) {
+      const idx = appStore.sharedProducts.findIndex(x => x.id === existingFbKey || x.firebaseKey === existingFbKey);
+      const localObj = { id: existingFbKey, firebaseKey: existingFbKey, ...payload };
+      if (idx !== -1) appStore.sharedProducts[idx] = localObj;
+      else appStore.sharedProducts.push(localObj);
+      selectedProductObj = localObj;
+    } else {
+      const tempObj = { id: 'local_' + Date.now(), ...payload };
+      appStore.sharedProducts.push(tempObj);
+      selectedProductObj = tempObj;
+    }
+
+    state.sharedProducts = appStore.sharedProducts;
+    saveState();
     closeProductModal();
     renderProductSearchResults();
     updatePortionPreview();
 
     try {
-      const res = await fetch(`${FIREBASE_DB_URL}/shared_products.json`, {
-        method: 'POST',
+      const url = existingFbKey
+        ? `${FIREBASE_DB_URL}/shared_products/${existingFbKey}.json`
+        : `${FIREBASE_DB_URL}/shared_products.json`;
+      const method = existingFbKey ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newProd)
+        body: JSON.stringify(payload)
       });
       if (res.ok) {
         await syncSharedProducts(false);
-        alert(`✅ Продукт «${name}» добавлен и синхронизирован для всех пользователей!`);
+        alert(existingFbKey
+          ? `✅ Продукт «${name}» исправлен и перевыгружен в облако для всех!`
+          : `✅ Продукт «${name}» добавлен и выгружен в облако для всех!`);
       } else {
-        alert(`Продукт «${name}» сохранен локально (ошибка записи в облако).`);
+        alert(`Сохранено локально (ошибка облака: ${res.status}).`);
       }
     } catch (e) {
-      alert(`Продукт «${name}» сохранен на телефоне и отправится в облако при появлении сети.`);
+      alert(`Сохранено на устройстве и перевыгрузится при подключении к сети.`);
+    }
+  }
+
+  async function deleteSharedProductFromCloud() {
+    if (!editingProductTarget || !editingProductTarget.firebaseKey) return;
+    if (!confirm(`Точно удалить «${editingProductTarget.name}» из общей облачной базы?`)) return;
+    const fbKey = editingProductTarget.firebaseKey;
+    appStore.sharedProducts = (appStore.sharedProducts || []).filter(x => x.id !== fbKey && x.firebaseKey !== fbKey);
+    state.sharedProducts = appStore.sharedProducts;
+    selectedProductObj = DEFAULT_PRODUCTS_DB[0];
+    saveState();
+    closeProductModal();
+    renderProductSearchResults();
+    updatePortionPreview();
+
+    try {
+      await fetch(`${FIREBASE_DB_URL}/shared_products/${fbKey}.json`, { method: 'DELETE' });
+      await syncSharedProducts(false);
+      alert('🗑️ Продукт удален из облака!');
+    } catch (e) {}
+  }
+
+  function selectMealSlotForInput(slotKey) {
+    activeMealSlotKey = slotKey;
+    const sel = document.getElementById('foodMealSlotSelect');
+    if (sel) sel.value = slotKey;
+    const adder = document.getElementById('foodAdderBox');
+    if (adder) {
+      adder.style.borderColor = 'var(--primary)';
+      adder.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      document.getElementById('foodSearchInput')?.focus();
     }
   }
 
@@ -2532,20 +2847,29 @@
     const countEl = document.getElementById('productsTotalCount');
     if (countEl) countEl.textContent = all.length;
 
-    const filtered = q ? all.filter(x => x.name.toLowerCase().includes(q)) : all.slice(0, 12);
+    const filtered = q ? all.filter(x => x.name.toLowerCase().includes(q)) : all.slice(0, 15);
     listEl.innerHTML = '';
     if (filtered.length === 0) {
-      listEl.innerHTML = `<div style="padding:10px; font-size:0.78rem; color:var(--muted); text-align:center;">Ничего не найдено. Нажми <strong>«+ Новый продукт»</strong> выше, чтобы добавить его в общую базу!</div>`;
+      listEl.innerHTML = `<div style="padding:10px; font-size:0.78rem; color:var(--muted); text-align:center;">Ничего не найдено. Нажми <strong>«+ Новый продукт»</strong> выше!</div>`;
       return;
     }
-    filtered.slice(0, 20).forEach(prod => {
+    filtered.slice(0, 25).forEach(prod => {
       const row = document.createElement('div');
       const isSel = selectedProductObj && selectedProductObj.name === prod.name;
       row.className = 'food-search-row' + (isSel ? ' selected' : '');
       row.innerHTML = `
-        <span>${prod.name}</span>
-        <span style="color:var(--muted); font-size:0.72rem; white-space:nowrap;">${prod.kcal} ккал / 100г</span>
+        <span style="flex:1; padding-right:6px;">${prod.name}</span>
+        <div class="row" style="gap:6px; flex-wrap:nowrap;">
+          <span style="color:var(--muted); font-size:0.72rem; white-space:nowrap;">${prod.kcal} ккал</span>
+          <button class="btn-soft" style="padding:2px 6px; min-height:24px; font-size:0.7rem;" title="Редактировать продукт">✏️</button>
+        </div>
       `;
+      const editBtn = row.querySelector('button');
+      editBtn.onclick = (e) => {
+        e.stopPropagation();
+        selectedProductObj = prod;
+        openProductModal(prod);
+      };
       row.onclick = () => {
         selectedProductObj = prod;
         renderProductSearchResults();
@@ -2570,10 +2894,15 @@
     prev.textContent = `${k} ккал • Б ${p} / Ж ${f} / У ${c}`;
   }
 
-  function logFoodEntry(name, grams, kcal, p, f, c) {
+  function logFoodEntry(name, grams, kcal, p, f, c, mealSlot) {
     const todayLog = ensureTodayLog();
     if (!todayLog.foods) todayLog.foods = [];
+    const mealsCount = state.profile.mealsPerDay || 4;
+    const slots = MEAL_DEFINITIONS[mealsCount] || MEAL_DEFINITIONS[4];
+    const validSlot = slots.some(s => s.key === mealSlot) ? mealSlot : slots[0].key;
+
     todayLog.foods.push({
+      meal: validSlot,
       name,
       grams,
       kcal: Math.round(kcal),
@@ -2582,7 +2911,6 @@
       c: +c.toFixed(1)
     });
 
-    // Auto-mark nutrition adherence as "Да" if consumed calories are within 70%..108% of target
     const latest = state.history[state.history.length - 1] || { weight: state.profile.startWeight };
     const stage = getCurrentDynamicPlan(latest.weight, state.profile);
     const totalKcal = todayLog.foods.reduce((s, x) => s + x.kcal, 0);
@@ -2593,7 +2921,6 @@
     }
     saveState();
     renderAll();
-  syncSharedProducts(false);
   }
 
   function addSelectedProductToLog() {
@@ -2603,6 +2930,7 @@
       alert('Укажи вес порции в граммах!');
       return;
     }
+    const slotKey = document.getElementById('foodMealSlotSelect')?.value || activeMealSlotKey;
     const ratio = grams / 100;
     logFoodEntry(
       selectedProductObj.name,
@@ -2610,7 +2938,8 @@
       selectedProductObj.kcal * ratio,
       selectedProductObj.p * ratio,
       selectedProductObj.f * ratio,
-      selectedProductObj.c * ratio
+      selectedProductObj.c * ratio,
+      slotKey
     );
   }
 
@@ -2620,19 +2949,27 @@
     const p = parseFloat(document.getElementById('qmFoodP').value) || 0;
     const f = parseFloat(document.getElementById('qmFoodF').value) || 0;
     const c = parseFloat(document.getElementById('qmFoodC').value) || 0;
+    const slotKey = document.getElementById('foodMealSlotSelect')?.value || activeMealSlotKey;
     if (!name || isNaN(kcal)) {
       alert('Введи название и калории!');
       return;
     }
-    logFoodEntry(name, null, kcal, p, f, c);
+    logFoodEntry(name, null, kcal, p, f, c, slotKey);
     ['qmFoodName', 'qmFoodKcal', 'qmFoodP', 'qmFoodF', 'qmFoodC'].forEach(id => document.getElementById(id).value = '');
   }
 
   function eatMealFromMenu(dayIdx, mealIdx) {
     const meal = state.currentMenu?.[dayIdx]?.items?.[mealIdx];
     if (!meal) return;
-    logFoodEntry(`${meal.type}: ${meal.name}`, null, meal.kcal, meal.p, meal.f, meal.c);
-    alert(`✅ «${meal.name}» (+${meal.kcal} ккал) добавлено в дневник питания за сегодня!`);
+    const mealsCount = state.profile.mealsPerDay || 4;
+    let targetSlot = 'breakfast';
+    if (meal.cat === 'breakfast') targetSlot = 'breakfast';
+    else if (meal.cat === 'lunch') targetSlot = 'lunch';
+    else if (meal.cat === 'dinner') targetSlot = 'dinner';
+    else targetSlot = mealsCount === 5 ? 'snack1' : (mealsCount === 4 ? 'snack' : 'lunch');
+
+    logFoodEntry(meal.name, null, meal.kcal, meal.p, meal.f, meal.c, targetSlot);
+    alert(`✅ «${meal.name}» (+${meal.kcal} ккал) добавлено в дневник питания!`);
   }
 
   function deleteFoodLogEntry(idx) {
@@ -2641,13 +2978,23 @@
       todayLog.foods.splice(idx, 1);
       saveState();
       renderAll();
-  syncSharedProducts(false);
     }
   }
 
   function renderCalorieTracker(stagePlan) {
     const todayLog = ensureTodayLog();
     const foods = todayLog.foods || [];
+    const mealsCount = state.profile.mealsPerDay || 4;
+    const slots = MEAL_DEFINITIONS[mealsCount] || MEAL_DEFINITIONS[4];
+
+    // Sync meal dropdown selector
+    const slotSelect = document.getElementById('foodMealSlotSelect');
+    if (slotSelect) {
+      if (!slots.some(s => s.key === activeMealSlotKey)) activeMealSlotKey = slots[0].key;
+      slotSelect.innerHTML = slots.map(s => `<option value="${s.key}" ${s.key === activeMealSlotKey ? 'selected' : ''}>Добавить в: ${s.label}</option>`).join('');
+      slotSelect.onchange = () => { activeMealSlotKey = slotSelect.value; };
+    }
+
     let sumKcal = 0, sumP = 0, sumF = 0, sumC = 0;
     foods.forEach(item => {
       sumKcal += item.kcal || 0;
@@ -2686,37 +3033,95 @@
     document.getElementById('macroCTarget').textContent = stagePlan.c;
     document.getElementById('macroCBar').style.width = `${Math.min(100, Math.round((sumC / Math.max(1, stagePlan.c)) * 100))}%`;
 
-    const logList = document.getElementById('todayFoodLogList');
-    if (!logList) return;
-    logList.innerHTML = '';
-    foods.forEach((item, idx) => {
-      const row = document.createElement('div');
-      row.className = 'food-log-item';
-      row.innerHTML = `
-        <div>
-          <strong>${item.name}</strong> ${item.grams ? `(${item.grams} г)` : ''}
-          <div style="font-size:0.68rem; color:var(--muted);">Б ${item.p}г • Ж ${item.f}г • У ${item.c}г</div>
-        </div>
-        <div class="row" style="gap:6px; flex-wrap:nowrap;">
-          <strong style="color:var(--primary); white-space:nowrap;">${item.kcal} ккал</strong>
-          <button class="btn-soft" style="padding:3px 7px; min-height:26px; font-size:0.7rem;" onclick="deleteFoodLogEntry(${idx})">✕</button>
-        </div>
-      `;
-      logList.appendChild(row);
-    });
+    // Render each meal slot block
+    const slotsContainer = document.getElementById('mealSlotsContainer');
+    if (slotsContainer) {
+      slotsContainer.innerHTML = '';
+      slots.forEach((slot, sIdx) => {
+        // Assign items matching this slot (fallback older untagged items to breakfast)
+        const slotItems = foods
+          .map((item, globalIdx) => ({ ...item, globalIdx }))
+          .filter(item => (item.meal === slot.key) || (!item.meal && sIdx === 0) || (!slots.some(x => x.key === item.meal) && sIdx === slots.length - 1));
+
+        const mKcal = slotItems.reduce((s, x) => s + (x.kcal || 0), 0);
+        const mP = Math.round(slotItems.reduce((s, x) => s + (x.p || 0), 0));
+        const mF = Math.round(slotItems.reduce((s, x) => s + (x.f || 0), 0));
+        const mC = Math.round(slotItems.reduce((s, x) => s + (x.c || 0), 0));
+        const recKcal = Math.round(targetK * slot.share);
+
+        const box = document.createElement('div');
+        box.className = 'meal-slot-box';
+        let itemsHtml = '';
+        slotItems.forEach(it => {
+          itemsHtml += `
+            <div class="food-log-item" style="background:var(--card);">
+              <div>
+                <strong>${it.name}</strong> ${it.grams ? `(${it.grams} г)` : ''}
+                <div style="font-size:0.68rem; color:var(--muted);">Б ${it.p}г • Ж ${it.f}г • У ${it.c}г</div>
+              </div>
+              <div class="row" style="gap:6px; flex-wrap:nowrap;">
+                <strong style="color:var(--primary); white-space:nowrap;">${it.kcal} ккал</strong>
+                <button class="btn-soft" style="padding:3px 7px; min-height:26px; font-size:0.7rem;" onclick="deleteFoodLogEntry(${it.globalIdx})">✕</button>
+              </div>
+            </div>
+          `;
+        });
+
+        box.innerHTML = `
+          <div class="meal-slot-header">
+            <div>
+              <div class="meal-slot-title">${slot.label} <span style="font-weight:700; color:var(--primary);">(${mKcal} / ~${recKcal} ккал)</span></div>
+              <div class="meal-slot-sub">Б ${mP}г • Ж ${mF}г • У ${mC}г</div>
+            </div>
+            <button class="btn-soft" style="padding:5px 10px; min-height:30px; font-size:0.74rem;" onclick="selectMealSlotForInput('${slot.key}')">+ Еда</button>
+          </div>
+          ${itemsHtml}
+        `;
+        slotsContainer.appendChild(box);
+      });
+    }
 
     renderProductSearchResults();
   }
 
-  function downloadBackupFile() {
+  async function downloadBackupFile() {
     const copyForBackup = { ...state, photos: [] };
-    const blob = new Blob([JSON.stringify(copyForBackup, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `novaya-ya-backup-${getTodayStr()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const jsonStr = JSON.stringify(copyForBackup, null, 2);
+    const fileName = `novaya-ya-backup-${getTodayStr()}.json`;
+
+    // Also fill & copy text backup code so user ALWAYS has a working copy even if APK WebView blocks file downloads
+    try {
+      const code = btoa(unescape(encodeURIComponent(JSON.stringify(copyForBackup))));
+      const area = document.getElementById('backupArea');
+      if (area) area.value = code;
+      if (navigator.clipboard) navigator.clipboard.writeText(code).catch(() => {});
+    } catch (e) {}
+
+    // 1. Try native Android/iOS Share Sheet with File (works reliably inside APK WebViews!)
+    try {
+      const file = new File([jsonStr], fileName, { type: 'application/json' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Резервная копия Новая Я'
+        });
+        return;
+      }
+    } catch (e) {}
+
+    // 2. Try Data URI download (supported by Android WebView DownloadListener, unlike blob: URLs)
+    try {
+      const dataUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr);
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      alert('📥 Файл отправлен на загрузку! На всякий случай код резервной копии также скопирован в буфер обмена.');
+    } catch (e) {
+      alert('Код резервной копии скопирован в буфер обмена и вставлен в поле ниже — сохрани его в Заметки или Telegram.');
+    }
   }
 
   function uploadBackupFile(event) {
@@ -2730,7 +3135,6 @@
           state = { ...state, ...parsed };
           saveState();
           renderAll();
-  syncSharedProducts(false);
           alert('✅ Все данные успешно восстановлены из файла!');
         } else {
           alert('Некорректный файл резервной копии.');
@@ -2748,7 +3152,6 @@
     state.savingsLogs.push({ date: getTodayStr(), item, amount });
     saveState();
     renderSavings();
-    renderCalorieTracker(currentStage);
   }
 
   function addCustomSaving() {
@@ -2764,14 +3167,12 @@
     document.getElementById('savingAmountInput').value = '';
     saveState();
     renderSavings();
-    renderCalorieTracker(currentStage);
   }
 
   function deleteSaving(idx) {
     state.savingsLogs.splice(idx, 1);
     saveState();
     renderSavings();
-    renderCalorieTracker(currentStage);
   }
 
   function getSavingRewardHint(totalRub) {
@@ -2785,7 +3186,7 @@
 
   function renderSavings() {
     if (!state.savingsLogs) state.savingsLogs = [];
-    const currentMonthPrefix = getTodayStr().slice(0, 7); // YYYY-MM
+    const currentMonthPrefix = getTodayStr().slice(0, 7);
     let monthSum = 0;
     let monthCount = 0;
     let totalSum = 0;
@@ -2825,13 +3226,10 @@
     });
   }
 
-  // Workout Timer Functions
   function selectWorkoutPreset(idx) {
     activeWorkoutIdx = idx;
     resetWorkoutTimer();
     renderWorkoutPresetDetails();
-    renderSavings();
-    renderCalorieTracker(currentStage);
   }
 
   function renderWorkoutPresetDetails() {
@@ -2897,11 +3295,9 @@
     saveState();
     resetWorkoutTimer();
     renderAll();
-  syncSharedProducts(false);
     alert('🎉 Отличная работа! Тренировка засчитана в цели дня.');
   }
 
-  // SOS Modal
   function openSosModal() {
     const p = state.profile;
     const latest = state.history[state.history.length - 1] || { weight: p.startWeight || 92 };
@@ -2930,9 +3326,7 @@
     }, 1000);
   }
 
-  // Monthly Discipline Calendar
   let heatmapDate = new Date();
-
   function changeHeatmapMonth(delta) {
     heatmapDate = new Date(heatmapDate.getFullYear(), heatmapDate.getMonth() + delta, 1);
     renderHeatmap();
@@ -2946,11 +3340,10 @@
 
     const year = heatmapDate.getFullYear();
     const month = heatmapDate.getMonth();
-    const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+    const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Авг', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     if (labelEl) labelEl.textContent = `${monthNames[month]} ${year}`;
 
     const firstDay = new Date(year, month, 1);
-    // Monday = 0, Sunday = 6
     let startOffset = firstDay.getDay() - 1;
     if (startOffset < 0) startOffset = 6;
 
@@ -2972,16 +3365,13 @@
 
       const cell = document.createElement('div');
       cell.className = 'hm-cell' + (score > 0 ? ` hm-${score}` : '');
-      if (key === todayStr) {
-        cell.style.outline = '2px solid var(--primary-deep)';
-      }
+      if (key === todayStr) cell.style.outline = '2px solid var(--primary-deep)';
       cell.textContent = day;
       cell.title = `${dStr}.${mStr}.${year}: выполнено ${score}/4 целей`;
       grid.appendChild(cell);
     }
   }
 
-  // Photo Progress Diary
   function handlePhotoUpload(event) {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -2990,7 +3380,6 @@
     reader.onload = function(e) {
       const img = new Image();
       img.onload = function() {
-        // Compress image to fit comfortably in localStorage
         const canvas = document.createElement('canvas');
         const maxW = 480;
         const scale = Math.min(1, maxW / img.width);
@@ -3038,7 +3427,6 @@
     }
   }
 
-  // Roadmap
   function renderRoadmap(activeStageIdx, startDateStr, eta) {
     const stages = buildRoadmapStages(state.profile);
     document.getElementById('roadmapCurrentStageBadge').textContent = `Этап ${activeStageIdx}`;
@@ -3058,7 +3446,6 @@
     });
   }
 
-  // Daily goal actions
   function setManualSteps() {
     const val = parseInt(document.getElementById('stepsManualInput').value, 10);
     if (!isNaN(val) && val >= 0) {
@@ -3066,7 +3453,6 @@
       document.getElementById('stepsManualInput').value = '';
       saveState();
       renderAll();
-  syncSharedProducts(false);
     }
   }
   function addSteps(delta) { ensureTodayLog().steps += delta; saveState(); renderAll(); }
@@ -3074,7 +3460,6 @@
   function setNutritionToday(val) { ensureTodayLog().nutrition = val; saveState(); renderAll(); }
   function toggleWorkoutToday() { const log = ensureTodayLog(); log.workout = !log.workout; saveState(); renderAll(); }
 
-  // Advent Calendar
   function renderAdvent() {
     const p = state.profile;
     const latest = state.history[state.history.length - 1] || { weight: p.startWeight };
@@ -3144,7 +3529,6 @@
     closeAdventModal();
   }
 
-  // Charts (including Moving Average Weight Line!)
   function getCssVar(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   }
@@ -3201,7 +3585,6 @@
       ctx.fillText(Math.round(val), 4, y + 3);
     }
 
-    // Ideal plan dashed line
     ctx.strokeStyle = soft;
     ctx.setLineDash([5, 5]);
     ctx.lineWidth = 2;
@@ -3212,7 +3595,6 @@
     ctx.setLineDash([]);
 
     const pts = state.history;
-    // Moving average calculation (window of 3)
     const movingAvg = pts.map((_, idx) => {
       const slice = pts.slice(Math.max(0, idx - 2), idx + 1);
       return slice.reduce((a, b) => a + b.weight, 0) / slice.length;
@@ -3220,7 +3602,6 @@
     const lastAvg = movingAvg[movingAvg.length - 1] || startW;
     document.getElementById('movingAvgBadge').textContent = `Средний: ${lastAvg.toFixed(1)} кг`;
 
-    // Actual weight line
     ctx.strokeStyle = primary;
     ctx.lineWidth = 2.5;
     ctx.beginPath();
@@ -3232,7 +3613,6 @@
     });
     ctx.stroke();
 
-    // Moving average smooth green line
     if (pts.length >= 2) {
       ctx.strokeStyle = success;
       ctx.lineWidth = 2.5;
@@ -3433,7 +3813,6 @@
     saveState();
     closeReportModal();
     renderAll();
-  syncSharedProducts(false);
   }
 
   function saveProfileSettings() {
@@ -3445,6 +3824,8 @@
     state.profile.startWeight = parseFloat(document.getElementById('profStartWeight').value) || 92.0;
     state.profile.goalWeight = parseFloat(document.getElementById('profGoalWeight').value) || 57.0;
     state.profile.startKcal = parseInt(document.getElementById('profStartKcal').value, 10) || 1700;
+    state.profile.mealsPerDay = parseInt(document.getElementById('profMealsPerDay').value, 10) || 4;
+    state.profile.pin = (document.getElementById('profPin').value || '').trim();
     state.profile.activity = parseFloat(document.getElementById('profActivity').value) || 1.55;
     state.profile.stepGoal = parseInt(document.getElementById('profStepGoal').value, 10) || 9500;
     state.profile.waterGoal = parseInt(document.getElementById('profWaterGoal').value, 10) || 8;
@@ -3465,11 +3846,9 @@
     }
     saveState();
     renderAll();
-  syncSharedProducts(false);
-    alert('Профиль, калораж, дорожная карта и адвент-календарь обновлены!');
+    alert('Профиль, приемы пищи, калораж и адвент-календарь обновлены!');
   }
 
-  // Meals, Favorites, Single-Meal Swap & Custom Recipes
   function shuffleArray(arr) {
     const copy = [...arr];
     for (let i = copy.length - 1; i > 0; i--) {
@@ -3533,7 +3912,7 @@
           { cat: 'breakfast', type: 'Завтрак', ...sb },
           { cat: 'lunch', type: 'Обед', ...sl },
           { cat: 'dinner', type: 'Ужин', ...sdn },
-          { cat: 'treat20', type: 'Радость 20%', ...st }
+          { cat: 'treat20', type: 'Перекус / Радость 20%', ...st }
         ]
       });
     }
@@ -3594,7 +3973,6 @@
     saveState();
     closeCustomRecipeModal();
     renderAll();
-  syncSharedProducts(false);
     alert('Блюдо добавлено в твою базу и отмечено в избранном ❤️!');
   }
 
@@ -3664,7 +4042,7 @@
   }
 
   function exportBackup() {
-    const copyForBackup = { ...state, photos: [] }; // Exclude heavy photos from text code so string stays short
+    const copyForBackup = { ...state, photos: [] };
     const code = btoa(unescape(encodeURIComponent(JSON.stringify(copyForBackup))));
     document.getElementById('backupArea').value = code;
     navigator.clipboard.writeText(code);
@@ -3679,7 +4057,6 @@
         state = { ...state, ...parsed };
         saveState();
         renderAll();
-  syncSharedProducts(false);
         alert('Данные успешно восстановлены!');
       }
     } catch (e) {
@@ -3687,7 +4064,10 @@
     }
   }
 
-  window.addEventListener('DOMContentLoaded', renderAll);
+  window.addEventListener('DOMContentLoaded', () => {
+    renderAll();
+    syncSharedProducts(false);
+  });
   renderAll();
   syncSharedProducts(false);
 </script>
