@@ -464,6 +464,58 @@
       margin-bottom: 10px;
     }
 
+
+    /* Exercise Visual Cards */
+    .ex-item-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+      margin-bottom: 8px;
+    }
+    .ex-svg-box {
+      width: 68px;
+      height: 68px;
+      min-width: 68px;
+      border-radius: 12px;
+      background: var(--surface-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+    }
+    .ex-svg-box svg {
+      width: 100%;
+      height: 100%;
+    }
+    .ex-info-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: var(--primary-deep);
+      margin-bottom: 2px;
+    }
+    .ex-info-desc {
+      font-size: 0.74rem;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    /* Savings Piggy Bank List */
+    .saving-log-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-top: 6px;
+      font-size: 0.82rem;
+    }
+
     /* Advent Calendar */
     .advent-grid {
       display: grid;
@@ -765,6 +817,41 @@
           <span class="badge" id="workoutsWeekBadge">0 / 2</span>
         </div>
       </div>
+    </div>
+
+
+    <!-- Piggy Bank: Saved Money by Skipping Junk Food -->
+    <div class="card">
+      <div class="card-title">
+        <span>💰 Сэкономил, не купив вредности</span>
+        <span class="badge" id="savedMonthBadge">За месяц: 0 ₽</span>
+      </div>
+      <div class="stats-grid" style="grid-template-columns: repeat(2, 1fr); margin-bottom:10px;">
+        <div class="stat-box">
+          <div class="stat-label">За этот месяц</div>
+          <div class="stat-val" style="color:var(--success);" id="savedMonthVal">0 ₽</div>
+          <div class="stat-sub" id="savedMonthCount">0 отказов</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Всего накоплено</div>
+          <div class="stat-val" id="savedTotalVal">0 ₽</div>
+          <div class="stat-sub" id="savedRewardHint">Копилка на мечту ✨</div>
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom:8px;">
+        <button class="btn-soft" onclick="quickAddSaving('Кофе с сиропом / выпечка', 250)">+250 ₽ Кофе/булочка</button>
+        <button class="btn-soft" onclick="quickAddSaving('Фастфуд / Бургер', 450)">+450 ₽ Фастфуд</button>
+        <button class="btn-soft" onclick="quickAddSaving('Доставка пиццы / роллов', 900)">+900 ₽ Доставка</button>
+      </div>
+
+      <div class="row" style="margin-bottom:6px;">
+        <input type="text" id="savingItemInput" placeholder="От чего отказался? (чипсы, сладкое...)" style="flex:2; min-width:140px;" />
+        <input type="number" id="savingAmountInput" placeholder="Сумма ₽" style="flex:1; min-width:90px;" />
+        <button class="btn" onclick="addCustomSaving()">+ В копилку</button>
+      </div>
+
+      <div id="savingsLogList"></div>
     </div>
 
     <!-- Measurements -->
@@ -1335,38 +1422,63 @@
 <script>
   const AVATAR_OPTIONS = ["🌸", "🦋", "👑", "🐱", "🦊", "🦄", "👩", "👱‍♀️", "🧕", "👨", "🧔", "💪"];
 
+
+  function getExSvg(pose) {
+    const c = 'var(--primary)';
+    const c2 = 'var(--primary-deep)';
+    const mat = 'var(--primary-soft)';
+    const poses = {
+      breath: `<svg viewBox="0 0 80 80"><circle cx="40" cy="20" r="7" fill="${c}"/><path d="M26 48 Q40 28 54 48 L50 66 L30 66 Z" fill="${c}" opacity="0.85"/><path d="M20 38 Q12 24 24 18" stroke="${c2}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M60 38 Q68 24 56 18" stroke="${c2}" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`,
+      catcow: `<svg viewBox="0 0 80 80"><line x1="10" y1="64" x2="70" y2="64" stroke="${mat}" stroke-width="4" stroke-linecap="round"/><circle cx="60" cy="40" r="6" fill="${c}"/><path d="M24 44 Q42 26 55 42" stroke="${c}" stroke-width="6" fill="none" stroke-linecap="round"/><line x1="25" y1="44" x2="25" y2="62" stroke="${c2}" stroke-width="4" stroke-linecap="round"/><line x1="52" y1="43" x2="52" y2="62" stroke="${c2}" stroke-width="4" stroke-linecap="round"/></svg>`,
+      bridge: `<svg viewBox="0 0 80 80"><line x1="8" y1="64" x2="72" y2="64" stroke="${mat}" stroke-width="4" stroke-linecap="round"/><circle cx="18" cy="56" r="6" fill="${c}"/><path d="M24 58 L44 38 L58 60" stroke="${c}" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M40 30 L44 22 L48 30" stroke="${c2}" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`,
+      sideleg: `<svg viewBox="0 0 80 80"><line x1="8" y1="64" x2="72" y2="64" stroke="${mat}" stroke-width="4" stroke-linecap="round"/><circle cx="18" cy="54" r="6" fill="${c}"/><line x1="24" y1="56" x2="46" y2="56" stroke="${c}" stroke-width="6" stroke-linecap="round"/><line x1="46" y1="56" x2="68" y2="58" stroke="${c2}" stroke-width="4" stroke-linecap="round"/><line x1="46" y1="55" x2="66" y2="32" stroke="${c}" stroke-width="4.5" stroke-linecap="round"/></svg>`,
+      stretch: `<svg viewBox="0 0 80 80"><line x1="10" y1="64" x2="70" y2="64" stroke="${mat}" stroke-width="4" stroke-linecap="round"/><circle cx="52" cy="46" r="6" fill="${c}"/><path d="M22 60 Q32 42 47 46" stroke="${c}" stroke-width="6" fill="none" stroke-linecap="round"/><line x1="48" y1="48" x2="64" y2="60" stroke="${c2}" stroke-width="4" stroke-linecap="round"/></svg>`,
+      bounce: `<svg viewBox="0 0 80 80"><circle cx="40" cy="18" r="6.5" fill="${c}"/><line x1="40" y1="26" x2="40" y2="46" stroke="${c}" stroke-width="6" stroke-linecap="round"/><line x1="40" y1="32" x2="26" y2="42" stroke="${c2}" stroke-width="3.5" stroke-linecap="round"/><line x1="40" y1="32" x2="54" y2="42" stroke="${c2}" stroke-width="3.5" stroke-linecap="round"/><line x1="36" y1="46" x2="34" y2="64" stroke="${c2}" stroke-width="4" stroke-linecap="round"/><line x1="44" y1="46" x2="46" y2="64" stroke="${c2}" stroke-width="4" stroke-linecap="round"/></svg>`,
+      neck: `<svg viewBox="0 0 80 80"><circle cx="44" cy="22" r="7" fill="${c}"/><path d="M28 56 Q40 32 52 56 Z" fill="${c}"/><path d="M32 16 A12 12 0 0 1 52 16" stroke="${c2}" stroke-width="2.5" fill="none" stroke-dasharray="3 2"/></svg>`,
+      sidebend: `<svg viewBox="0 0 80 80"><circle cx="48" cy="20" r="6.5" fill="${c}"/><path d="M40 48 Q42 34 46 27" stroke="${c}" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M44 29 Q32 14 24 22" stroke="${c2}" stroke-width="3.5" fill="none" stroke-linecap="round"/><line x1="38" y1="48" x2="32" y2="66" stroke="${c2}" stroke-width="4" stroke-linecap="round"/><line x1="42" y1="48" x2="48" y2="66" stroke="${c2}" stroke-width="4" stroke-linecap="round"/></svg>`,
+      hiprot: `<svg viewBox="0 0 80 80"><circle cx="40" cy="18" r="6.5" fill="${c}"/><line x1="40" y1="26" x2="40" y2="45" stroke="${c}" stroke-width="6" stroke-linecap="round"/><ellipse cx="40" cy="45" rx="14" ry="5" stroke="${c2}" stroke-width="2.5" fill="none"/><line x1="35" y1="46" x2="33" y2="66" stroke="${c2}" stroke-width="4" stroke-linecap="round"/><line x1="45" y1="46" x2="47" y2="66" stroke="${c2}" stroke-width="4" stroke-linecap="round"/></svg>`,
+      inhale: `<svg viewBox="0 0 80 80"><circle cx="40" cy="22" r="6.5" fill="${c}"/><line x1="40" y1="30" x2="40" y2="48" stroke="${c}" stroke-width="6" stroke-linecap="round"/><path d="M36 32 L24 14" stroke="${c2}" stroke-width="3.5" stroke-linecap="round"/><path d="M44 32 L56 14" stroke="${c2}" stroke-width="3.5" stroke-linecap="round"/><line x1="37" y1="48" x2="37" y2="66" stroke="${c2}" stroke-width="4" stroke-linecap="round"/><line x1="43" y1="48" x2="43" y2="66" stroke="${c2}" stroke-width="4" stroke-linecap="round"/></svg>`,
+      march: `<svg viewBox="0 0 80 80"><circle cx="40" cy="18" r="6.5" fill="${c}"/><line x1="40" y1="26" x2="40" y2="45" stroke="${c}" stroke-width="6" stroke-linecap="round"/><line x1="40" y1="30" x2="28" y2="38" stroke="${c2}" stroke-width="3.5" stroke-linecap="round"/><line x1="40" y1="30" x2="52" y2="24" stroke="${c2}" stroke-width="3.5" stroke-linecap="round"/><line x1="38" y1="45" x2="36" y2="66" stroke="${c2}" stroke-width="4" stroke-linecap="round"/><path d="M42 45 L54 45 L54 60" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      squat: `<svg viewBox="0 0 80 80"><circle cx="44" cy="24" r="6.5" fill="${c}"/><line x1="42" y1="32" x2="34" y2="48" stroke="${c}" stroke-width="6" stroke-linecap="round"/><line x1="41" y1="34" x2="58" y2="34" stroke="${c2}" stroke-width="3.5" stroke-linecap="round"/><path d="M34 48 L50 50 L48 66" stroke="${c2}" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      pushup: `<svg viewBox="0 0 80 80"><line x1="10" y1="64" x2="70" y2="64" stroke="${mat}" stroke-width="4" stroke-linecap="round"/><circle cx="58" cy="34" r="6" fill="${c}"/><line x1="22" y1="60" x2="53" y2="38" stroke="${c}" stroke-width="6" stroke-linecap="round"/><line x1="52" y1="40" x2="54" y2="62" stroke="${c2}" stroke-width="4" stroke-linecap="round"/></svg>`,
+      lunge: `<svg viewBox="0 0 80 80"><circle cx="42" cy="20" r="6.5" fill="${c}"/><line x1="42" y1="28" x2="42" y2="46" stroke="${c}" stroke-width="6" stroke-linecap="round"/><path d="M42 46 L56 48 L56 66" stroke="${c2}" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 46 L26 58 L18 58" stroke="${c}" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+      plank: `<svg viewBox="0 0 80 80"><line x1="8" y1="64" x2="72" y2="64" stroke="${mat}" stroke-width="4" stroke-linecap="round"/><circle cx="62" cy="44" r="5.5" fill="${c}"/><line x1="16" y1="58" x2="56" y2="46" stroke="${c}" stroke-width="6" stroke-linecap="round"/><path d="M55 47 L55 60 L62 60" stroke="${c2}" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+    };
+    return poses[pose] || poses.inhale;
+  }
+
   const WORKOUT_PRESETS = [
     {
       title: "🧘‍♀️ Мягкий пилатес и осанка (15 минут)",
       minutes: 15,
       exercises: [
-        "1. Дыхание ребрами и круговые движения плечами — 2 мин",
-        "2. «Кошка-корова» для гибкости позвоночника — 3 мин",
-        "3. Ягодичный мостик лежа на спине (3 подхода по 15 раз) — 4 мин",
-        "4. Отведение ноги лежа на боку (по 15 раз на каждую сторону) — 3 мин",
-        "5. Мягкая растяжка спины и задней поверхности бедра — 3 мин"
+        { pose: "breath", name: "Дыхание ребрами и круги плечами (2 мин)", desc: "Сядь ровно, раскрывай грудную клетку на глубоком вдохе и мягко опускай плечи." },
+        { pose: "catcow", name: "«Кошка-корова» для спины (3 мин)", desc: "На четвереньках плавно прогибай и округляй позвоночник в ритме дыхания." },
+        { pose: "bridge", name: "Ягодичный мостик лежа (4 мин)", desc: "3 подхода по 15 подъемов таза вверх с паузой 1 секунду в верхней точке." },
+        { pose: "sideleg", name: "Отведение ноги лежа на боку (3 мин)", desc: "По 15 плавных подъемов прямой ноги на каждую сторону для бедер." },
+        { pose: "stretch", name: "Мягкая растяжка спины (3 мин)", desc: "Поза ребенка: потянись руками вперед и расслабь поясницу." }
       ]
     },
     {
-      title: "🌿 Утренняя суставная зарядка и лимфодренаж (10 минут)",
+      title: "🌿 Утренняя зарядка и лимфодренаж (10 минут)",
       minutes: 10,
       exercises: [
-        "1. Лимфодренажные пружинки на носках — 2 мин",
-        "2. Разминка шеи, плеч, локтей и кистей — 2 мин",
-        "3. Плавные наклоны корпуса в стороны и вперед — 2 мин",
-        "4. Вращения тазобедренными суставами и коленями — 2 мин",
-        "5. Глубокие вдохи с вытяжением рук вверх — 2 мин"
+        { pose: "bounce", name: "Лимфодренажные пружинки (2 мин)", desc: "Легкие перекаты с пятки на носок без отрыва стоп от пола." },
+        { pose: "neck", name: "Разминка шеи и плеч (2 мин)", desc: "Медленные полукруги головой и вращения плечами назад." },
+        { pose: "sidebend", name: "Плавные наклоны в стороны (2 мин)", desc: "Поочередно вытягивайся за рукой вправо и влево, раскрывая бок." },
+        { pose: "hiprot", name: "Вращения тазом и коленями (2 мин)", desc: "Мягкие круговые движения для улучшения кровообращения." },
+        { pose: "inhale", name: "Глубокое дыхание с потягиванием (2 мин)", desc: "Вдох — руки вверх на носочках, длинный выдох — расслабление вниз." }
       ]
     },
     {
       title: "💪 Легкое фулбоди без прыжков (20 минут)",
       minutes: 20,
       exercises: [
-        "1. Разминка и шаги на месте с высоким подниманием колена — 3 мин",
-        "2. Приседания до параллели с полом (3×12 раз) — 4 мин",
-        "3. Отжимания от стены или с колен (3×10 раз) — 4 мин",
-        "4. Выпады назад на месте без прыжков (3×10 на ногу) — 5 мин",
-        "5. Планка с колен или на предплечьях (3×30 сек) + заминка — 4 мин"
+        { pose: "march", name: "Шаги на месте с высоким коленом (3 мин)", desc: "Активная разминка с работой рук для разогрева всего тела." },
+        { pose: "squat", name: "Приседания до параллели (4 мин)", desc: "3 подхода по 12 повторений, колени смотрят по направлению носков." },
+        { pose: "pushup", name: "Отжимания от стены или с колен (4 мин)", desc: "3 подхода по 10 раз в спокойном темпе без прогиба в пояснице." },
+        { pose: "lunge", name: "Выпады назад без прыжков (5 мин)", desc: "3 подхода по 10 шагов назад на каждую ногу с прямой спиной." },
+        { pose: "plank", name: "Планка с колен или на предплечьях (4 мин)", desc: "3 подхода по 30 секунд удержания ровного корпуса + заминка." }
       ]
     }
   ];
@@ -1521,6 +1633,7 @@
     },
     history: [],
     dailyLogs: {},
+    savingsLogs: [],
     photos: [], // [{ date, label, dataUrl }]
     favoriteIds: [],
     customRecipes: { breakfast: [], lunch: [], dinner: [], treat20: [] },
@@ -1822,6 +1935,7 @@
         profile: { name: '', avatar: '🌸', gender: 'female', age: null, height: null, startWeight: null, goalWeight: null, startKcal: null, activity: 1.55, stepGoal: 9500, waterGoal: 8, workoutGoal: 2 },
         history: [],
         dailyLogs: {},
+    savingsLogs: [],
         photos: [],
         favoriteIds: [],
         customRecipes: { breakfast: [], lunch: [], dinner: [], treat20: [] },
@@ -2045,6 +2159,7 @@
     document.getElementById('profileBmiBadge').textContent = `ИМТ: ${bmiObj.bmi} (${bmiObj.cat})`;
 
     renderWorkoutPresetDetails();
+    renderSavings();
     renderHeatmap();
     renderPhotoDiary();
     renderAdvent();
@@ -2056,21 +2171,112 @@
     }
   }
 
+
+  // Piggy Bank: Saved Money by Skipping Junk Food
+  function quickAddSaving(item, amount) {
+    if (!state.savingsLogs) state.savingsLogs = [];
+    state.savingsLogs.push({ date: getTodayStr(), item, amount });
+    saveState();
+    renderSavings();
+  }
+
+  function addCustomSaving() {
+    const item = document.getElementById('savingItemInput').value.trim() || 'Отказ от вредной еды';
+    const amount = parseInt(document.getElementById('savingAmountInput').value, 10);
+    if (!amount || amount <= 0) {
+      alert('Введи сумму в рублях, которую удалось сэкономить!');
+      return;
+    }
+    if (!state.savingsLogs) state.savingsLogs = [];
+    state.savingsLogs.push({ date: getTodayStr(), item, amount });
+    document.getElementById('savingItemInput').value = '';
+    document.getElementById('savingAmountInput').value = '';
+    saveState();
+    renderSavings();
+  }
+
+  function deleteSaving(idx) {
+    state.savingsLogs.splice(idx, 1);
+    saveState();
+    renderSavings();
+  }
+
+  function getSavingRewardHint(totalRub) {
+    if (totalRub < 500) return "Копилка запущена! ✨";
+    if (totalRub < 1500) return "Хватит на маску для лица или книгу 📚";
+    if (totalRub < 3000) return "Хватит на маникюр или билеты в кино 🎬";
+    if (totalRub < 6000) return "Хватит на массаж или новую косметику 💄";
+    if (totalRub < 12000) return "Хватит на обновление гардероба 👗";
+    return "Целый бюджет на СПА-день или фотосессию! 👑";
+  }
+
+  function renderSavings() {
+    if (!state.savingsLogs) state.savingsLogs = [];
+    const currentMonthPrefix = getTodayStr().slice(0, 7); // YYYY-MM
+    let monthSum = 0;
+    let monthCount = 0;
+    let totalSum = 0;
+
+    state.savingsLogs.forEach(entry => {
+      totalSum += entry.amount;
+      if ((entry.date || '').startsWith(currentMonthPrefix)) {
+        monthSum += entry.amount;
+        monthCount++;
+      }
+    });
+
+    document.getElementById('savedMonthBadge').textContent = `За месяц: ${monthSum.toLocaleString('ru-RU')} ₽`;
+    document.getElementById('savedMonthVal').textContent = `${monthSum.toLocaleString('ru-RU')} ₽`;
+    document.getElementById('savedMonthCount').textContent = `${monthCount} отказов в этом месяце`;
+    document.getElementById('savedTotalVal').textContent = `${totalSum.toLocaleString('ru-RU')} ₽`;
+    document.getElementById('savedRewardHint').textContent = getSavingRewardHint(totalSum);
+
+    const listEl = document.getElementById('savingsLogList');
+    if (!listEl) return;
+    listEl.innerHTML = '';
+    const recent = state.savingsLogs.map((e, idx) => ({ ...e, idx })).slice(-5).reverse();
+    recent.forEach(entry => {
+      const row = document.createElement('div');
+      row.className = 'saving-log-item';
+      row.innerHTML = `
+        <div>
+          <strong>${entry.item}</strong>
+          <div style="font-size:0.68rem; color:var(--muted);">${entry.date}</div>
+        </div>
+        <div class="row">
+          <strong style="color:var(--success);">+${entry.amount.toLocaleString('ru-RU')} ₽</strong>
+          <button class="btn-soft" style="padding:3px 7px; min-height:26px; font-size:0.7rem;" onclick="deleteSaving(${entry.idx})">✕</button>
+        </div>
+      `;
+      listEl.appendChild(row);
+    });
+  }
+
   // Workout Timer Functions
   function selectWorkoutPreset(idx) {
     activeWorkoutIdx = idx;
     resetWorkoutTimer();
     renderWorkoutPresetDetails();
+    renderSavings();
   }
 
   function renderWorkoutPresetDetails() {
     const preset = WORKOUT_PRESETS[activeWorkoutIdx] || WORKOUT_PRESETS[0];
     const box = document.getElementById('workoutPresetDetails');
     if (!box) return;
-    box.innerHTML = `
-      <div style="font-weight:800; color:var(--primary-deep); margin-bottom:6px;">${preset.title}</div>
-      <div style="font-size:0.78rem; color:var(--text); line-height:1.5;">${preset.exercises.join('<br/>')}</div>
-    `;
+    let exHtml = `<div style="font-weight:800; color:var(--primary-deep); margin-bottom:8px;">${preset.title}</div>`;
+    preset.exercises.forEach(ex => {
+      exHtml += `
+        <div class="ex-item-card">
+          <div class="ex-svg-box">${getExSvg(ex.pose)}</div>
+          <div>
+            <div class="ex-info-title">${ex.name}</div>
+            <div class="ex-info-desc">${ex.desc}</div>
+          </div>
+        </div>
+      `;
+    });
+    box.innerHTML = exHtml;
   }
 
   function updateTimerDisplay() {
