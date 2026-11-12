@@ -27,6 +27,7 @@
       --chart-grid: #fce7f3;
       --success: #10b981;
       --danger: #ef4444;
+      --warn: #f59e0b;
     }
     [data-theme="black"] {
       --bg-grad: linear-gradient(180deg, #09090b 0%, #121216 50%, #09090b 100%);
@@ -45,6 +46,7 @@
       --chart-grid: #27272a;
       --success: #34d399;
       --danger: #fb7185;
+      --warn: #fbbf24;
     }
     [data-theme="blue"] {
       --bg-grad: linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 50%, #e0f2fe 100%);
@@ -63,6 +65,7 @@
       --chart-grid: #e0f2fe;
       --success: #10b981;
       --danger: #ef4444;
+      --warn: #f59e0b;
     }
     [data-theme="purple"] {
       --bg-grad: linear-gradient(180deg, #f3e8ff 0%, #faf5ff 50%, #f3e8ff 100%);
@@ -81,6 +84,7 @@
       --chart-grid: #f3e8ff;
       --success: #10b981;
       --danger: #ef4444;
+      --warn: #f59e0b;
     }
     [data-theme="green"] {
       --bg-grad: linear-gradient(180deg, #dcfce7 0%, #f0fdf4 50%, #dcfce7 100%);
@@ -99,6 +103,7 @@
       --chart-grid: #dcfce7;
       --success: #059669;
       --danger: #ef4444;
+      --warn: #f59e0b;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -110,12 +115,12 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
-    body { padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
+    body { padding-bottom: calc(86px + env(safe-area-inset-bottom)); }
 
     header {
       background: var(--header-grad);
       color: #fff;
-      padding: calc(14px + env(safe-area-inset-top)) 16px 18px;
+      padding: calc(14px + env(safe-area-inset-top)) 14px 16px;
       border-bottom-left-radius: 24px;
       border-bottom-right-radius: 24px;
       box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -127,27 +132,40 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: 760px;
+      max-width: 780px;
       margin: 0 auto;
-      gap: 10px;
+      gap: 8px;
     }
-    .brand h1 { font-size: 1.18rem; font-weight: 800; letter-spacing: -0.02em; }
-    .brand p { font-size: 0.76rem; opacity: 0.92; margin-top: 2px; }
+    .brand h1 { font-size: 1.12rem; font-weight: 800; letter-spacing: -0.02em; }
+    .brand p { font-size: 0.74rem; opacity: 0.92; margin-top: 2px; }
+    .header-actions { display: flex; gap: 6px; align-items: center; }
     .btn-header {
       background: rgba(255,255,255,0.22);
       border: 1px solid rgba(255,255,255,0.45);
       color: #fff;
-      padding: 10px 14px;
-      border-radius: 14px;
-      font-size: 0.82rem;
+      padding: 8px 11px;
+      border-radius: 13px;
+      font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
       white-space: nowrap;
-      min-height: 40px;
+      min-height: 38px;
     }
-    .btn-header:active { transform: scale(0.96); }
+    .btn-sos {
+      background: rgba(239, 68, 68, 0.88);
+      border: 1px solid rgba(255,255,255,0.7);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 13px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      min-height: 38px;
+    }
+    .btn-header:active, .btn-sos:active { transform: scale(0.96); }
 
-    .container { max-width: 760px; margin: 0 auto; padding: 12px; }
+    .container { max-width: 780px; margin: 0 auto; padding: 12px; }
     .card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -157,7 +175,7 @@
       box-shadow: var(--shadow);
     }
     .card-title {
-      font-size: 0.98rem;
+      font-size: 0.96rem;
       font-weight: 800;
       color: var(--primary-deep);
       margin-bottom: 10px;
@@ -165,6 +183,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
     .stats-grid {
       display: grid;
@@ -177,24 +196,24 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 11px 8px;
+      padding: 10px 8px;
       text-align: center;
     }
-    .stat-label { font-size: 0.7rem; color: var(--muted); font-weight: 600; }
-    .stat-val { font-size: 1.24rem; font-weight: 800; color: var(--primary); margin: 3px 0 2px; }
-    .stat-sub { font-size: 0.68rem; color: var(--muted); }
+    .stat-label { font-size: 0.69rem; color: var(--muted); font-weight: 600; }
+    .stat-val { font-size: 1.2rem; font-weight: 800; color: var(--primary); margin: 3px 0 2px; }
+    .stat-sub { font-size: 0.67rem; color: var(--muted); }
 
-    .eta-banner {
+    .info-banner {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 10px 14px;
+      padding: 10px 13px;
       margin-bottom: 12px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
     }
 
     .progress-wrap {
@@ -233,42 +252,42 @@
     .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
     input, select, textarea {
       width: 100%;
-      padding: 11px 12px;
+      padding: 10px 12px;
       border: 1.5px solid var(--border);
       border-radius: 12px;
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: var(--text);
       background: var(--card);
       outline: none;
-      min-height: 44px;
+      min-height: 42px;
     }
     input:focus, select:focus, textarea:focus { border-color: var(--primary); }
     .btn {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: #fff;
       border: none;
-      padding: 11px 16px;
+      padding: 10px 15px;
       border-radius: 14px;
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      min-height: 44px;
+      min-height: 42px;
     }
     .btn:active { transform: scale(0.97); }
     .btn-soft {
       background: var(--surface-2);
       color: var(--primary-deep);
       border: 1px solid var(--border);
-      padding: 9px 12px;
+      padding: 8px 11px;
       border-radius: 12px;
       font-weight: 700;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       cursor: pointer;
-      min-height: 38px;
+      min-height: 36px;
     }
     .btn-soft:active { opacity: 0.85; }
     .btn-danger {
@@ -283,39 +302,25 @@
       width: 100%;
       min-height: 44px;
     }
-    .btn-danger:active { background: var(--danger); color: #fff; }
 
     .yn-group { display: flex; gap: 8px; width: 100%; }
     .yn-btn {
       flex: 1;
-      padding: 10px;
+      padding: 9px;
       border-radius: 12px;
       border: 1.5px solid var(--border);
       background: var(--surface);
       color: var(--text);
       font-weight: 800;
-      font-size: 0.86rem;
+      font-size: 0.84rem;
       cursor: pointer;
-      min-height: 44px;
+      min-height: 42px;
       transition: 0.2s;
     }
-    .yn-btn.active-yes {
-      background: var(--success);
-      border-color: var(--success);
-      color: #fff;
-    }
-    .yn-btn.active-no {
-      background: var(--danger);
-      border-color: var(--danger);
-      color: #fff;
-    }
-    .yn-btn.active-gender {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: #fff;
-    }
+    .yn-btn.active-yes { background: var(--success); border-color: var(--success); color: #fff; }
+    .yn-btn.active-no { background: var(--danger); border-color: var(--danger); color: #fff; }
+    .yn-btn.active-gender { background: var(--primary); border-color: var(--primary); color: #fff; }
 
-    /* Avatar Picker Grid */
     .avatar-grid {
       display: grid;
       grid-template-columns: repeat(6, 1fr);
@@ -337,19 +342,18 @@
       border-color: var(--primary);
       background: var(--surface-2);
       transform: scale(1.06);
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     }
 
     .water-cups { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
     .cup {
-      width: 36px;
-      height: 42px;
+      width: 35px;
+      height: 40px;
       border-radius: 8px 8px 12px 12px;
       border: 2px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       cursor: pointer;
       background: var(--surface);
       transition: 0.2s;
@@ -360,6 +364,7 @@
       color: #fff;
     }
 
+    /* Bottom Navigation (7 clean tabs) */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -369,7 +374,7 @@
       border-top: 1px solid var(--border);
       display: flex;
       justify-content: space-around;
-      padding: 6px 2px calc(8px + env(safe-area-inset-bottom));
+      padding: 5px 1px calc(7px + env(safe-area-inset-bottom));
       z-index: 30;
       box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
     }
@@ -380,33 +385,99 @@
       flex-direction: column;
       align-items: center;
       gap: 2px;
-      font-size: 0.62rem;
+      font-size: 0.58rem;
       font-weight: 700;
       color: var(--muted);
       cursor: pointer;
-      padding: 6px 3px;
-      border-radius: 12px;
+      padding: 5px 2px;
+      border-radius: 10px;
       flex: 1;
     }
     .nav-btn.active { color: var(--primary); background: var(--surface); }
-    .nav-icon { font-size: 1.15rem; }
+    .nav-icon { font-size: 1.1rem; }
 
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
 
+    /* Heatmap Calendar */
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      margin-top: 8px;
+    }
+    .hm-cell {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+    }
+    .hm-1 { background: color-mix(in srgb, var(--primary) 22%, var(--card)); color: var(--text); }
+    .hm-2 { background: color-mix(in srgb, var(--primary) 45%, var(--card)); color: var(--text); }
+    .hm-3 { background: color-mix(in srgb, var(--primary) 72%, var(--card)); color: #fff; }
+    .hm-4 { background: var(--primary); color: #fff; font-weight: 800; }
+
+    /* Photo Progress Grid */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .photo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 8px;
+      text-align: center;
+      position: relative;
+    }
+    .photo-card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    /* Workout Timer */
+    .timer-display {
+      font-size: 2.3rem;
+      font-weight: 900;
+      color: var(--primary);
+      text-align: center;
+      margin: 10px 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .workout-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    /* Advent Calendar */
     .advent-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(102px, 1fr));
-      gap: 9px;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 8px;
     }
     .advent-box {
       border-radius: 16px;
-      padding: 12px 6px;
+      padding: 11px 6px;
       text-align: center;
       border: 1.5px dashed var(--border);
       background: var(--surface);
       cursor: pointer;
-      min-height: 108px;
+      min-height: 106px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -419,7 +490,6 @@
       border-style: solid;
       border-color: var(--primary);
       background: var(--surface-2);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
       animation: pulseGlow 2s infinite;
     }
     @keyframes pulseGlow {
@@ -432,10 +502,11 @@
       border: none;
       animation: none;
     }
-    .advent-num { font-size: 0.7rem; font-weight: 800; opacity: 0.9; }
-    .advent-emoji { font-size: 1.55rem; margin: 4px 0; }
-    .advent-text { font-size: 0.7rem; font-weight: 600; line-height: 1.22; }
+    .advent-num { font-size: 0.68rem; font-weight: 800; opacity: 0.9; }
+    .advent-emoji { font-size: 1.5rem; margin: 4px 0; }
+    .advent-text { font-size: 0.68rem; font-weight: 600; line-height: 1.22; }
 
+    /* Theme Selector Pills */
     .theme-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -454,6 +525,7 @@
     }
     .theme-pill.active { border-color: var(--text); transform: scale(1.04); }
 
+    /* Meals */
     .meal-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -466,12 +538,12 @@
       justify-content: space-between;
       font-weight: 800;
       color: var(--primary-deep);
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       margin-bottom: 4px;
       gap: 8px;
     }
-    .meal-kcal { font-size: 0.76rem; color: var(--primary); font-weight: 700; white-space: nowrap; }
-    .meal-desc { font-size: 0.82rem; color: var(--text); margin-bottom: 6px; }
+    .meal-kcal { font-size: 0.75rem; color: var(--primary); font-weight: 700; white-space: nowrap; }
+    .meal-desc { font-size: 0.8rem; color: var(--text); margin-bottom: 8px; }
     .meal-recipe {
       font-size: 0.78rem;
       color: var(--muted);
@@ -480,7 +552,7 @@
       border-radius: 10px;
       border: 1px solid var(--border);
       display: none;
-      margin-top: 6px;
+      margin-top: 8px;
       line-height: 1.45;
     }
     .meal-recipe.open { display: block; }
@@ -489,17 +561,17 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 9px 0;
+      padding: 8px 0;
       border-bottom: 1px solid var(--border);
-      font-size: 0.88rem;
+      font-size: 0.86rem;
     }
-    .shop-item input[type="checkbox"] { width: 20px; height: 20px; min-height: 20px; accent-color: var(--primary); }
+    .shop-item input[type="checkbox"] { width: 19px; height: 19px; min-height: 19px; accent-color: var(--primary); }
     .shop-item.checked span { text-decoration: line-through; color: var(--muted); }
 
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.55);
+      background: rgba(0, 0, 0, 0.58);
       display: none;
       align-items: center;
       justify-content: center;
@@ -515,13 +587,13 @@
       border-radius: 24px;
       padding: 18px;
       width: 100%;
-      max-width: 440px;
+      max-width: 450px;
       max-height: 90vh;
       overflow-y: auto;
       box-shadow: 0 16px 40px rgba(0,0,0,0.3);
     }
-    .field { margin-bottom: 11px; }
-    .field label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
+    .field { margin-bottom: 10px; }
+    .field label { display: block; font-size: 0.76rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
 
     canvas { width: 100% !important; height: 185px !important; display: block; }
     .badge {
@@ -529,7 +601,7 @@
       color: var(--primary-deep);
       padding: 4px 9px;
       border-radius: 999px;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       font-weight: 700;
       white-space: nowrap;
     }
@@ -537,7 +609,7 @@
       display: inline-block;
       padding: 4px 10px;
       border-radius: 999px;
-      font-size: 0.75rem;
+      font-size: 0.74rem;
       font-weight: 800;
       background: var(--surface-2);
       color: var(--primary-deep);
@@ -556,8 +628,8 @@
       text-align: center;
     }
     .ring-card canvas { height: 120px !important; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
-    th, td { padding: 9px 6px; border-bottom: 1px solid var(--border); text-align: left; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.76rem; }
+    th, td { padding: 8px 5px; border-bottom: 1px solid var(--border); text-align: left; }
     th { color: var(--primary-deep); font-weight: 800; }
     tr.active-stage { background: var(--surface-2); font-weight: 700; }
   </style>
@@ -570,7 +642,10 @@
       <h1 id="headerGreeting">🌸 Привет!</h1>
       <p id="headerSubtitle">Цель: — кг • Норма: — ккал/день</p>
     </div>
-    <button class="btn-header" onclick="openReportModal()">+ Отчет</button>
+    <div class="header-actions">
+      <button class="btn-sos" onclick="openSosModal()">🆘 SOS</button>
+      <button class="btn-header" onclick="openReportModal()">+ Отчет</button>
+    </div>
   </div>
 </header>
 
@@ -596,19 +671,45 @@
       </div>
       <div class="stat-box">
         <div class="stat-label">Прогноз финиша</div>
-        <div class="stat-val" id="statEta" style="font-size:1.02rem;">—</div>
+        <div class="stat-val" id="statEta" style="font-size:1rem;">—</div>
         <div class="stat-sub" id="statBmiSub">ИМТ: —</div>
       </div>
     </div>
 
-    <div class="eta-banner">
+    <!-- Fun Weight Comparison ("Было / Стало" in objects) -->
+    <div class="info-banner" id="funComparisonBanner">
       <div>
-        <div style="font-weight:800; color:var(--primary-deep);">🗓️ Ориентировочная дата цели: <span id="exactEtaFull">—</span></div>
-        <div style="font-size:0.72rem; color:var(--muted); margin-top:2px;" id="etaWeeksLeft">—</div>
+        <div style="font-weight:800; color:var(--primary-deep);" id="funCompareTitle">🎈 Твой результат в фактах</div>
+        <div style="font-size:0.74rem; color:var(--muted); margin-top:2px;" id="funCompareText">Сделай первый шаг — и здесь появится наглядное сравнение сброшенного веса!</div>
       </div>
-      <span class="badge" id="stageNowBadge">Этап 1</span>
     </div>
 
+    <!-- ETA & Diet Break Timer Banner -->
+    <div class="info-banner">
+      <div>
+        <div style="font-weight:800; color:var(--primary-deep);">🗓️ Финиш: <span id="exactEtaFull">—</span></div>
+        <div style="font-size:0.72rem; color:var(--muted); margin-top:2px;" id="dietBreakStatusText">До диетических каникул (+300 ккал): 11 нед.</div>
+      </div>
+      <button class="btn-soft" id="btnToggleDietBreak" onclick="toggleDietBreak()">🌴 Каникулы</button>
+    </div>
+
+    <!-- Cycle / Wellness Tracker (Gender-adapted) -->
+    <div class="card" id="wellnessCard">
+      <div class="card-title">
+        <span id="wellnessCardTitle">🌺 Самочувствие и цикл сегодня</span>
+        <span class="badge" id="wellnessBadge">Норма</span>
+      </div>
+      <div class="row" id="cycleSelectorRow" style="margin-bottom:8px;">
+        <button class="btn-soft" style="flex:1;" onclick="setCyclePhase('normal')">☀️ Обычная фаза</button>
+        <button class="btn-soft" style="flex:1;" onclick="setCyclePhase('pms')">💧 ПМС / Задержка воды</button>
+        <button class="btn-soft" style="flex:1;" onclick="setCyclePhase('period')">🌸 Менструация</button>
+      </div>
+      <div style="font-size:0.76rem; color:var(--muted);" id="wellnessHintText">
+        Отмечай самочувствие: при задержке воды приложение напомнит не снижать калории из-за временного плюса на весах.
+      </div>
+    </div>
+
+    <!-- 35 Steps Progress -->
     <div class="card">
       <div class="card-title">
         <span id="stepsToGoalTitle">✨ Шаги по килограммам до цели</span>
@@ -618,9 +719,6 @@
         <div class="progress-bar" id="mainProgressBar" style="width: 0%;"></div>
       </div>
       <div class="kg-bubbles" id="kgBubbles"></div>
-      <div style="font-size:0.74rem; color:var(--muted); margin-top:8px;">
-        Кружочки закрашиваются автоматически, а калорийность плавно снижается по мере уменьшения веса.
-      </div>
     </div>
 
     <!-- Daily Habits & Goals -->
@@ -695,16 +793,14 @@
     </div>
   </div>
 
-  <!-- TAB 2: CHARTS & ANALYTICS -->
+  <!-- TAB 2: CHARTS, HEATMAP & PHOTO DIARY -->
   <div id="tab-analytics" class="tab-pane">
+    <!-- Overall Donut -->
     <div class="card">
       <div class="card-title">
         <span>🏆 Общая диаграмма успешных дней</span>
         <span class="badge" id="overallSuccessBadge">0% успеха</span>
       </div>
-      <p style="font-size:0.78rem; color:var(--muted); margin-bottom:8px;">
-        День считается успешным, когда выполнено минимум 3 из 4 целей (шаги, вода, питание «Да», тренировка по плану).
-      </p>
       <canvas id="overallDonutChart"></canvas>
       <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-top:10px; margin-bottom:0;">
         <div class="stat-box">
@@ -722,17 +818,34 @@
       </div>
     </div>
 
+    <!-- GitHub-style Heatmap Calendar (28 days) -->
     <div class="card">
       <div class="card-title">
-        <span>📉 Диаграмма веса (План vs Факт)</span>
-        <span class="badge" id="etaBadge">Финиш: —</span>
+        <span>📅 Тепловая карта дисциплины (28 дней)</span>
+        <span class="badge">Цели дня: 0 → 4</span>
       </div>
+      <p style="font-size:0.75rem; color:var(--muted);">
+        Чем насыщеннее цвет ячейки, тем больше целей дня ты выполнила в эту дату.
+      </p>
+      <div class="heatmap-grid" id="heatmapGrid"></div>
+    </div>
+
+    <!-- Weight Chart with Moving Average -->
+    <div class="card">
+      <div class="card-title">
+        <span>📉 Вес: Факт vs Скользящее среднее</span>
+        <span class="badge" id="movingAvgBadge">Средний: —</span>
+      </div>
+      <p style="font-size:0.75rem; color:var(--muted); margin-bottom:6px;">
+        Плавная линия сглаживает скачки воды и показывает реальное снижение жировой массы.
+      </p>
       <canvas id="weightChart"></canvas>
     </div>
 
+    <!-- Steps & Water Bar Charts -->
     <div class="card">
       <div class="card-title">
-        <span>👟 Диаграмма шагов (последние 7 дней)</span>
+        <span>👟 Шаги за последние 7 дней</span>
         <span class="badge" id="avgStepsBadge">Среднее: 0</span>
       </div>
       <canvas id="stepsChart"></canvas>
@@ -740,13 +853,13 @@
 
     <div class="card">
       <div class="card-title">
-        <span>💧 Диаграмма воды (стаканы за 7 дней)</span>
+        <span>💧 Вода за последние 7 дней (стаканы)</span>
         <span class="badge" id="avgWaterBadge">Среднее: 0</span>
       </div>
       <canvas id="waterChart"></canvas>
     </div>
 
-    <div class="summary-rings">
+    <div class="summary-rings" style="margin-bottom:12px;">
       <div class="ring-card">
         <div style="font-size:0.78rem; font-weight:800; color:var(--primary-deep); margin-bottom:4px;">🥗 Питание («Да»)</div>
         <canvas id="nutritionDonutChart"></canvas>
@@ -756,18 +869,58 @@
         <canvas id="workoutDonutChart"></canvas>
       </div>
     </div>
+
+    <!-- Photo Progress Diary ("До / После") -->
+    <div class="card">
+      <div class="card-title">
+        <span>📸 Фото-дневник «До / После»</span>
+        <span class="badge">Локально в телефоне</span>
+      </div>
+      <p style="font-size:0.76rem; color:var(--muted); margin-bottom:10px;">
+        Фотографии никуда не загружаются в интернет и хранятся только в памяти твоего устройства.
+      </p>
+      <div class="row">
+        <input type="text" id="photoLabelInput" placeholder="Подпись (например: Старт 92 кг)" style="flex:1;" />
+        <label class="btn" style="cursor:pointer;">
+          + Добавить фото
+          <input type="file" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)" />
+        </label>
+      </div>
+      <div class="photo-grid" id="photoDiaryGrid"></div>
+    </div>
   </div>
 
-  <!-- TAB 3: ROADMAP -->
+  <!-- TAB 3: ROADMAP & WORKOUT TIMER -->
   <div id="tab-roadmap" class="tab-pane">
+    <!-- Built-in Light Workout Timer -->
+    <div class="card">
+      <div class="card-title">
+        <span>⏱️ Таймер легких домашних тренировок</span>
+        <span class="badge" id="timerStatusBadge">Готов</span>
+      </div>
+      <p style="font-size:0.78rem; color:var(--muted); margin-bottom:8px;">
+        Выбери мягкий комплекс на 15–25 минут без прыжков и нагрузки на суставы. После завершения тренировка автоматически засчитается в цели дня!
+      </p>
+      <div class="row" style="margin-bottom:8px;">
+        <button class="btn-soft" style="flex:1;" onclick="selectWorkoutPreset(0)">🧘‍♀️ Пилатес (15 мин)</button>
+        <button class="btn-soft" style="flex:1;" onclick="selectWorkoutPreset(1)">🌿 Зарядка (10 мин)</button>
+        <button class="btn-soft" style="flex:1;" onclick="selectWorkoutPreset(2)">💪 Фулбоди (20 мин)</button>
+      </div>
+      <div class="workout-card" id="workoutPresetDetails"></div>
+      <div class="timer-display" id="workoutTimerDisplay">15:00</div>
+      <div class="row">
+        <button class="btn" style="flex:1;" id="btnStartTimer" onclick="toggleWorkoutTimer()">▶️ Старт</button>
+        <button class="btn-soft" onclick="resetWorkoutTimer()">Сброс</button>
+        <button class="btn-soft" onclick="finishWorkoutEarly()">✅ Завершить и засчитать</button>
+      </div>
+    </div>
+
+    <!-- Roadmap Table -->
     <div class="card">
       <div class="card-title">
         <span>🗺️ Персональная дорожная карта</span>
-        <span class="badge" id="roadmapCurrentStageBadge">Текущий этап: 1</span>
+        <span class="badge" id="roadmapCurrentStageBadge">Этап 1</span>
       </div>
-      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
-        По мере снижения веса организм расходует меньше энергии, поэтому приложение автоматически корректирует норму калорий и БЖУ на каждом этапе:
-      </p>
       <table>
         <thead>
           <tr>
@@ -780,54 +933,29 @@
         </thead>
         <tbody id="roadmapTableBody"></tbody>
       </table>
-      <div style="margin-top:12px; padding:11px; background:var(--surface); border:1px solid var(--border); border-radius:14px; font-size:0.8rem; line-height:1.45;">
-        <strong>💡 Диетические каникулы:</strong> каждые 10–12 недель дефицита делай плановый перерыв на 7–14 дней, добавляя +300 ккал к текущей норме за счет сложных углеводов и полезных жиров. Это восстановит гормональный фон и защитит от плато.
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">
-        <span>📅 Расчет времени достижения цели</span>
-      </div>
-      <div class="stats-grid" style="margin-bottom:0;">
-        <div class="stat-box">
-          <div class="stat-label">Дата старта</div>
-          <div class="stat-val" style="font-size:1rem;" id="rmStartDate">—</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Дата финиша</div>
-          <div class="stat-val" style="font-size:1rem;" id="rmEndDate">—</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Средний темп</div>
-          <div class="stat-val" style="font-size:1rem;" id="rmPaceVal">~0.65 кг/нед</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Осталось недель</div>
-          <div class="stat-val" style="font-size:1rem;" id="rmWeeksLeft">—</div>
-        </div>
+      <div style="margin-top:12px; padding:11px; background:var(--surface); border:1px solid var(--border); border-radius:14px; font-size:0.78rem; line-height:1.45;">
+        <strong>💡 Диетические каникулы:</strong> каждые 10–12 недель дефицита делай перерыв на 7–14 дней (+300 ккал к норме за счет круп, фруктов и полезных жиров). Ты можешь включить режим каникул кнопкой <strong>«🌴 Каникулы»</strong> на главном экране.
       </div>
     </div>
   </div>
 
-  <!-- TAB 4: MEAL PLAN & SHOPPING -->
+  <!-- TAB 4: MEAL PLAN, CUSTOM RECIPES & SHOPPING -->
   <div id="tab-meals" class="tab-pane">
     <div class="card">
       <div class="card-title">
         <span>🥗 Умное меню 80/20 (<span id="recipeCountBadge">38 блюд</span>)</span>
         <span class="badge" id="mealTargetBadge">— ккал</span>
       </div>
-      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
-        Генератор подбирает разнообразные блюда без повторов под твой текущий калораж (80% цельной еды + 20% вкусняшка).
-      </p>
       <div class="field">
-        <label>Фильтр / пожелания (без рыбы, без мяса, без молочки, сырники и т.д.):</label>
+        <label>Фильтр (без рыбы, без мяса, без молочки, избранное и т.д.):</label>
         <input type="text" id="mealPrefInput" placeholder="Любые продукты..." />
       </div>
-      <div class="row">
-        <button class="btn" style="flex:1;" onclick="generateMenu(1)">Новое меню на 1 день</button>
-        <button class="btn-soft" style="flex:1;" onclick="generateMenu(7)">Меню на 7 дней</button>
+      <div class="row" style="margin-bottom:8px;">
+        <button class="btn" style="flex:1;" onclick="generateMenu(1, false)">На 1 день</button>
+        <button class="btn-soft" style="flex:1;" onclick="generateMenu(7, false)">На 7 дней</button>
+        <button class="btn-soft" onclick="generateMenu(1, true)" title="Собрать из отмеченных сердечком">❤️ Из избранного</button>
       </div>
+      <button class="btn-soft" style="width:100%;" onclick="openCustomRecipeModal()">+ Добавить свой рецепт в базу</button>
     </div>
 
     <div id="menuContainer"></div>
@@ -848,7 +976,7 @@
         <span>🎁 Адвент-календарь сюрпризов</span>
         <span class="badge" id="adventUnlockedBadge">Открыто: 0</span>
       </div>
-      <p style="font-size:0.82rem; color:var(--muted); margin-bottom:12px;">
+      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:12px;">
         Все сюрпризы подобраны специально для тебя и спрятаны под замочком! Окошко разблокируется <strong>только тогда</strong>, когда ты достигнешь нужного веса в своем отчете.
       </p>
       <div class="advent-grid" id="adventGrid"></div>
@@ -884,7 +1012,7 @@
         <input type="text" id="profName" />
       </div>
       <div class="field">
-        <label>Пол (влияет на расчет калорий и подарки в адвенте):</label>
+        <label>Пол:</label>
         <select id="profGender">
           <option value="female">Женский</option>
           <option value="male">Мужской</option>
@@ -911,7 +1039,7 @@
         </div>
       </div>
       <div class="field">
-        <label>Начальная суточная калорийность (ккал — можешь изменить вручную):</label>
+        <label>Начальная суточная калорийность (ккал):</label>
         <input type="number" step="10" id="profStartKcal" />
       </div>
       <div class="field">
@@ -925,15 +1053,15 @@
       </div>
       <div class="row">
         <div class="field" style="flex:1;">
-          <label>Цель шагов в день:</label>
+          <label>Цель шагов:</label>
           <input type="number" step="500" id="profStepGoal" />
         </div>
         <div class="field" style="flex:1;">
-          <label>Цель воды (стаканов):</label>
+          <label>Цель воды (ст.):</label>
           <input type="number" id="profWaterGoal" />
         </div>
         <div class="field" style="flex:1;">
-          <label>Тренировок в нед.:</label>
+          <label>Трен. в нед.:</label>
           <input type="number" id="profWorkoutGoal" />
         </div>
       </div>
@@ -955,16 +1083,13 @@
       <div class="card-title">
         <span>🔄 Управление профилем</span>
       </div>
-      <p style="font-size:0.78rem; color:var(--muted); margin-bottom:10px;">
-        Если хочешь начать с чистого листа или создать другого пользователя, нажми кнопку ниже. Все текущие записи будут очищены.
-      </p>
       <button class="btn-danger" onclick="resetFullProfile()">🗑️ Сбросить профиль и начать заново</button>
     </div>
   </div>
 
 </div>
 
-<!-- BOTTOM NAV (No black silhouette icon — uses user's chosen colorful avatar icon!) -->
+<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <button class="nav-btn active" onclick="switchTab('dashboard', this)">
     <span class="nav-icon">🏠</span>
@@ -972,11 +1097,11 @@
   </button>
   <button class="nav-btn" onclick="switchTab('analytics', this)">
     <span class="nav-icon">📊</span>
-    <span>Графики</span>
+    <span>Прогресс</span>
   </button>
   <button class="nav-btn" onclick="switchTab('roadmap', this)">
-    <span class="nav-icon">🗺️</span>
-    <span>Карта</span>
+    <span class="nav-icon">⏱️</span>
+    <span>Спорт/Карта</span>
   </button>
   <button class="nav-btn" onclick="switchTab('meals', this)">
     <span class="nav-icon">🥗</span>
@@ -992,13 +1117,13 @@
   </button>
 </nav>
 
-<!-- ONBOARDING MODAL (FIRST LAUNCH - NO EXAMPLES IN INPUTS, AVATAR PICKER INCLUDED) -->
+<!-- ONBOARDING MODAL -->
 <div class="modal-backdrop" id="onboardingModal">
   <div class="modal">
     <div class="card-title">
       <span>✨ Создание личного профиля</span>
     </div>
-    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:12px;">
+    <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
       Выбери оформление, иконку и заполни свои параметры — я рассчитаю ИМТ, дневной калораж, дату достижения цели и подготовлю секретный адвент-календарь.
     </p>
 
@@ -1078,6 +1203,83 @@
   </div>
 </div>
 
+<!-- SOS ANTI-CRAVING MODAL -->
+<div class="modal-backdrop" id="sosModal">
+  <div class="modal">
+    <div class="card-title">
+      <span>🆘 Пауза перед срывом</span>
+      <button class="btn-soft" onclick="closeSosModal()">✕</button>
+    </div>
+    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;">
+      Сильный тяга к еде длится всего 3–5 минут. Выпей стакан воды, запусти 3-минутный таймер паузы и посмотри на свой прогресс!
+    </p>
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:12px; text-align:center; margin-bottom:10px;">
+      <div style="font-size:0.78rem; color:var(--muted);">Таймер осознанной паузы</div>
+      <div class="timer-display" id="sosTimerDisplay" style="font-size:2rem; margin:6px 0;">03:00</div>
+      <button class="btn" onclick="startSosTimer()">⏳ Запустить 3 минуты</button>
+    </div>
+    <div style="font-size:0.82rem; font-weight:800; color:var(--primary-deep); margin-bottom:6px;">🍏 Спасательные перекусы до 100 ккал:</div>
+    <ul style="font-size:0.78rem; color:var(--text); padding-left:18px; line-height:1.5; margin-bottom:10px;">
+      <li>Яблоко или груша (150 г) — ~70 ккал</li>
+      <li>Творог мягкий 0–2% с корицей (120 г) — ~85 ккал</li>
+      <li>2 вареных яичных белка + свежий огурец — ~55 ккал</li>
+      <li>Горячий травяной чай с 1 ч.л. меда — ~35 ккал</li>
+      <li>Хлебец цельнозерновой с творожным сыром (15 г) — ~75 ккал</li>
+    </ul>
+    <div style="background:var(--surface-2); padding:10px; border-radius:12px; font-size:0.78rem; font-weight:700; text-align:center;" id="sosMotivationQuote"></div>
+  </div>
+</div>
+
+<!-- CUSTOM RECIPE MODAL -->
+<div class="modal-backdrop" id="customRecipeModal">
+  <div class="modal">
+    <div class="card-title">
+      <span>🍳 Добавить свое блюдо</span>
+      <button class="btn-soft" onclick="closeCustomRecipeModal()">✕</button>
+    </div>
+    <div class="field">
+      <label>Прием пищи:</label>
+      <select id="crCategory">
+        <option value="breakfast">Завтрак</option>
+        <option value="lunch">Обед</option>
+        <option value="dinner">Ужин</option>
+        <option value="treat20">Вкусняшка 20%</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Название блюда:</label>
+      <input type="text" id="crName" placeholder="Например: Сырники с вишней" />
+    </div>
+    <div class="row">
+      <div class="field" style="flex:1;">
+        <label>Ккал:</label>
+        <input type="number" id="crKcal" placeholder="400" />
+      </div>
+      <div class="field" style="flex:1;">
+        <label>Белки (г):</label>
+        <input type="number" id="crP" placeholder="25" />
+      </div>
+      <div class="field" style="flex:1;">
+        <label>Жиры (г):</label>
+        <input type="number" id="crF" placeholder="12" />
+      </div>
+      <div class="field" style="flex:1;">
+        <label>Углев. (г):</label>
+        <input type="number" id="crC" placeholder="45" />
+      </div>
+    </div>
+    <div class="field">
+      <label>Ингредиенты (через запятую):</label>
+      <input type="text" id="crIng" placeholder="Творог 150 г, яйцо 1 шт..." />
+    </div>
+    <div class="field">
+      <label>Краткий рецепт:</label>
+      <textarea id="crSteps" rows="2" placeholder="Как готовить..."></textarea>
+    </div>
+    <button class="btn" style="width:100%;" onclick="saveCustomRecipe()">Сохранить блюдо в базу</button>
+  </div>
+</div>
+
 <!-- REPORT MODAL -->
 <div class="modal-backdrop" id="reportModal">
   <div class="modal">
@@ -1132,6 +1334,42 @@
 
 <script>
   const AVATAR_OPTIONS = ["🌸", "🦋", "👑", "🐱", "🦊", "🦄", "👩", "👱‍♀️", "🧕", "👨", "🧔", "💪"];
+
+  const WORKOUT_PRESETS = [
+    {
+      title: "🧘‍♀️ Мягкий пилатес и осанка (15 минут)",
+      minutes: 15,
+      exercises: [
+        "1. Дыхание ребрами и круговые движения плечами — 2 мин",
+        "2. «Кошка-корова» для гибкости позвоночника — 3 мин",
+        "3. Ягодичный мостик лежа на спине (3 подхода по 15 раз) — 4 мин",
+        "4. Отведение ноги лежа на боку (по 15 раз на каждую сторону) — 3 мин",
+        "5. Мягкая растяжка спины и задней поверхности бедра — 3 мин"
+      ]
+    },
+    {
+      title: "🌿 Утренняя суставная зарядка и лимфодренаж (10 минут)",
+      minutes: 10,
+      exercises: [
+        "1. Лимфодренажные пружинки на носках — 2 мин",
+        "2. Разминка шеи, плеч, локтей и кистей — 2 мин",
+        "3. Плавные наклоны корпуса в стороны и вперед — 2 мин",
+        "4. Вращения тазобедренными суставами и коленями — 2 мин",
+        "5. Глубокие вдохи с вытяжением рук вверх — 2 мин"
+      ]
+    },
+    {
+      title: "💪 Легкое фулбоди без прыжков (20 минут)",
+      minutes: 20,
+      exercises: [
+        "1. Разминка и шаги на месте с высоким подниманием колена — 3 мин",
+        "2. Приседания до параллели с полом (3×12 раз) — 4 мин",
+        "3. Отжимания от стены или с колен (3×10 раз) — 4 мин",
+        "4. Выпады назад на месте без прыжков (3×10 на ногу) — 5 мин",
+        "5. Планка с колен или на предплечьях (3×30 сек) + заминка — 4 мин"
+      ]
+    }
+  ];
 
   const FEMALE_REWARDS = [
     "Ароматная бомбочка для ванны и вечер при свечах",
@@ -1190,7 +1428,7 @@
     "Набор качественного мужского ухода (гель, парфюмированный бальзам)",
     "Билет на стендап, концерт или спортивный матч",
     "Стейк-ужин в хорошем ресторане (вписанный в норму калорий)",
-    "Беспроводные наушники или полезный гаджет",
+    "Беспроводные наушники или полезный гажет",
     "Юбилей минус 20 кг! Новые кроссовки или стильная рубашка",
     "Сеанс в термальном комплексе или бассейне",
     "Набор для гриля или фирменные специи",
@@ -1209,242 +1447,52 @@
     "ГЛАВНЫЙ ПРИЗ! Новая форма и крутая фотосессия в новом образе 🏆"
   ];
 
-  const RECIPES_DB = {
+  const DEFAULT_RECIPES_DB = {
     breakfast: [
-      {
-        name: "Нежные творожные сырники с ягодами",
-        kcal: 420, p: 32, f: 12, c: 45, tags: ["творог", "сладкое", "сырники", "без мяса", "без рыбы"],
-        ingredients: ["Творог 5% — 180 г", "Яйцо куриное — 1 шт", "Мука рисовая — 25 г", "Ягоды (клубника/голубика) — 80 г", "Мед или подсластитель — 10 г"],
-        steps: "Смешай творог, яйцо, муку и подсластитель. Сформируй 3–4 сырника, обжарь на антипригарной сковороде по 3 мин с каждой стороны под крышкой. Подавай с ягодами."
-      },
-      {
-        name: "Овсяноблин с сыром и ветчиной из индейки",
-        kcal: 440, p: 30, f: 16, c: 42, tags: ["овсянка", "яйца", "без рыбы"],
-        ingredients: ["Овсяные хлопья — 45 г", "Яйца — 2 шт", "Молоко 2.5% — 40 мл", "Сыр легкий — 25 г", "Ветчина из индейки — 40 г", "Огурец — 50 г"],
-        steps: "Взбей яйца с молоком и овсянкой, вылей на разогретую сковороду. Через 2 мин переверни, на половину выложи сыр и индейку, сложи пополам и прогрей 1 мин."
-      },
-      {
-        name: "Шакшука с цельнозерновым тостом",
-        kcal: 410, p: 24, f: 18, c: 36, tags: ["яйца", "овощи", "без мяса", "без рыбы", "без молочки"],
-        ingredients: ["Яйца — 2 шт", "Томаты в собственном соку — 150 г", "Перец болгарский — 60 г", "Хлеб цельнозерновой — 50 г", "Масло оливковое — 5 г"],
-        steps: "Потуши нарезанный перец и томаты 5 минут на сковороде. Сделай два углубления, вбей яйца, посоли и готовь под крышкой 4 минуты. Подавай с подсушенным тостом."
-      },
-      {
-        name: "Скрембл с авокадо и слабосоленой форелью на тосте",
-        kcal: 450, p: 26, f: 22, c: 35, tags: ["рыба", "яйца", "авокадо", "без мяса", "без молочки"],
-        ingredients: ["Яйца — 2 шт", "Хлеб цельнозерновой — 50 г", "Форель/семга с/с — 45 г", "Авокадо — 40 г", "Руккола/шпинат — 30 г"],
-        steps: "Подсуши хлеб в тостере, разомни вилкой авокадо. Приготовь нежный скрембл на медленном огне, выложи на тост с рыбой и зеленью."
-      },
-      {
-        name: "Ленивая овсянка в банке с протеином и бананом",
-        kcal: 430, p: 28, f: 10, c: 56, tags: ["овсянка", "сладкое", "без мяса", "без рыбы"],
-        ingredients: ["Овсяные хлопья — 50 г", "Йогурт греческий 2% — 130 г", "Молоко 2.5% — 70 мл", "Банан — 70 г", "Семена чиа или орехи — 8 г"],
-        steps: "Смешай с вечера овсянку, йогурт, молоко и чиа, убери в холодильник. Утром добавь кружочки банана — готово без варки!"
-      },
-      {
-        name: "Творожная вафля с творожным сыром и огурцом",
-        kcal: 415, p: 31, f: 15, c: 38, tags: ["творог", "без мяса", "без рыбы"],
-        ingredients: ["Творог 5% — 150 г", "Яйцо — 1 шт", "Мука овсяная или рисовая — 30 г", "Сыр творожный — 25 г", "Свежий огурец и зелень — 70 г"],
-        steps: "Смешай творог, яйцо и муку, выпеки в вафельнице (или на сковороде как оладьи). Смажь творожным сыром и укрась ломтиками огурца."
-      },
-      {
-        name: "Гречневая каша с яйцом пашот и пармезаном",
-        kcal: 425, p: 23, f: 14, c: 50, tags: ["крупа", "яйца", "без мяса", "без рыбы"],
-        ingredients: ["Гречка (сухая) — 55 г", "Яйцо — 2 шт", "Сыр пармезан — 15 г", "Помидоры черри — 70 г"],
-        steps: "Отвари гречку, свари яйца пашот или всмятку (6 минут). Выложи яйца на горячую гречку, посыпь тертым пармезаном и добавь черри."
-      },
-      {
-        name: "Панкейки на кефире с ягодным соусом",
-        kcal: 435, p: 22, f: 11, c: 60, tags: ["сладкое", "без мяса", "без рыбы"],
-        ingredients: ["Кефир 2.5% — 120 мл", "Яйцо — 1 шт", "Мука цельнозерновая — 55 г", "Разрыхлитель — 3 г", "Ягоды — 90 г", "Мед — 10 г"],
-        steps: "Взбей яйцо с кефиром, добавь муку и разрыхлитель. Выпекай небольшие панкейки на сухой антипригарной сковороде, подавай с ягодами и медом."
-      },
-      {
-        name: "Омлет с шампиньонами, шпинатом и моцареллой",
-        kcal: 405, p: 29, f: 21, c: 24, tags: ["яйца", "грибы", "без мяса", "без рыбы"],
-        ingredients: ["Яйца — 3 шт", "Молоко 2.5% — 50 мл", "Шампиньоны — 80 г", "Шпинат — 40 г", "Сыр моцарелла — 25 г", "Хлебцы цельнозерновые — 20 г"],
-        steps: "Обжарь нарезанные грибы со шпинатом 3 минуты, залей взбитыми с молоком яйцами, посыпь моцареллой и доведи под крышкой 4 минуты."
-      },
-      {
-        name: "Тосты с арахисовой пастой, творогом и грушей",
-        kcal: 445, p: 25, f: 16, c: 49, tags: ["сладкое", "без мяса", "без рыбы"],
-        ingredients: ["Хлеб цельнозерновой — 60 г", "Творог мягкий 5% — 120 г", "Арахисовая паста — 15 г", "Груша — 90 г", "Корица — щепотка"],
-        steps: "Подсуши тосты, смажь мягким творогом и тонким слоем арахисовой пасты, сверху выложи дольки груши и посыпь корицей."
-      }
+      { id: "b1", name: "Нежные творожные сырники с ягодами", kcal: 420, p: 32, f: 12, c: 45, tags: ["творог", "сладкое", "сырники", "без мяса", "без рыбы"], ingredients: ["Творог 5% — 180 г", "Яйцо куриное — 1 шт", "Мука рисовая — 25 г", "Ягоды — 80 г", "Мед/подсластитель — 10 г"], steps: "Смешай творог, яйцо и муку. Сформируй сырники, обжарь по 3 мин с каждой стороны под крышкой. Подавай с ягодами." },
+      { id: "b2", name: "Овсяноблин с сыром и ветчиной из индейки", kcal: 440, p: 30, f: 16, c: 42, tags: ["овсянка", "яйца", "без рыбы"], ingredients: ["Овсяные хлопья — 45 г", "Яйца — 2 шт", "Молоко 2.5% — 40 мл", "Сыр легкий — 25 г", "Ветчина из индейки — 40 г"], steps: "Взбей яйца с молоком и овсянкой, вылей на сковороду. Переверни, выложи сыр и индейку, сложи пополам." },
+      { id: "b3", name: "Шакшука с цельнозерновым тостом", kcal: 410, p: 24, f: 18, c: 36, tags: ["яйца", "овощи", "без мяса", "без рыбы", "без молочки"], ingredients: ["Яйца — 2 шт", "Томаты в с/с — 150 г", "Перец болгарский — 60 г", "Хлеб цельнозерновой — 50 г"], steps: "Потуши перец и томаты 5 мин, вбей яйца, посоли и готовь под крышкой 4 мин. Подавай с тостом." },
+      { id: "b4", name: "Скрембл с авокадо и форелью на тосте", kcal: 450, p: 26, f: 22, c: 35, tags: ["рыба", "яйца", "авокадо", "без мяса", "без молочки"], ingredients: ["Яйца — 2 шт", "Хлеб цельнозерновой — 50 г", "Форель с/с — 45 г", "Авокадо — 40 г"], steps: "Подсуши хлеб, разомни авокадо. Приготовь скрембл на медленном огне, выложи на тост с рыбой." },
+      { id: "b5", name: "Ленивая овсянка в банке с бананом", kcal: 430, p: 28, f: 10, c: 56, tags: ["овсянка", "сладкое", "без мяса", "без рыбы"], ingredients: ["Овсяные хлопья — 50 г", "Йогурт греческий 2% — 130 г", "Молоко 2.5% — 70 мл", "Банан — 70 г"], steps: "Смешай овсянку, йогурт и молоко с вечера. Утром добавь банан." },
+      { id: "b6", name: "Творожная вафля с творожным сыром и огурцом", kcal: 415, p: 31, f: 15, c: 38, tags: ["творог", "без мяса", "без рыбы"], ingredients: ["Творог 5% — 150 г", "Яйцо — 1 шт", "Мука рисовая — 30 г", "Сыр творожный — 25 г", "Огурец — 70 г"], steps: "Смешай творог, яйцо и муку, выпеки в вафельнице или на сковороде. Смажь сыром, добавь огурец." },
+      { id: "b7", name: "Гречневая каша с яйцом пашот и пармезаном", kcal: 425, p: 23, f: 14, c: 50, tags: ["крупа", "яйца", "без мяса", "без рыбы"], ingredients: ["Гречка (сухая) — 55 г", "Яйцо — 2 шт", "Сыр пармезан — 15 г", "Черри — 70 г"], steps: "Отвари гречку, свари яйца всмятку (6 мин). Выложи на гречку, посыпь пармезаном." },
+      { id: "b8", name: "Панкейки на кефире с ягодным соусом", kcal: 435, p: 22, f: 11, c: 60, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Кефир 2.5% — 120 мл", "Яйцо — 1 шт", "Мука ц/з — 55 г", "Ягоды — 90 г", "Мед — 10 г"], steps: "Взбей яйцо с кефиром и мукой, выпекай панкейки на сухой сковороде, подавай с ягодами." },
+      { id: "b9", name: "Омлет с шампиньонами, шпинатом и моцареллой", kcal: 405, p: 29, f: 21, c: 24, tags: ["яйца", "грибы", "без мяса", "без рыбы"], ingredients: ["Яйца — 3 шт", "Молоко — 50 мл", "Шампиньоны — 80 г", "Шпинат — 40 г", "Моцарелла — 25 г"], steps: "Обжарь грибы со шпинатом 3 мин, залей яйцами с молоком и посыпь сыром." },
+      { id: "b10", name: "Тосты с арахисовой пастой, творогом и грушей", kcal: 445, p: 25, f: 16, c: 49, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Хлеб ц/з — 60 г", "Творог мягкий 5% — 120 г", "Арахисовая паста — 15 г", "Груша — 90 г"], steps: "Подсуши тосты, смажь творогом и пастой, выложи дольки груши." }
     ],
     lunch: [
-      {
-        name: "Куриное филе в сливочно-грибном соусе с гречкой",
-        kcal: 540, p: 44, f: 14, c: 58, tags: ["курица", "гречка", "грибы", "без рыбы"],
-        ingredients: ["Куриное филе — 150 г", "Гречка (сухая) — 60 г", "Шампиньоны — 100 г", "Сливки 10% — 50 мл", "Салат из свежих овощей — 120 г"],
-        steps: "Отвари гречку. Курицу нарежь кусочками, обжарь с грибами 7 минут, влей сливки, посоли и туши еще 5 минут. Подавай с гречкой и овощами."
-      },
-      {
-        name: "Паста с креветками в томатно-чесночном соусе",
-        kcal: 530, p: 40, f: 12, c: 64, tags: ["рыба", "морепродукты", "паста", "без мяса", "без молочки"],
-        ingredients: ["Макароны из твердых сортов (сухие) — 65 г", "Креветки очищенные — 160 г", "Томаты протертые — 100 г", "Чеснок — 1 зубчик", "Масло оливковое — 7 г", "Зелень"],
-        steps: "Отвари пасту аль денте. На сковороде с каплей масла и чесноком обжарь креветки 3 минуты, влей томаты, прогрей 2 минуты и смешай с пастой."
-      },
-      {
-        name: "Запеченный картофель с бедром индейки и овощным салатом",
-        kcal: 520, p: 42, f: 13, c: 56, tags: ["индейка", "картофель", "без рыбы", "без молочки"],
-        ingredients: ["Филе бедра индейки — 150 г", "Картофель — 180 г", "Огурцы и помидоры — 150 г", "Масло растительное — 8 г", "Паприка, чеснок, соль"],
-        steps: "Нарежь картофель дольками, индейку кусочками, сбрызни маслом со специями и запекай в духовке при 190°C 25–30 минут."
-      },
-      {
-        name: "Плов с куриной грудкой, морковью и нутом",
-        kcal: 550, p: 43, f: 12, c: 66, tags: ["курица", "рис", "без рыбы", "без молочки"],
-        ingredients: ["Куриная грудка — 150 г", "Рис бурый или басмати (сухой) — 60 г", "Морковь — 70 г", "Лук репчатый — 40 г", "Масло растительное — 7 г", "Зира, барбарис"],
-        steps: "Обжарь кусочки курицы с луком и морковью, добавь промытый рис, специи и залей водой (1:2). Томи под крышкой 20 минут на слабом огне."
-      },
-      {
-        name: "Стейк из лосося/горбуши с булгуром и стручковой фасолью",
-        kcal: 560, p: 38, f: 19, c: 56, tags: ["рыба", "крупа", "без мяса", "без молочки"],
-        ingredients: ["Филе горбуши или форели — 140 г", "Булгур (сухой) — 60 г", "Фасоль стручковая — 120 г", "Лимонный сок — 10 мл"],
-        steps: "Отвари булгур. Рыбу сбрызни лимоном, посоли и запекай 15 минут при 180°C вместе со стручковой фасолью."
-      },
-      {
-        name: "Домашняя шаурма в лаваше с курицей и йогуртовым соусом",
-        kcal: 525, p: 42, f: 14, c: 55, tags: ["курица", "без рыбы"],
-        ingredients: ["Лаваш тонкий — 60 г", "Куриное филе — 140 г", "Капуста пекинская — 80 г", "Огурец и помидор — 100 г", "Йогурт греческий — 40 г", "Горчица и чеснок"],
-        steps: "Обжарь куриное филе полосками. Смешай йогурт с горчицей и чесноком, смажь лаваш, выложи курицу и нарезанные овощи, сверни и подрумянь на сухой сковороде."
-      },
-      {
-        name: "Фрикадельки из говядины/индейки в томатном соусе с пюре",
-        kcal: 535, p: 41, f: 15, c: 57, tags: ["мясо", "картофель", "без рыбы"],
-        ingredients: ["Фарш из индейки или постной говядины — 150 г", "Картофель — 180 г", "Томатный соус — 80 г", "Молоко 2.5% (в пюре) — 40 мл", "Салат из огурцов — 100 г"],
-        steps: "Сформируй фрикадельки и потуши их в томатном соусе 15 минут. Отвари картофель и сделай нежное пюре с теплым молоком."
-      },
-      {
-        name: "Боул с киноа, запеченным нутом, авокадо и сыром фета",
-        kcal: 515, p: 24, f: 19, c: 61, tags: ["крупа", "без мяса", "без рыбы"],
-        ingredients: ["Киноа (сухая) — 60 г", "Нут консервированный — 90 г", "Авокадо — 45 г", "Сыр фета — 35 г", "Огурец, черри и шпинат — 140 г"],
-        steps: "Отвари киноа. Выложи в глубокую тарелку киноа, нут, свежие овощи, кубики феты и ломтики авокадо, сбрызни лимонным соком."
-      },
-      {
-        name: "Гречневая лапша соба с курицей и овощами терияки",
-        kcal: 545, p: 40, f: 12, c: 67, tags: ["курица", "лапша", "без рыбы", "без молочки"],
-        ingredients: ["Лапша соба (сухая) — 60 г", "Куриная грудка — 140 г", "Перец болгарский и морковь — 120 г", "Соус терияки — 20 г", "Кунжут — 5 г"],
-        steps: "Отвари лапшу 5 минут. Быстро обжарь нарезанную курицу и овощи соломкой, добавь соус терияки и готовую лапшу, посыпь кунжутом."
-      },
-      {
-        name: "Тушеная капуста с куриными колбасками или филе и ржаным хлебом",
-        kcal: 495, p: 39, f: 14, c: 51, tags: ["курица", "овощи", "без рыбы", "без молочки"],
-        ingredients: ["Куриное филе — 160 г", "Капуста белокочанная — 250 г", "Морковь и томатная паста — 50 г", "Масло растительное — 7 г", "Хлеб ржаной — 45 г"],
-        steps: "Нашинкуй капусту, потуши с морковью, томатной пастой и кусочками курицы под крышкой 20 минут. Подавай с ломтиком ржаного хлеба."
-      }
+      { id: "l1", name: "Куриное филе в сливочно-грибном соусе с гречкой", kcal: 540, p: 44, f: 14, c: 58, tags: ["курица", "гречка", "грибы", "без рыбы"], ingredients: ["Куриное филе — 150 г", "Гречка (сухая) — 60 г", "Шампиньоны — 100 г", "Сливки 10% — 50 мл", "Овощи — 120 г"], steps: "Отвари гречку. Обжарь курицу с грибами 7 мин, влей сливки и туши 5 мин." },
+      { id: "l2", name: "Паста с креветками в томатно-чесночном соусе", kcal: 530, p: 40, f: 12, c: 64, tags: ["рыба", "морепродукты", "паста", "без мяса", "без молочки"], ingredients: ["Макароны тв. сортов — 65 г", "Креветки — 160 г", "Томаты протертые — 100 г", "Масло оливковое — 7 г"], steps: "Отвари пасту, обжарь креветки 3 мин, добавь томаты и смешай с пастой." },
+      { id: "l3", name: "Запеченный картофель с бедром индейки и салатом", kcal: 520, p: 42, f: 13, c: 56, tags: ["индейка", "картофель", "без рыбы", "без молочки"], ingredients: ["Филе индейки — 150 г", "Картофель — 180 г", "Огурцы и томаты — 150 г", "Масло раст. — 8 г"], steps: "Запеки картофель дольками и индейку при 190°C 25–30 минут." },
+      { id: "l4", name: "Плов с куриной грудкой, морковью и нутом", kcal: 550, p: 43, f: 12, c: 66, tags: ["курица", "рис", "без рыбы", "без молочки"], ingredients: ["Куриная грудка — 150 г", "Рис басмати — 60 г", "Морковь — 70 г", "Масло раст. — 7 г"], steps: "Обжарь курицу с морковью, добавь рис и воду (1:2), томи под крышкой 20 мин." },
+      { id: "l5", name: "Стейк из горбуши/лосося с булгуром и фасолью", kcal: 560, p: 38, f: 19, c: 56, tags: ["рыба", "крупа", "без мяса", "без молочки"], ingredients: ["Филе горбуши — 140 г", "Булгур — 60 г", "Фасоль стручковая — 120 г"], steps: "Отвари булгур, запеки рыбу с фасолью 15 мин при 180°C." },
+      { id: "l6", name: "Домашняя шаурма с курицей и йогуртовым соусом", kcal: 525, p: 42, f: 14, c: 55, tags: ["курица", "без рыбы"], ingredients: ["Лаваш — 60 г", "Куриное филе — 140 г", "Пекинская капуста и огурец — 180 г", "Йогурт греческий — 40 г"], steps: "Обжарь филе, смажь лаваш йогуртом с чесноком, выложи начинку и подрумянь на сковороде." },
+      { id: "l7", name: "Фрикадельки из индейки в томатном соусе с пюре", kcal: 535, p: 41, f: 15, c: 57, tags: ["мясо", "картофель", "без рыбы"], ingredients: ["Фарш индейки — 150 г", "Картофель — 180 г", "Томатный соус — 80 г", "Молоко — 40 мл"], steps: "Потуши фрикадельки в томатном соусе 15 мин, отвари картофель для пюре." },
+      { id: "l8", name: "Боул с киноа, нутом, авокадо и сыром фета", kcal: 515, p: 24, f: 19, c: 61, tags: ["крупа", "без мяса", "без рыбы"], ingredients: ["Киноа — 60 г", "Нут — 90 г", "Авокадо — 45 г", "Сыр фета — 35 г", "Овощи — 140 г"], steps: "Отвари киноа, выложи в тарелку с нутом, овощами, фетой и авокадо." },
+      { id: "l9", name: "Гречневая лапша соба с курицей и овощами терияки", kcal: 545, p: 40, f: 12, c: 67, tags: ["курица", "лапша", "без рыбы", "без молочки"], ingredients: ["Лапша соба — 60 г", "Куриная грудка — 140 г", "Перец и морковь — 120 г", "Соус терияки — 20 г"], steps: "Отвари собу 5 мин, обжарь курицу с овощами и смешай с соусом терияки." },
+      { id: "l10", name: "Тушеная капуста с куриным филе и ржаным хлебом", kcal: 495, p: 39, f: 14, c: 51, tags: ["курица", "овощи", "без рыбы", "без молочки"], ingredients: ["Куриное филе — 160 г", "Капуста — 250 г", "Томатная паста — 30 г", "Хлеб ржаной — 45 г"], steps: "Потуши нашинкованную капусту с курицей и томатной пастой 20 мин." }
     ],
     dinner: [
-      {
-        name: "Теплый салат с курицей гриль, яйцом и авокадо",
-        kcal: 410, p: 36, f: 19, c: 22, tags: ["курица", "салат", "без рыбы"],
-        ingredients: ["Куриное филе — 130 г", "Листья салата / микс — 80 г", "Авокадо — 40 г", "Яйцо вареное — 1 шт", "Помидоры черри — 80 г", "Йогурт греческий — 30 г"],
-        steps: "Обжарь куриное филе на гриле или сухой сковороде, нарежь ломтиками. Смешай с зеленью, черри, авокадо и яйцом, заправь греческим йогуртом."
-      },
-      {
-        name: "Творожная запеканка с грушей и корицей",
-        kcal: 390, p: 34, f: 11, c: 38, tags: ["творог", "сладкое", "без мяса", "без рыбы"],
-        ingredients: ["Творог 5% — 200 г", "Яйцо — 1 шт", "Манка или кукурузная мука — 20 г", "Груша — 100 г", "Сметана 10% — 25 г"],
-        steps: "Смешай творог, яйцо и муку, выложи в небольшую форму, сверху разложи тонкие ломтики груши. Запекай 25 минут при 180°C."
-      },
-      {
-        name: "Запеченная треска или минтай с брокколи под сырной корочкой",
-        kcal: 380, p: 38, f: 10, c: 32, tags: ["рыба", "овощи", "без мяса"],
-        ingredients: ["Филе трески или минтая — 170 г", "Брокколи и цветная капуста — 220 г", "Сыр легкий — 20 г", "Сметана 10% — 30 г"],
-        steps: "Выложи рыбу и соцветия капусты в форму, смажь сметаной, посыпь тертым сыром и запекай 20 минут при 180°C."
-      },
-      {
-        name: "Куриные котлетки на пару с овощным рагу (кабачок, перец, томат)",
-        kcal: 395, p: 39, f: 11, c: 34, tags: ["курица", "овощи", "без рыбы", "без молочки"],
-        ingredients: ["Куриный фарш из грудки — 160 г", "Кабачок — 150 г", "Перец болгарский и томат — 120 г", "Лук и зелень — 30 г"],
-        steps: "Сформируй котлетки из куриного фарша и приготовь на пару или потуши в воде. Рядом потуши нарезанные кубиками овощи 12 минут."
-      },
-      {
-        name: "Салат с тунцом, фасолью, яйцом и красным луком",
-        kcal: 385, p: 37, f: 9, c: 36, tags: ["рыба", "салат", "без мяса", "без молочки"],
-        ingredients: ["Тунец консервированный в с/с — 130 г", "Фасоль красная консервированная — 80 г", "Яйцо вареное — 1 шт", "Огурец и листья салата — 120 г", "Масло оливковое — 5 г"],
-        steps: "Слей жидкость с тунца и фасоли, смешай с нарезанным яйцом, свежим огурцом и зеленью, заправь каплей оливкового масла и лимонным соком."
-      },
-      {
-        name: "Фаршированные перцы с индейкой и овощами",
-        kcal: 405, p: 36, f: 12, c: 37, tags: ["индейка", "овощи", "без рыбы"],
-        ingredients: ["Перец болгарский — 2 шт (220 г)", "Фарш из индейки — 150 г", "Рис (сухой) — 20 г", "Сметана 10% — 30 г", "Томатный сок — 100 мл"],
-        steps: "Очисти перцы, начини смесью фарша индейки и полуготового риса. Потуши в томатном соке под крышкой 25 минут, подавай со сметаной."
-      },
-      {
-        name: "Рулетики из кабачков с творожным сыром, чесноком и курицей",
-        kcal: 375, p: 35, f: 14, c: 26, tags: ["курица", "овощи", "без рыбы"],
-        ingredients: ["Кабачок — 220 г", "Куриное филе отварное/запеченное — 130 г", "Сыр творожный — 35 г", "Помидор — 80 г", "Зелень и чеснок"],
-        steps: "Нарежь кабачок тонкими пластинами и обжарь на гриле по 1 минуте. Смажь творожным сыром с зеленью, выложи кусочек курицы и помидора, сверни рулетиками."
-      },
-      {
-        name: "Кальмары, тушенные в сметане со шпинатом и овощами",
-        kcal: 370, p: 38, f: 12, c: 25, tags: ["рыба", "морепродукты", "без мяса"],
-        ingredients: ["Филе кальмара — 180 г", "Сметана 10% — 45 г", "Шпинат — 60 г", "Огурцы и редис для салата — 150 г"],
-        steps: "Нарежь кальмары кольцами, потуши в сметане со шпинатом ровно 3–4 минуты (чтобы остались нежными). Подавай со свежим салатом."
-      },
-      {
-        name: "Греческий салат с запеченной куриной грудкой",
-        kcal: 415, p: 37, f: 18, c: 25, tags: ["курица", "салат", "без рыбы"],
-        ingredients: ["Куриная грудка запеченная — 130 г", "Помидоры, огурцы, перец — 180 г", "Сыр фета — 35 г", "Маслины — 20 г", "Масло оливковое — 6 г"],
-        steps: "Крупно нарежь свежие овощи, добавь кубики феты, маслины и ломтики запеченной куриной грудки, заправь оливковым маслом с орегано."
-      },
-      {
-        name: "Нежный тыквенно-морковный крем-суп с креветками или курицей",
-        kcal: 385, p: 33, f: 11, c: 38, tags: ["суп", "курица", "овощи"],
-        ingredients: ["Тыква и морковь — 250 г", "Куриное филе или креветки — 140 г", "Сливки 10% — 40 мл", "Сухарики цельнозерновые — 20 г"],
-        steps: "Отвари тыкву и морковь до мягкости, пробей блендером со сливками. Добавь в тарелку отварное куриное филе или креветки и сухарики."
-      }
+      { id: "d1", name: "Теплый салат с курицей гриль, яйцом и авокадо", kcal: 410, p: 36, f: 19, c: 22, tags: ["курица", "салат", "без рыбы"], ingredients: ["Куриное филе — 130 г", "Салат микс — 80 г", "Авокадо — 40 г", "Яйцо — 1 шт", "Черри — 80 г", "Йогурт — 30 г"], steps: "Обжарь филе, нарежь и смешай с овощами, яйцом и авокадо, заправь йогуртом." },
+      { id: "d2", name: "Творожная запеканка с грушей и корицей", kcal: 390, p: 34, f: 11, c: 38, tags: ["творог", "сладкое", "без мяса", "без рыбы"], ingredients: ["Творог 5% — 200 г", "Яйцо — 1 шт", "Манка — 20 г", "Груша — 100 г", "Сметана 10% — 25 г"], steps: "Смешай творог, яйцо и манку, сверху выложи дольки груши, запекай 25 мин при 180°C." },
+      { id: "d3", name: "Запеченная треска с брокколи под сырной корочкой", kcal: 380, p: 38, f: 10, c: 32, tags: ["рыба", "овощи", "без мяса"], ingredients: ["Филе трески — 170 г", "Брокколи — 220 г", "Сыр легкий — 20 г", "Сметана 10% — 30 г"], steps: "Запеки рыбу и брокколи под сметаной и сыром 20 минут при 180°C." },
+      { id: "d4", name: "Куриные котлетки на пару с овощным рагу", kcal: 395, p: 39, f: 11, c: 34, tags: ["курица", "овощи", "без рыбы", "без молочки"], ingredients: ["Куриный фарш — 160 г", "Кабачок — 150 г", "Перец и томат — 120 г"], steps: "Приготовь котлетки на пару или в воде, рядом потуши овощи 12 мин." },
+      { id: "d5", name: "Салат с тунцом, фасолью и яйцом", kcal: 385, p: 37, f: 9, c: 36, tags: ["рыба", "салат", "без мяса", "без молочки"], ingredients: ["Тунец в с/с — 130 г", "Фасоль красная — 80 г", "Яйцо — 1 шт", "Огурец и зелень — 120 г"], steps: "Смешай тунец, фасоль, нарезанное яйцо, огурец и зелень с каплей масла." },
+      { id: "d6", name: "Фаршированные перцы с индейкой", kcal: 405, p: 36, f: 12, c: 37, tags: ["индейка", "овощи", "без рыбы"], ingredients: ["Перец болгарский — 220 г", "Фарш индейки — 150 г", "Рис — 20 г", "Сметана 10% — 30 г"], steps: "Начини перцы фаршем и рисом, потуши в томатном соке 25 минут." },
+      { id: "d7", name: "Рулетики из кабачков с творожным сыром и курицей", kcal: 375, p: 35, f: 14, c: 26, tags: ["курица", "овощи", "без рыбы"], ingredients: ["Кабачок — 220 г", "Куриное филе — 130 г", "Сыр творожный — 35 г", "Помидор — 80 г"], steps: "Обжарь пластины кабачка, смажь сыром, выложи курицу и томат, сверни рулетиками." },
+      { id: "d8", name: "Кальмары, тушенные в сметане со шпинатом", kcal: 370, p: 38, f: 12, c: 25, tags: ["рыба", "морепродукты", "без мяса"], ingredients: ["Филе кальмара — 180 г", "Сметана 10% — 45 г", "Шпинат — 60 г", "Салат овощной — 150 г"], steps: "Потуши кольца кальмара в сметане со шпинатом ровно 3–4 минуты." },
+      { id: "d9", name: "Греческий салат с запеченной куриной грудкой", kcal: 415, p: 37, f: 18, c: 25, tags: ["курица", "салат", "без рыбы"], ingredients: ["Куриная грудка — 130 г", "Овощи свежие — 180 г", "Сыр фета — 35 г", "Масло оливковое — 6 г"], steps: "Нарежь овощи, добавь фету и ломтики куриной грудки, заправь маслом." },
+      { id: "d10", name: "Тыквенно-морковный крем-суп с креветками/курицей", kcal: 385, p: 33, f: 11, c: 38, tags: ["суп", "курица", "овощи"], ingredients: ["Тыква и морковь — 250 г", "Курица или креветки — 140 г", "Сливки 10% — 40 мл"], steps: "Отвари овощи, пробей блендером со сливками, добавь отварную курицу или креветки." }
     ],
     treat20: [
-      {
-        name: "Вкусняшка 20%: Зефир + капучино без сахара",
-        kcal: 220, p: 4, f: 4, c: 42, tags: ["сладкое", "без мяса", "без рыбы"],
-        ingredients: ["Зефир классический — 1 шт (45 г)", "Молоко 2.5% для капучино — 120 мл", "Кофе эспрессо — 50 мл"],
-        steps: "Сделай ароматный капучино и насладись целым зефиром без чувства вины — это твои законные 20% радости!"
-      },
-      {
-        name: "Вкусняшка 20%: Темный или молочный шоколад (25 г) и банан",
-        kcal: 230, p: 3, f: 9, c: 34, tags: ["сладкое", "без мяса", "без рыбы", "без молочки"],
-        ingredients: ["Шоколад — 25 г (3–4 дольки)", "Банан — 90 г", "Чай травяной или черный"],
-        steps: "Раздели на перекус днем или после обеда вместе с любимым чаем."
-      },
-      {
-        name: "Вкусняшка 20%: Мороженое пломбир в стаканчике",
-        kcal: 215, p: 4, f: 11, c: 25, tags: ["сладкое", "без мяса", "без рыбы"],
-        ingredients: ["Мороженое пломбир классический — 75 г"],
-        steps: "Настоящий пломбир легко вписывается в дневной калораж, если запланировать его заранее!"
-      },
-      {
-        name: "Вкусняшка 20%: Протеиновый батончик или печенье",
-        kcal: 210, p: 15, f: 7, c: 22, tags: ["сладкое", "без мяса", "без рыбы"],
-        ingredients: ["Протеиновый батончик / печенье — 1 шт (50–60 г)"],
-        steps: "Идеальный сладкий перекус, который дополнительно дает 15 г белка."
-      },
-      {
-        name: "Вкусняшка 20%: Пастила яблочная без сахара и горсть миндаля",
-        kcal: 225, p: 5, f: 10, c: 29, tags: ["сладкое", "без мяса", "без рыбы", "без молочки"],
-        ingredients: ["Пастила белевская или яблочная — 50 г", "Миндаль или фундук — 15 г"],
-        steps: "Хрустящие орешки и нежная пастила к вечернему чаю."
-      },
-      {
-        name: "Вкусняшка 20%: Творожный сырок в глазури + ягоды",
-        kcal: 235, p: 6, f: 12, c: 26, tags: ["сладкое", "без мяса", "без рыбы"],
-        ingredients: ["Сырок творожный глазированный — 1 шт (45 г)", "Клубника или малина — 70 г"],
-        steps: "Маленькое удовольствие, которое помогает не срываться на дистанции."
-      },
-      {
-        name: "Вкусняшка 20%: Мармелад (40 г) и латте на миндальном/обычном молоке",
-        kcal: 215, p: 4, f: 4, c: 41, tags: ["сладкое", "без мяса", "без рыбы"],
-        ingredients: ["Мармелад фруктовый — 40 г (3–4 шт)", "Молоко 2.5% — 150 мл", "Кофе — 50 мл"],
-        steps: "Вкусный дневной перекус без перебора по жирам."
-      },
-      {
-        name: "Вкусняшка 20%: Хлебец с нутеллой/шоколадной пастой и клубникой",
-        kcal: 220, p: 3, f: 9, c: 32, tags: ["сладкое", "без мяса", "без рыбы"],
-        ingredients: ["Хлебцы воздушные — 2 шт (20 г)", "Шоколадно-ореховая паста — 18 г", "Клубника — 80 г"],
-        steps: "Намажь пасту на хрустящие хлебцы и укрась ломтиками клубники."
-      }
+      { id: "t1", name: "Вкусняшка 20%: Зефир + капучино без сахара", kcal: 220, p: 4, f: 4, c: 42, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Зефир — 1 шт (45 г)", "Молоко 2.5% — 120 мл", "Кофе — 50 мл"], steps: "Насладись зефиром с капучино в рамках дневного калоража!" },
+      { id: "t2", name: "Вкусняшка 20%: Шоколад (25 г) и банан", kcal: 230, p: 3, f: 9, c: 34, tags: ["сладкое", "без мяса", "без рыбы", "без молочки"], ingredients: ["Шоколад — 25 г", "Банан — 90 г"], steps: "Сладкий перекус к чаю." },
+      { id: "t3", name: "Вкусняшка 20%: Мороженое пломбир в стаканчике", kcal: 215, p: 4, f: 11, c: 25, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Мороженое пломбир — 75 г"], steps: "Классический пломбир, вписанный в калории." },
+      { id: "t4", name: "Вкусняшка 20%: Протеиновый батончик или печенье", kcal: 210, p: 15, f: 7, c: 22, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Протеиновый батончик — 1 шт (55 г)"], steps: "Вкусно и дает +15 г белка." },
+      { id: "t5", name: "Вкусняшка 20%: Пастила яблочная и миндаль", kcal: 225, p: 5, f: 10, c: 29, tags: ["сладкое", "без мяса", "без рыбы", "без молочки"], ingredients: ["Пастила — 50 г", "Миндаль — 15 г"], steps: "Отличный перекус к вечернему чаю." },
+      { id: "t6", name: "Вкусняшка 20%: Творожный сырок в глазури + ягоды", kcal: 235, p: 6, f: 12, c: 26, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Сырок глазированный — 1 шт (45 г)", "Ягоды — 70 г"], steps: "Маленькое удовольствие без чувства вины." },
+      { id: "t7", name: "Вкусняшка 20%: Мармелад (40 г) и латте", kcal: 215, p: 4, f: 4, c: 41, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Мармелад — 40 г", "Молоко 2.5% — 150 мл", "Кофе — 50 мл"], steps: "Легкий десерт с минимальным содержанием жиров." },
+      { id: "t8", name: "Вкусняшка 20%: Хлебец с шоколадной пастой и клубникой", kcal: 220, p: 3, f: 9, c: 32, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Хлебцы — 20 г", "Шоколадная паста — 18 г", "Клубника — 80 г"], steps: "Намажь пасту на хрустящие хлебцы и укрась клубникой." }
     ]
   };
 
@@ -1452,9 +1500,11 @@
     return new Date().toISOString().split('T')[0];
   }
 
-  let state = JSON.parse(localStorage.getItem('novayaYaV5')) || {
+  let state = JSON.parse(localStorage.getItem('novayaYaV6')) || {
     onboarded: false,
     theme: 'pink',
+    dietBreakActive: false,
+    cyclePhase: 'normal',
     profile: {
       name: '',
       avatar: '🌸',
@@ -1471,6 +1521,9 @@
     },
     history: [],
     dailyLogs: {},
+    photos: [], // [{ date, label, dataUrl }]
+    favoriteIds: [],
+    customRecipes: { breakfast: [], lunch: [], dinner: [], treat20: [] },
     rewards: [],
     openedAdvent: [],
     currentMenu: [],
@@ -1480,9 +1533,26 @@
   let onbSelectedGender = 'female';
   let onbSelectedAvatar = '🌸';
   let editingAdventIdx = null;
+  let activeWorkoutIdx = 0;
+  let workoutSecondsLeft = 15 * 60;
+  let workoutInterval = null;
+  let sosInterval = null;
 
   function saveState() {
-    localStorage.setItem('novayaYaV5', JSON.stringify(state));
+    try {
+      localStorage.setItem('novayaYaV6', JSON.stringify(state));
+    } catch (e) {
+      alert('Память хранилища заполнена (возможно, слишком много фото). Удали старые фото для освобождения места.');
+    }
+  }
+
+  function getFullRecipesDB() {
+    return {
+      breakfast: [...DEFAULT_RECIPES_DB.breakfast, ...(state.customRecipes?.breakfast || [])],
+      lunch: [...DEFAULT_RECIPES_DB.lunch, ...(state.customRecipes?.lunch || [])],
+      dinner: [...DEFAULT_RECIPES_DB.dinner, ...(state.customRecipes?.dinner || [])],
+      treat20: [...DEFAULT_RECIPES_DB.treat20, ...(state.customRecipes?.treat20 || [])]
+    };
   }
 
   function renderAvatarGrids() {
@@ -1493,14 +1563,10 @@
         const div = document.createElement('div');
         div.className = 'avatar-pill' + (onbSelectedAvatar === ico ? ' active' : '');
         div.textContent = ico;
-        div.onclick = () => {
-          onbSelectedAvatar = ico;
-          renderAvatarGrids();
-        };
+        div.onclick = () => { onbSelectedAvatar = ico; renderAvatarGrids(); };
         onbGrid.appendChild(div);
       });
     }
-
     const profGrid = document.getElementById('profAvatarGrid');
     if (profGrid) {
       const currentAv = state.profile.avatar || '🌸';
@@ -1509,11 +1575,7 @@
         const div = document.createElement('div');
         div.className = 'avatar-pill' + (currentAv === ico ? ' active' : '');
         div.textContent = ico;
-        div.onclick = () => {
-          state.profile.avatar = ico;
-          saveState();
-          renderAll();
-        };
+        div.onclick = () => { state.profile.avatar = ico; saveState(); renderAll(); };
         profGrid.appendChild(div);
       });
     }
@@ -1558,9 +1620,7 @@
 
   function suggestDefaultStartKcal(weight, heightCm, age, activity, gender) {
     if (!weight || !heightCm || !age || !activity) return '';
-    if (gender === 'female' && Math.abs(weight - 92) < 1 && Math.abs(heightCm - 167) < 2) {
-      return 1700;
-    }
+    if (gender === 'female' && Math.abs(weight - 92) < 1 && Math.abs(heightCm - 167) < 2) return 1700;
     const genderOffset = gender === 'male' ? 5 : -161;
     const bmr = 10 * weight + 6.25 * heightCm - 5 * age + genderOffset;
     const tdee = bmr * activity;
@@ -1615,12 +1675,22 @@
 
   function getCurrentDynamicPlan(currentWeight, profile) {
     const stages = buildRoadmapStages(profile);
+    let active = stages[0];
     for (let i = 0; i < stages.length; i++) {
       if (currentWeight > stages[i].wTo || i === stages.length - 1) {
-        return stages[i];
+        active = stages[i];
+        break;
       }
     }
-    return stages[0];
+    if (state.dietBreakActive) {
+      return {
+        ...active,
+        kcal: active.kcal + 300,
+        c: active.c + 75,
+        isBreak: true
+      };
+    }
+    return active;
   }
 
   function calcEtaInfo(currentWeight, goalWeight, startKcal) {
@@ -1639,15 +1709,24 @@
     };
   }
 
+  function getFunWeightComparison(lostKg) {
+    if (lostKg < 0.5) return "Сделай первый отчет — и здесь появится наглядное сравнение сброшенного веса!";
+    if (lostKg < 2) return `Минус ${lostKg.toFixed(1)} кг — это как 1–2 больших пакета сока, которые ты больше не носишь на себе!`;
+    if (lostKg < 5) return `Минус ${lostKg.toFixed(1)} кг — это как целый тяжелый арбуз или ноутбук с рюкзаком!`;
+    if (lostKg < 10) return `Минус ${lostKg.toFixed(1)} кг — это как полная 5-литровая бутыль воды (и даже больше!), которую ты сняла с плеч!`;
+    if (lostKg < 15) return `Минус ${lostKg.toFixed(1)} кг — это вес целого велосипеда или большого чемодана в отпуск!`;
+    if (lostKg < 22) return `Минус ${lostKg.toFixed(1)} кг — это как целая автомобильная шина или мешок сахара, от которого ты освободилась!`;
+    if (lostKg < 30) return `Минус ${lostKg.toFixed(1)} кг — это вес взрослого ретривера или целого чемодана максимального веса в аэропорту!`;
+    return `Минус ${lostKg.toFixed(1)} кг — невероятная победа! Ты сбросила вес целого подростка-школьника! 👑`;
+  }
+
   function recalcOnboardingDefaultKcal() {
     const w = parseFloat(document.getElementById('onbWeight').value);
     const h = parseFloat(document.getElementById('onbHeight').value);
     const age = parseInt(document.getElementById('onbAge').value, 10);
     const act = parseFloat(document.getElementById('onbActivity').value);
     const suggested = suggestDefaultStartKcal(w, h, age, act, onbSelectedGender);
-    if (suggested) {
-      document.getElementById('onbStartKcal').value = suggested;
-    }
+    if (suggested) document.getElementById('onbStartKcal').value = suggested;
     previewOnboardingSummary();
   }
 
@@ -1717,10 +1796,14 @@
     };
     state.history = [{ date: getTodayStr(), weight, chest: null, waist: null, hips: null }];
     state.dailyLogs = {};
+    state.photos = [];
+    state.favoriteIds = [];
     state.rewards = pool;
     state.openedAdvent = [];
     state.currentMenu = [];
     state.checkedShopping = {};
+    state.dietBreakActive = false;
+    state.cyclePhase = 'normal';
     state.onboarded = true;
 
     saveState();
@@ -1730,42 +1813,28 @@
 
   function resetFullProfile() {
     if (confirm('Точно сбросить текущий профиль и удалить все записи? Откроется окно создания нового пользователя.')) {
-      localStorage.removeItem('novayaYaV5');
+      localStorage.removeItem('novayaYaV6');
       state = {
         onboarded: false,
         theme: state.theme || 'pink',
-        profile: {
-          name: '',
-          avatar: '🌸',
-          gender: 'female',
-          age: null,
-          height: null,
-          startWeight: null,
-          goalWeight: null,
-          startKcal: null,
-          activity: 1.55,
-          stepGoal: 9500,
-          waterGoal: 8,
-          workoutGoal: 2
-        },
+        dietBreakActive: false,
+        cyclePhase: 'normal',
+        profile: { name: '', avatar: '🌸', gender: 'female', age: null, height: null, startWeight: null, goalWeight: null, startKcal: null, activity: 1.55, stepGoal: 9500, waterGoal: 8, workoutGoal: 2 },
         history: [],
         dailyLogs: {},
+        photos: [],
+        favoriteIds: [],
+        customRecipes: { breakfast: [], lunch: [], dinner: [], treat20: [] },
         rewards: [],
         openedAdvent: [],
         currentMenu: [],
         checkedShopping: {}
       };
-      document.getElementById('onbName').value = '';
-      document.getElementById('onbAge').value = '';
-      document.getElementById('onbHeight').value = '';
-      document.getElementById('onbWeight').value = '';
-      document.getElementById('onbGoalWeight').value = '';
-      document.getElementById('onbActivity').value = '';
-      document.getElementById('onbStartKcal').value = '';
+      ['onbName', 'onbAge', 'onbHeight', 'onbWeight', 'onbGoalWeight', 'onbActivity', 'onbStartKcal'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
       onbSelectedGender = 'female';
       onbSelectedAvatar = '🌸';
-      document.getElementById('onbGenderF').className = 'yn-btn active-gender';
-      document.getElementById('onbGenderM').className = 'yn-btn';
       previewOnboardingSummary();
       renderAll();
     }
@@ -1791,20 +1860,33 @@
     return count;
   }
 
-  function isDaySuccessful(log, weeklyWorkouts) {
-    if (!log) return false;
+  function getDayScore(log, weeklyWorkouts) {
+    if (!log) return 0;
     let score = 0;
     if ((log.steps || 0) >= state.profile.stepGoal) score++;
     if ((log.water || 0) >= state.profile.waterGoal) score++;
     if (log.nutrition === true) score++;
     if (log.workout === true || weeklyWorkouts >= state.profile.workoutGoal) score++;
-    return score >= 3;
+    return score;
+  }
+
+  function toggleDietBreak() {
+    state.dietBreakActive = !state.dietBreakActive;
+    saveState();
+    renderAll();
+  }
+
+  function setCyclePhase(phase) {
+    state.cyclePhase = phase;
+    saveState();
+    renderAll();
   }
 
   function renderAll() {
     setTheme(state.theme);
     renderAvatarGrids();
-    const totalRecipesCount = RECIPES_DB.breakfast.length + RECIPES_DB.lunch.length + RECIPES_DB.dinner.length + RECIPES_DB.treat20.length;
+    const db = getFullRecipesDB();
+    const totalRecipesCount = db.breakfast.length + db.lunch.length + db.dinner.length + db.treat20.length;
     document.getElementById('recipeCountBadge').textContent = `${totalRecipesCount} блюд`;
 
     if (!state.onboarded) {
@@ -1837,7 +1919,7 @@
     const eta = calcEtaInfo(currentW, p.goalWeight, p.startKcal);
 
     document.getElementById('headerGreeting').textContent = `${p.avatar} Привет, ${p.name}!`;
-    document.getElementById('headerSubtitle').textContent = `Цель: ${p.goalWeight} кг • Этап ${currentStage.index}: ${currentStage.kcal} ккал`;
+    document.getElementById('headerSubtitle').textContent = `Цель: ${p.goalWeight} кг • ${currentStage.isBreak ? '🌴 Каникулы' : 'Этап ' + currentStage.index}: ${currentStage.kcal} ккал`;
 
     document.getElementById('statWeight').textContent = `${currentW.toFixed(1)} кг`;
     document.getElementById('statLost').textContent = `Сброшено: ${lost.toFixed(1)} кг`;
@@ -1849,10 +1931,35 @@
     document.getElementById('statBmiSub').textContent = `ИМТ: ${bmiObj.bmi} (${bmiObj.cat})`;
     document.getElementById('mealTargetBadge').textContent = `${currentStage.kcal} ккал`;
 
+    // Fun comparison
+    document.getElementById('funCompareText').textContent = getFunWeightComparison(lost);
+
+    // Diet break timer
+    const startDt = new Date(start.date);
+    const weeksPassed = Math.max(0, Math.floor((Date.now() - startDt.getTime()) / (7 * 86400000)));
+    const weeksUntilBreak = Math.max(0, 11 - (weeksPassed % 11));
     document.getElementById('exactEtaFull').textContent = eta.fullStr;
-    document.getElementById('etaWeeksLeft').textContent = `Осталось ~${eta.weeksLeft} нед. при темпе ~${eta.pace} кг/нед`;
-    document.getElementById('stageNowBadge').textContent = `Этап ${currentStage.index} из 4`;
-    document.getElementById('etaBadge').textContent = `Финиш: ${eta.shortStr}`;
+    document.getElementById('dietBreakStatusText').textContent = state.dietBreakActive
+      ? '🌴 Активны диетические каникулы (+300 ккал для восстановления)'
+      : `Неделя ${weeksPassed + 1} • До плановых каникул: ${weeksUntilBreak} нед.`;
+    const btnBreak = document.getElementById('btnToggleDietBreak');
+    btnBreak.textContent = state.dietBreakActive ? '✅ Вернуть дефицит' : '🌴 Каникулы';
+
+    // Wellness / Cycle tracker
+    const wellnessCard = document.getElementById('wellnessCard');
+    if (p.gender === 'male') {
+      wellnessCard.style.display = 'none';
+    } else {
+      wellnessCard.style.display = 'block';
+      const phaseInfo = {
+        normal: { badge: 'Обычная фаза', hint: 'Отличное время для плавного снижения веса и легких тренировок.' },
+        pms: { badge: 'ПМС (вода +1–2 кг)', hint: 'Возможна естественная задержка воды до 1,5–2 кг и тяга к сладкому. Не урезай калории — вес уйдет сам через 4–5 дней!' },
+        period: { badge: 'Менструация', hint: 'Организм восстанавливается: отдай предпочтение прогулкам и мягкой растяжке вместо силовых.' }
+      };
+      const curP = phaseInfo[state.cyclePhase || 'normal'];
+      document.getElementById('wellnessBadge').textContent = curP.badge;
+      document.getElementById('wellnessHintText').textContent = curP.hint;
+    }
 
     renderRoadmap(currentStage.index, start.date, eta);
 
@@ -1905,11 +2012,7 @@
     btnW.style.background = todayLog.workout ? 'var(--success)' : '';
     btnW.style.color = todayLog.workout ? '#fff' : '';
 
-    let scoreToday = 0;
-    if (todayLog.steps >= p.stepGoal) scoreToday++;
-    if (todayLog.water >= p.waterGoal) scoreToday++;
-    if (todayLog.nutrition === true) scoreToday++;
-    if (todayLog.workout || weekWorkouts >= p.workoutGoal) scoreToday++;
+    const scoreToday = getDayScore(todayLog, weekWorkouts);
     document.getElementById('todayScoreBadge').textContent = `${scoreToday} / 4 целей`;
 
     document.getElementById('mChest').textContent = latest.chest ? `${latest.chest}` : '—';
@@ -1941,6 +2044,9 @@
     document.getElementById('profWorkoutGoal').value = p.workoutGoal;
     document.getElementById('profileBmiBadge').textContent = `ИМТ: ${bmiObj.bmi} (${bmiObj.cat})`;
 
+    renderWorkoutPresetDetails();
+    renderHeatmap();
+    renderPhotoDiary();
     renderAdvent();
     renderAllCharts();
     if (!state.currentMenu || state.currentMenu.length === 0) {
@@ -1950,9 +2056,180 @@
     }
   }
 
+  // Workout Timer Functions
+  function selectWorkoutPreset(idx) {
+    activeWorkoutIdx = idx;
+    resetWorkoutTimer();
+    renderWorkoutPresetDetails();
+  }
+
+  function renderWorkoutPresetDetails() {
+    const preset = WORKOUT_PRESETS[activeWorkoutIdx] || WORKOUT_PRESETS[0];
+    const box = document.getElementById('workoutPresetDetails');
+    if (!box) return;
+    box.innerHTML = `
+      <div style="font-weight:800; color:var(--primary-deep); margin-bottom:6px;">${preset.title}</div>
+      <div style="font-size:0.78rem; color:var(--text); line-height:1.5;">${preset.exercises.join('<br/>')}</div>
+    `;
+  }
+
+  function updateTimerDisplay() {
+    const m = String(Math.floor(workoutSecondsLeft / 60)).padStart(2, '0');
+    const s = String(workoutSecondsLeft % 60).padStart(2, '0');
+    document.getElementById('workoutTimerDisplay').textContent = `${m}:${s}`;
+  }
+
+  function toggleWorkoutTimer() {
+    const btn = document.getElementById('btnStartTimer');
+    if (workoutInterval) {
+      clearInterval(workoutInterval);
+      workoutInterval = null;
+      btn.textContent = '▶️ Продолжить';
+      document.getElementById('timerStatusBadge').textContent = 'Пауза';
+    } else {
+      btn.textContent = '⏸️ Пауза';
+      document.getElementById('timerStatusBadge').textContent = 'Идет тренировка';
+      workoutInterval = setInterval(() => {
+        if (workoutSecondsLeft > 0) {
+          workoutSecondsLeft--;
+          updateTimerDisplay();
+        } else {
+          clearInterval(workoutInterval);
+          workoutInterval = null;
+          finishWorkoutEarly();
+        }
+      }, 1000);
+    }
+  }
+
+  function resetWorkoutTimer() {
+    if (workoutInterval) { clearInterval(workoutInterval); workoutInterval = null; }
+    const preset = WORKOUT_PRESETS[activeWorkoutIdx] || WORKOUT_PRESETS[0];
+    workoutSecondsLeft = preset.minutes * 60;
+    document.getElementById('btnStartTimer').textContent = '▶️ Старт';
+    document.getElementById('timerStatusBadge').textContent = 'Готов';
+    updateTimerDisplay();
+  }
+
+  function finishWorkoutEarly() {
+    if (workoutInterval) { clearInterval(workoutInterval); workoutInterval = null; }
+    ensureTodayLog().workout = true;
+    saveState();
+    resetWorkoutTimer();
+    renderAll();
+    alert('🎉 Отличная работа! Тренировка засчитана в цели дня.');
+  }
+
+  // SOS Modal
+  function openSosModal() {
+    const p = state.profile;
+    const latest = state.history[state.history.length - 1] || { weight: p.startWeight || 92 };
+    const lost = Math.max(0, (p.startWeight || 92) - latest.weight).toFixed(1);
+    document.getElementById('sosMotivationQuote').textContent =
+      `Ты уже сбросила ${lost} кг! Одна случайная конфета не стоит твоей большой цели 💖`;
+    document.getElementById('sosModal').classList.add('open');
+  }
+  function closeSosModal() {
+    document.getElementById('sosModal').classList.remove('open');
+    if (sosInterval) { clearInterval(sosInterval); sosInterval = null; }
+  }
+  function startSosTimer() {
+    if (sosInterval) clearInterval(sosInterval);
+    let sec = 180;
+    sosInterval = setInterval(() => {
+      sec--;
+      const m = String(Math.floor(sec / 60)).padStart(2, '0');
+      const s = String(sec % 60).padStart(2, '0');
+      document.getElementById('sosTimerDisplay').textContent = `${m}:${s}`;
+      if (sec <= 0) {
+        clearInterval(sosInterval);
+        sosInterval = null;
+        document.getElementById('sosTimerDisplay').textContent = 'Готово! ✨';
+      }
+    }, 1000);
+  }
+
+  // Heatmap Calendar (28 days)
+  function renderHeatmap() {
+    const grid = document.getElementById('heatmapGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    const now = new Date();
+    const weekW = getWeeklyWorkoutsCount();
+    for (let i = 27; i >= 0; i--) {
+      const d = new Date(now);
+      d.setDate(now.getDate() - i);
+      const key = d.toISOString().split('T')[0];
+      const score = getDayScore(state.dailyLogs[key], weekW);
+      const cell = document.createElement('div');
+      cell.className = 'hm-cell' + (score > 0 ? ` hm-${score}` : '');
+      cell.textContent = d.getDate();
+      cell.title = `${key}: выполнено ${score}/4 целей`;
+      grid.appendChild(cell);
+    }
+  }
+
+  // Photo Progress Diary
+  function handlePhotoUpload(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const label = document.getElementById('photoLabelInput').value.trim() || new Date().toLocaleDateString('ru-RU');
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        // Compress image to fit comfortably in localStorage
+        const canvas = document.createElement('canvas');
+        const maxW = 480;
+        const scale = Math.min(1, maxW / img.width);
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        const compressed = canvas.toDataURL('image/jpeg', 0.72);
+        state.photos.push({ date: getTodayStr(), label, dataUrl: compressed });
+        document.getElementById('photoLabelInput').value = '';
+        saveState();
+        renderPhotoDiary();
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function renderPhotoDiary() {
+    const grid = document.getElementById('photoDiaryGrid');
+    if (!grid) return;
+    grid.innerHTML = '';
+    if (!state.photos || state.photos.length === 0) {
+      grid.innerHTML = `<div style="grid-column:1/-1; font-size:0.78rem; color:var(--muted); text-align:center; padding:12px;">Пока нет загруженных фото. Добавь первое фото «Старт», чтобы сравнивать результат!</div>`;
+      return;
+    }
+    state.photos.forEach((ph, idx) => {
+      const card = document.createElement('div');
+      card.className = 'photo-card';
+      card.innerHTML = `
+        <img src="${ph.dataUrl}" alt="${ph.label}" />
+        <div style="font-size:0.76rem; font-weight:800;">${ph.label}</div>
+        <div style="font-size:0.68rem; color:var(--muted);">${ph.date}</div>
+        <button class="btn-soft" style="margin-top:4px; padding:4px 8px; font-size:0.7rem;" onclick="deletePhoto(${idx})">Удалить</button>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function deletePhoto(idx) {
+    if (confirm('Удалить это фото из дневника?')) {
+      state.photos.splice(idx, 1);
+      saveState();
+      renderPhotoDiary();
+    }
+  }
+
+  // Roadmap
   function renderRoadmap(activeStageIdx, startDateStr, eta) {
     const stages = buildRoadmapStages(state.profile);
-    document.getElementById('roadmapCurrentStageBadge').textContent = `Активен: Этап ${activeStageIdx}`;
+    document.getElementById('roadmapCurrentStageBadge').textContent = `Этап ${activeStageIdx}`;
     const tbody = document.getElementById('roadmapTableBody');
     tbody.innerHTML = '';
     stages.forEach(st => {
@@ -1960,21 +2237,16 @@
       if (st.index === activeStageIdx) tr.className = 'active-stage';
       tr.innerHTML = `
         <td>${st.index === activeStageIdx ? '👉 ' : ''}${st.title}</td>
-        <td>${st.wFrom} → ${st.wTo} кг</td>
+        <td>${st.wFrom} → ${st.wTo}</td>
         <td><strong>${st.kcal}</strong></td>
         <td>${st.p}/${st.f}/${st.c}</td>
         <td>${st.period}</td>
       `;
       tbody.appendChild(tr);
     });
-
-    const sd = new Date(startDateStr || getTodayStr());
-    document.getElementById('rmStartDate').textContent = sd.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
-    document.getElementById('rmEndDate').textContent = eta.shortStr;
-    document.getElementById('rmPaceVal').textContent = `~${eta.pace} кг/нед`;
-    document.getElementById('rmWeeksLeft').textContent = `${eta.weeksLeft} нед.`;
   }
 
+  // Daily goal actions
   function setManualSteps() {
     const val = parseInt(document.getElementById('stepsManualInput').value, 10);
     if (!isNaN(val) && val >= 0) {
@@ -1984,28 +2256,12 @@
       renderAll();
     }
   }
-  function addSteps(delta) {
-    ensureTodayLog().steps += delta;
-    saveState();
-    renderAll();
-  }
-  function resetSteps() {
-    ensureTodayLog().steps = 0;
-    saveState();
-    renderAll();
-  }
-  function setNutritionToday(val) {
-    ensureTodayLog().nutrition = val;
-    saveState();
-    renderAll();
-  }
-  function toggleWorkoutToday() {
-    const log = ensureTodayLog();
-    log.workout = !log.workout;
-    saveState();
-    renderAll();
-  }
+  function addSteps(delta) { ensureTodayLog().steps += delta; saveState(); renderAll(); }
+  function resetSteps() { ensureTodayLog().steps = 0; saveState(); renderAll(); }
+  function setNutritionToday(val) { ensureTodayLog().nutrition = val; saveState(); renderAll(); }
+  function toggleWorkoutToday() { const log = ensureTodayLog(); log.workout = !log.workout; saveState(); renderAll(); }
 
+  // Advent Calendar
   function renderAdvent() {
     const p = state.profile;
     const latest = state.history[state.history.length - 1] || { weight: p.startWeight };
@@ -2031,9 +2287,7 @@
           <div class="advent-emoji">🔒</div>
           <div class="advent-text">Секретный сюрприз</div>
         `;
-        box.onclick = () => {
-          alert(`🔒 Этот сюрприз пока скрыт! Он откроется автоматически, когда твой вес в отчете достигнет ${targetWeight} кг.`);
-        };
+        box.onclick = () => alert(`🔒 Этот сюрприз пока скрыт! Он откроется автоматически, когда твой вес в отчете достигнет ${targetWeight} кг.`);
       } else if (!isOpened) {
         box.innerHTML = `
           <div class="advent-num">Цель: ${targetWeight} кг</div>
@@ -2068,23 +2322,16 @@
     document.getElementById('adventCustomInput').value = reward;
     document.getElementById('adventModal').classList.add('open');
   }
-
-  function closeAdventModal() {
-    document.getElementById('adventModal').classList.remove('open');
-  }
-
+  function closeAdventModal() { document.getElementById('adventModal').classList.remove('open'); }
   function saveCustomAdvent() {
     if (editingAdventIdx !== null) {
       const val = document.getElementById('adventCustomInput').value.trim();
-      if (val) {
-        state.rewards[editingAdventIdx] = val;
-        saveState();
-        renderAdvent();
-      }
+      if (val) { state.rewards[editingAdventIdx] = val; saveState(); renderAdvent(); }
     }
     closeAdventModal();
   }
 
+  // Charts (including Moving Average Weight Line!)
   function getCssVar(name) {
     return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   }
@@ -2112,6 +2359,7 @@
 
     const primary = getCssVar('--primary');
     const soft = getCssVar('--primary-soft');
+    const success = getCssVar('--success');
     const grid = getCssVar('--chart-grid');
     const muted = getCssVar('--muted');
     const text = getCssVar('--text');
@@ -2140,6 +2388,7 @@
       ctx.fillText(Math.round(val), 4, y + 3);
     }
 
+    // Ideal plan dashed line
     ctx.strokeStyle = soft;
     ctx.setLineDash([5, 5]);
     ctx.lineWidth = 2;
@@ -2150,23 +2399,46 @@
     ctx.setLineDash([]);
 
     const pts = state.history;
+    // Moving average calculation (window of 3)
+    const movingAvg = pts.map((_, idx) => {
+      const slice = pts.slice(Math.max(0, idx - 2), idx + 1);
+      return slice.reduce((a, b) => a + b.weight, 0) / slice.length;
+    });
+    const lastAvg = movingAvg[movingAvg.length - 1] || startW;
+    document.getElementById('movingAvgBadge').textContent = `Средний: ${lastAvg.toFixed(1)} кг`;
+
+    // Actual weight line
     ctx.strokeStyle = primary;
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
     pts.forEach((p, idx) => {
-      const x = pad.left + (pts.length === 1 ? 0 : (idx / Math.max(pts.length - 1, 1)) * (plotW * 0.75));
+      const x = pad.left + (pts.length === 1 ? 0 : (idx / Math.max(pts.length - 1, 1)) * (plotW * 0.78));
       const y = pad.top + plotH - ((p.weight - minY) / spanY) * plotH;
       if (idx === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     });
     ctx.stroke();
 
+    // Moving average smooth green line
+    if (pts.length >= 2) {
+      ctx.strokeStyle = success;
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      movingAvg.forEach((avgW, idx) => {
+        const x = pad.left + (idx / Math.max(pts.length - 1, 1)) * (plotW * 0.78);
+        const y = pad.top + plotH - ((avgW - minY) / spanY) * plotH;
+        if (idx === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+    }
+
     pts.forEach((p, idx) => {
-      const x = pad.left + (pts.length === 1 ? 0 : (idx / Math.max(pts.length - 1, 1)) * (plotW * 0.75));
+      const x = pad.left + (pts.length === 1 ? 0 : (idx / Math.max(pts.length - 1, 1)) * (plotW * 0.78));
       const y = pad.top + plotH - ((p.weight - minY) / spanY) * plotH;
       ctx.fillStyle = primary;
       ctx.beginPath();
-      ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+      ctx.arc(x, y, 4, 0, Math.PI * 2);
       ctx.fill();
       ctx.fillStyle = text;
       ctx.fillText(p.weight.toFixed(1), x - 10, y - 8);
@@ -2226,20 +2498,15 @@
       const y = pad.top + plotH - barH;
       ctx.fillStyle = d.val >= goal ? success : primary;
       ctx.beginPath();
-      if (ctx.roundRect) {
-        ctx.roundRect(cx - barW / 2, y, barW, barH, 6);
-      } else {
-        ctx.rect(cx - barW / 2, y, barW, barH);
-      }
+      if (ctx.roundRect) ctx.roundRect(cx - barW / 2, y, barW, barH, 6);
+      else ctx.rect(cx - barW / 2, y, barW, barH);
       ctx.fill();
 
       ctx.fillStyle = muted;
       ctx.font = '10px sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText(d.label, cx, h - 8);
-      if (d.val > 0) {
-        ctx.fillText(d.val, cx, y - 4);
-      }
+      if (d.val > 0) ctx.fillText(d.val, cx, y - 4);
     });
   }
 
@@ -2295,7 +2562,7 @@
 
     keys.forEach(k => {
       const log = state.dailyLogs[k];
-      if (isDaySuccessful(log, weekW)) {
+      if (getDayScore(log, weekW) >= 3) {
         successDays++;
         streak++;
       } else {
@@ -2340,9 +2607,7 @@
     document.getElementById('repHips').value = latest.hips || '';
     document.getElementById('reportModal').classList.add('open');
   }
-  function closeReportModal() {
-    document.getElementById('reportModal').classList.remove('open');
-  }
+  function closeReportModal() { document.getElementById('reportModal').classList.remove('open'); }
 
   function saveReport() {
     const date = document.getElementById('repDate').value || getTodayStr();
@@ -2350,10 +2615,7 @@
     const chest = parseFloat(document.getElementById('repChest').value) || null;
     const waist = parseFloat(document.getElementById('repWaist').value) || null;
     const hips = parseFloat(document.getElementById('repHips').value) || null;
-    if (!weight || weight < 35 || weight > 250) {
-      alert('Введи корректный вес!');
-      return;
-    }
+    if (!weight || weight < 35 || weight > 250) { alert('Введи корректный вес!'); return; }
     state.history.push({ date, weight, chest, waist, hips });
     saveState();
     closeReportModal();
@@ -2392,6 +2654,7 @@
     alert('Профиль, калораж, дорожная карта и адвент-календарь обновлены!');
   }
 
+  // Meals, Favorites, Single-Meal Swap & Custom Recipes
   function shuffleArray(arr) {
     const copy = [...arr];
     for (let i = copy.length - 1; i > 0; i--) {
@@ -2401,18 +2664,16 @@
     return copy;
   }
 
-  function filterRecipesByPref(arr, pref) {
-    if (!pref) return arr;
+  function filterRecipesByPref(arr, pref, onlyFavorites) {
     let res = arr;
-    if (pref.includes('без рыбы')) {
-      res = res.filter(x => !x.tags.includes('рыба') && !x.tags.includes('морепродукты'));
+    if (onlyFavorites && state.favoriteIds && state.favoriteIds.length > 0) {
+      const favs = res.filter(x => state.favoriteIds.includes(x.id));
+      if (favs.length > 0) res = favs;
     }
-    if (pref.includes('без мяса')) {
-      res = res.filter(x => x.tags.includes('без мяса'));
-    }
-    if (pref.includes('без молоч')) {
-      res = res.filter(x => x.tags.includes('без молочки'));
-    }
+    if (!pref) return res;
+    if (pref.includes('без рыбы')) res = res.filter(x => !x.tags.includes('рыба') && !x.tags.includes('морепродукты'));
+    if (pref.includes('без мяса')) res = res.filter(x => x.tags.includes('без мяса'));
+    if (pref.includes('без молоч')) res = res.filter(x => x.tags.includes('без молочки'));
     const keywords = pref.split(/[\s,]+/).filter(w => w.length > 3 && !['хочу', 'блюда', 'меню', 'на', 'день'].includes(w));
     if (keywords.length > 0 && !pref.startsWith('без ')) {
       const matched = res.filter(x => keywords.some(kw => x.name.toLowerCase().includes(kw) || x.tags.some(t => t.includes(kw))));
@@ -2421,13 +2682,24 @@
     return res.length > 0 ? res : arr;
   }
 
-  function generateMenu(days = 1, shouldSave = true) {
-    const pref = (document.getElementById('mealPrefInput')?.value || '').toLowerCase().trim();
+  function scaleMealObj(m, scale) {
+    return {
+      ...m,
+      kcal: Math.round(m.kcal * scale),
+      p: Math.round(m.p * scale),
+      f: Math.round(m.f * scale),
+      c: Math.round(m.c * scale)
+    };
+  }
 
-    const bPool = shuffleArray(filterRecipesByPref(RECIPES_DB.breakfast, pref));
-    const lPool = shuffleArray(filterRecipesByPref(RECIPES_DB.lunch, pref));
-    const dPool = shuffleArray(filterRecipesByPref(RECIPES_DB.dinner, pref));
-    const tPool = shuffleArray(filterRecipesByPref(RECIPES_DB.treat20, pref));
+  function generateMenu(days = 1, onlyFavorites = false, shouldSave = true) {
+    const pref = (document.getElementById('mealPrefInput')?.value || '').toLowerCase().trim();
+    const db = getFullRecipesDB();
+
+    const bPool = shuffleArray(filterRecipesByPref(db.breakfast, pref, onlyFavorites));
+    const lPool = shuffleArray(filterRecipesByPref(db.lunch, pref, onlyFavorites));
+    const dPool = shuffleArray(filterRecipesByPref(db.dinner, pref, onlyFavorites));
+    const tPool = shuffleArray(filterRecipesByPref(db.treat20, pref, onlyFavorites));
 
     const latest = state.history[state.history.length - 1] || { weight: state.profile.startWeight };
     const stagePlan = getCurrentDynamicPlan(latest.weight, state.profile);
@@ -2435,28 +2707,18 @@
 
     const menu = [];
     for (let d = 0; d < days; d++) {
-      const b = bPool[d % bPool.length];
-      const l = lPool[d % lPool.length];
-      const dn = dPool[d % dPool.length];
-      const t = tPool[d % tPool.length];
-
-      const scaleMeal = (m) => ({
-        ...m,
-        kcal: Math.round(m.kcal * scale),
-        p: Math.round(m.p * scale),
-        f: Math.round(m.f * scale),
-        c: Math.round(m.c * scale)
-      });
-
-      const sb = scaleMeal(b), sl = scaleMeal(l), sdn = scaleMeal(dn), st = scaleMeal(t);
+      const sb = scaleMealObj(bPool[d % bPool.length], scale);
+      const sl = scaleMealObj(lPool[d % lPool.length], scale);
+      const sdn = scaleMealObj(dPool[d % dPool.length], scale);
+      const st = scaleMealObj(tPool[d % tPool.length], scale);
       menu.push({
         day: days === 1 ? 'Меню на сегодня' : `День ${d + 1}`,
         totalKcal: sb.kcal + sl.kcal + sdn.kcal + st.kcal,
         items: [
-          { type: 'Завтрак', ...sb },
-          { type: 'Обед', ...sl },
-          { type: 'Ужин', ...sdn },
-          { type: 'Радость 20%', ...st }
+          { cat: 'breakfast', type: 'Завтрак', ...sb },
+          { cat: 'lunch', type: 'Обед', ...sl },
+          { cat: 'dinner', type: 'Ужин', ...sdn },
+          { cat: 'treat20', type: 'Радость 20%', ...st }
         ]
       });
     }
@@ -2464,6 +2726,60 @@
     state.checkedShopping = {};
     if (shouldSave) saveState();
     renderMenuAndShopping();
+  }
+
+  function swapSingleMeal(dayIdx, mealIdx) {
+    const dayObj = state.currentMenu[dayIdx];
+    if (!dayObj) return;
+    const oldMeal = dayObj.items[mealIdx];
+    const db = getFullRecipesDB();
+    const pool = db[oldMeal.cat] || db.breakfast;
+    const candidates = pool.filter(x => x.id !== oldMeal.id);
+    const nextRaw = candidates.length ? candidates[Math.floor(Math.random() * candidates.length)] : pool[0];
+
+    const latest = state.history[state.history.length - 1] || { weight: state.profile.startWeight };
+    const stagePlan = getCurrentDynamicPlan(latest.weight, state.profile);
+    const scale = stagePlan.kcal / 1600;
+    const scaled = scaleMealObj(nextRaw, scale);
+
+    dayObj.items[mealIdx] = { cat: oldMeal.cat, type: oldMeal.type, ...scaled };
+    dayObj.totalKcal = dayObj.items.reduce((acc, m) => acc + m.kcal, 0);
+    saveState();
+    renderMenuAndShopping();
+  }
+
+  function toggleFavoriteMeal(id) {
+    if (!state.favoriteIds) state.favoriteIds = [];
+    const idx = state.favoriteIds.indexOf(id);
+    if (idx === -1) state.favoriteIds.push(id);
+    else state.favoriteIds.splice(idx, 1);
+    saveState();
+    renderMenuAndShopping();
+  }
+
+  function openCustomRecipeModal() { document.getElementById('customRecipeModal').classList.add('open'); }
+  function closeCustomRecipeModal() { document.getElementById('customRecipeModal').classList.remove('open'); }
+
+  function saveCustomRecipe() {
+    const cat = document.getElementById('crCategory').value;
+    const name = document.getElementById('crName').value.trim();
+    const kcal = parseInt(document.getElementById('crKcal').value, 10) || 400;
+    const p = parseInt(document.getElementById('crP').value, 10) || 25;
+    const f = parseInt(document.getElementById('crF').value, 10) || 12;
+    const c = parseInt(document.getElementById('crC').value, 10) || 45;
+    const ingStr = document.getElementById('crIng').value.trim();
+    const steps = document.getElementById('crSteps').value.trim() || 'Приготовить по своему фирменному рецепту.';
+    if (!name) { alert('Введи название блюда!'); return; }
+
+    const ingredients = ingStr ? ingStr.split(',').map(s => s.trim()).filter(Boolean) : [name];
+    const newId = 'custom_' + Date.now();
+    if (!state.customRecipes) state.customRecipes = { breakfast: [], lunch: [], dinner: [], treat20: [] };
+    state.customRecipes[cat].push({ id: newId, name, kcal, p, f, c, tags: ['свое'], ingredients, steps });
+    state.favoriteIds.push(newId);
+    saveState();
+    closeCustomRecipeModal();
+    renderAll();
+    alert('Блюдо добавлено в твою базу и отмечено в избранном ❤️!');
   }
 
   function renderMenuAndShopping() {
@@ -2477,6 +2793,7 @@
       let html = `<div class="card-title"><span>🍽️ ${dayObj.day}</span><span class="badge">${dayObj.totalKcal} ккал</span></div>`;
       dayObj.items.forEach((meal, mIdx) => {
         const recId = `rec-${dIdx}-${mIdx}`;
+        const isFav = (state.favoriteIds || []).includes(meal.id);
         meal.ingredients.forEach(ing => shopSet.add(ing));
         html += `
           <div class="meal-card">
@@ -2485,7 +2802,11 @@
               <span class="meal-kcal">${meal.kcal} ккал</span>
             </div>
             <div class="meal-desc">Б: ${meal.p}г • Ж: ${meal.f}г • У: ${meal.c}г</div>
-            <button class="btn-soft" onclick="document.getElementById('${recId}').classList.toggle('open')">📖 Рецепт и граммовки</button>
+            <div class="row">
+              <button class="btn-soft" onclick="document.getElementById('${recId}').classList.toggle('open')">📖 Рецепт</button>
+              <button class="btn-soft" onclick="swapSingleMeal(${dIdx}, ${mIdx})">🔄 Заменить</button>
+              <button class="btn-soft" onclick="toggleFavoriteMeal('${meal.id}')">${isFav ? '❤️ В избранном' : '🤍 В избранное'}</button>
+            </div>
             <div class="meal-recipe" id="${recId}">
               <strong>Ингредиенты:</strong> ${meal.ingredients.join(', ')}.<br/>
               <strong>Приготовление:</strong> ${meal.steps}
@@ -2526,7 +2847,8 @@
   }
 
   function exportBackup() {
-    const code = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    const copyForBackup = { ...state, photos: [] }; // Exclude heavy photos from text code so string stays short
+    const code = btoa(unescape(encodeURIComponent(JSON.stringify(copyForBackup))));
     document.getElementById('backupArea').value = code;
     navigator.clipboard.writeText(code);
     alert('Код прогресса скопирован!');
@@ -2537,7 +2859,7 @@
       const code = document.getElementById('backupArea').value.trim();
       const parsed = JSON.parse(decodeURIComponent(escape(atob(code))));
       if (parsed && parsed.profile) {
-        state = parsed;
+        state = { ...state, ...parsed };
         saveState();
         renderAll();
         alert('Данные успешно восстановлены!');
