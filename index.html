@@ -905,15 +905,22 @@
       </div>
     </div>
 
-    <!-- GitHub-style Heatmap Calendar (28 days) -->
+    <!-- Monthly Discipline Calendar -->
     <div class="card">
       <div class="card-title">
-        <span>📅 Тепловая карта дисциплины (28 дней)</span>
-        <span class="badge">Цели дня: 0 → 4</span>
+        <span>📅 Календарь дисциплины</span>
+        <div class="row" style="gap:6px;">
+          <button class="btn-soft" style="padding:4px 9px; min-height:28px;" onclick="changeHeatmapMonth(-1)">◀</button>
+          <span class="badge" id="heatmapMonthLabel">Ноябрь 2026</span>
+          <button class="btn-soft" style="padding:4px 9px; min-height:28px;" onclick="changeHeatmapMonth(1)">▶</button>
+        </div>
       </div>
-      <p style="font-size:0.75rem; color:var(--muted);">
-        Чем насыщеннее цвет ячейки, тем больше целей дня ты выполнила в эту дату.
+      <p style="font-size:0.75rem; color:var(--muted); margin-bottom:6px;">
+        Чем насыщеннее цвет дня, тем больше целей (от 1 до 4) выполнено в эту дату.
       </p>
+      <div class="heatmap-grid" style="margin-bottom:4px; text-align:center; font-size:0.68rem; font-weight:800; color:var(--muted);">
+        <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+      </div>
       <div class="heatmap-grid" id="heatmapGrid"></div>
     </div>
 
@@ -967,7 +974,7 @@
         Фотографии никуда не загружаются в интернет и хранятся только в памяти твоего устройства.
       </p>
       <div class="row">
-        <input type="text" id="photoLabelInput" placeholder="Подпись (например: Старт 92 кг)" style="flex:1;" />
+        <input type="text" id="photoLabelInput" placeholder="Подпись к фото" style="flex:1;" />
         <label class="btn" style="cursor:pointer;">
           + Добавить фото
           <input type="file" accept="image/*" style="display:none;" onchange="handlePhotoUpload(event)" />
@@ -2355,22 +2362,53 @@
     }, 1000);
   }
 
-  // Heatmap Calendar (28 days)
+  // Monthly Discipline Calendar
+  let heatmapDate = new Date();
+
+  function changeHeatmapMonth(delta) {
+    heatmapDate = new Date(heatmapDate.getFullYear(), heatmapDate.getMonth() + delta, 1);
+    renderHeatmap();
+  }
+
   function renderHeatmap() {
     const grid = document.getElementById('heatmapGrid');
+    const labelEl = document.getElementById('heatmapMonthLabel');
     if (!grid) return;
     grid.innerHTML = '';
-    const now = new Date();
+
+    const year = heatmapDate.getFullYear();
+    const month = heatmapDate.getMonth();
+    const monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+    if (labelEl) labelEl.textContent = `${monthNames[month]} ${year}`;
+
+    const firstDay = new Date(year, month, 1);
+    // Monday = 0, Sunday = 6
+    let startOffset = firstDay.getDay() - 1;
+    if (startOffset < 0) startOffset = 6;
+
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
     const weekW = getWeeklyWorkoutsCount();
-    for (let i = 27; i >= 0; i--) {
-      const d = new Date(now);
-      d.setDate(now.getDate() - i);
-      const key = d.toISOString().split('T')[0];
+    const todayStr = getTodayStr();
+
+    for (let empty = 0; empty < startOffset; empty++) {
+      const spacer = document.createElement('div');
+      spacer.style.aspectRatio = '1';
+      grid.appendChild(spacer);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const mStr = String(month + 1).padStart(2, '0');
+      const dStr = String(day).padStart(2, '0');
+      const key = `${year}-${mStr}-${dStr}`;
       const score = getDayScore(state.dailyLogs[key], weekW);
+
       const cell = document.createElement('div');
       cell.className = 'hm-cell' + (score > 0 ? ` hm-${score}` : '');
-      cell.textContent = d.getDate();
-      cell.title = `${key}: выполнено ${score}/4 целей`;
+      if (key === todayStr) {
+        cell.style.outline = '2px solid var(--primary-deep)';
+      }
+      cell.textContent = day;
+      cell.title = `${dStr}.${mStr}.${year}: выполнено ${score}/4 целей`;
       grid.appendChild(cell);
     }
   }
