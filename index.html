@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#ec4899" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Новая Я — Трекер похудения (92 → 57 кг)</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="icon-512.png" />
+  <link rel="apple-touch-icon" href="icon-512.png" />
+  <style>
+    :root {
+      --bg: #fff5f8;
+      --card: #ffffff;
+      --pink-50: #fdf2f8;
+      --pink-100: #fce7f3;
+      --pink-200: #fbcfe8;
+      --pink-300: #f9a8d4;
+      --pink-400: #f472b6;
+      --pink-500: #ec4899;
+      --pink-600: #db2777;
+      --pink-700: #be185d;
+      --text: #3b1d2a;
+      --muted: #8c5a70;
+      --border: #f8d4e4;
+      --shadow: 0 8px 24px rgba(236, 72, 153, 0.10);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: linear-gradient(180deg, #ffeaf2 0%, #fff7fa 45%, #fff0f6 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 84px;
+    }
+    header {
+      background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+      color: #fff;
+      padding: 18px 16px 20px;
+      border-bottom-left-radius: 24px;
+      border-bottom-right-radius: 24px;
+      box-shadow: 0 6px 20px rgba(219, 39, 119, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .brand h1 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.02em; }
+    .brand p { font-size: 0.78rem; opacity: 0.92; margin-top: 2px; }
+    .btn-header {
+      background: rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.45);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-header:active { transform: scale(0.97); }
+    .container { max-width: 900px; margin: 0 auto; padding: 14px; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--pink-700);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    @media (min-width: 640px) { .stats-grid { grid-template-columns: repeat(4, 1fr); } }
+    .stat-box {
+      background: var(--pink-50);
+      border: 1px solid var(--pink-200);
+      border-radius: 16px;
+      padding: 12px;
+      text-align: center;
+    }
+    .stat-label { font-size: 0.72rem; color: var(--muted); font-weight: 600; }
+    .stat-val { font-size: 1.35rem; font-weight: 800; color: var(--pink-600); margin: 4px 0 2px; }
+    .stat-sub { font-size: 0.7rem; color: var(--muted); }
+    .progress-wrap {
+      background: var(--pink-100);
+      height: 16px;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #f472b6, #db2777);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+    .kg-bubbles { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
+    .kg-dot {
+      width: 27px;
+      height: 27px;
+      border-radius: 50%;
+      font-size: 0.68rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--pink-50);
+      border: 1px solid var(--pink-200);
+      color: var(--muted);
+    }
+    .kg-dot.done {
+      background: linear-gradient(135deg, #ec4899, #db2777);
+      color: #fff;
+      border-color: #db2777;
+    }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    input, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid var(--pink-200);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+    }
+    input:focus, textarea:focus { border-color: var(--pink-500); }
+    .btn {
+      background: linear-gradient(135deg, #ec4899, #db2777);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-soft {
+      background: var(--pink-100);
+      color: var(--pink-700);
+      border: 1px solid var(--pink-200);
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .btn-soft:active { background: var(--pink-200); }
+    .water-cups { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .cup {
+      width: 34px;
+      height: 40px;
+      border-radius: 8px 8px 12px 12px;
+      border: 2px solid var(--pink-300);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background: #fff;
+      transition: 0.2s;
+    }
+    .cup.filled {
+      background: linear-gradient(180deg, #93c5fd 0%, #3b82f6 100%);
+      border-color: #2563eb;
+      color: #fff;
+    }
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 4px 10px;
+      z-index: 30;
+      box-shadow: 0 -4px 16px rgba(236, 72, 153, 0.08);
+    }
+    .nav-btn {
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 12px;
+    }
+    .nav-btn.active { color: var(--pink-600); background: var(--pink-50); }
+    .nav-icon { font-size: 1.2rem; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+    .advent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+      gap: 10px;
+    }
+    .advent-box {
+      border-radius: 16px;
+      padding: 12px 8px;
+      text-align: center;
+      border: 1.5px dashed var(--pink-300);
+      background: var(--pink-50);
+      cursor: pointer;
+      min-height: 108px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: 0.2s;
+    }
+    .advent-box.unlocked {
+      border-style: solid;
+      border-color: var(--pink-500);
+      background: linear-gradient(135deg, #fff0f7, #fce7f3);
+      box-shadow: 0 4px 12px rgba(236, 72, 153, 0.16);
+    }
+    .advent-box.opened {
+      background: linear-gradient(135deg, #ec4899, #db2777);
+      color: #fff;
+      border: none;
+    }
+    .advent-num { font-size: 0.72rem; font-weight: 800; opacity: 0.85; }
+    .advent-emoji { font-size: 1.5rem; margin: 4px 0; }
+    .advent-text { font-size: 0.72rem; font-weight: 600; line-height: 1.2; }
+    .meal-card {
+      background: var(--pink-50);
+      border: 1px solid var(--pink-200);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+    .meal-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 800;
+      color: var(--pink-700);
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+      gap: 8px;
+    }
+    .meal-kcal { font-size: 0.78rem; color: var(--pink-600); font-weight: 700; white-space: nowrap; }
+    .meal-desc { font-size: 0.84rem; color: var(--text); margin-bottom: 6px; }
+    .meal-recipe {
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: #fff;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--pink-100);
+      display: none;
+      margin-top: 6px;
+      line-height: 1.45;
+    }
+    .meal-recipe.open { display: block; }
+    .shop-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--pink-100);
+      font-size: 0.88rem;
+    }
+    .shop-item input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--pink-600); }
+    .shop-item.checked span { text-decoration: line-through; color: var(--muted); }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(59, 29, 42, 0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: #fff;
+      border-radius: 22px;
+      padding: 18px;
+      width: 100%;
+      max-width: 440px;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.2);
+    }
+    .field { margin-bottom: 10px; }
+    .field label { display: block; font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-bottom: 4px; }
+    canvas { width: 100% !important; height: 190px !important; }
+    .badge {
+      background: var(--pink-100);
+      color: var(--pink-700);
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    th, td { padding: 8px 6px; border-bottom: 1px solid var(--pink-100); text-align: left; }
+    th { color: var(--pink-700); font-weight: 800; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div class="brand">
+      <h1>🌸 Новая Я: 92 → 57 кг</h1>
+      <p id="headerSubtitle">Цель: 57.0 кг • Старт: 1700 ккал/день</p>
+    </div>
+    <button class="btn-header" onclick="openReportModal()">+ Отчет</button>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- TAB 1: DASHBOARD -->
+  <div id="tab-dashboard" class="tab-pane active">
+    <div class="stats-grid">
+      <div class="stat-box">
+        <div class="stat-label">Текущий вес</div>
+        <div class="stat-val" id="statWeight">92.0 кг</div>
+        <div class="stat-sub" id="statLost">Сброшено: 0.0 кг</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Осталось до цели</div>
+        <div class="stat-val" id="statLeft">35.0 кг</div>
+        <div class="stat-sub" id="statPercent">Прогресс: 0%</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Норма калорий</div>
+        <div class="stat-val" id="statKcal">1700</div>
+        <div class="stat-sub" id="statMacros">Б 120 / Ж 55 / У 180</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Прогноз финиша</div>
+        <div class="stat-val" id="statEta" style="font-size:1.05rem;">Дек 2027</div>
+        <div class="stat-sub">~0.65 кг/нед</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>✨ 35 шагов до новой тебя</span>
+        <span class="badge" id="stepCounterBadge">0 / 35 кг</span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar" id="mainProgressBar" style="width: 0%;"></div>
+      </div>
+      <div class="kg-bubbles" id="kgBubbles"></div>
+    </div>
+
+    <!-- Steps & Habits -->
+    <div class="card">
+      <div class="card-title">
+        <span>👟 Активность и привычки сегодня</span>
+        <span class="badge" id="stepsPercentBadge">0% цели</span>
+      </div>
+      <div class="field">
+        <label>Твоя цель шагов на день:</label>
+        <div class="row">
+          <input type="number" id="stepGoalInput" value="9500" step="500" style="max-width:130px;" onchange="updateStepGoal()" />
+          <span style="font-size:0.8rem; color:var(--muted);">шагов/день</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Пройдено сегодня: <strong id="stepsCurrentLabel" style="color:var(--pink-600);">0</strong> шагов</label>
+        <div class="row" style="margin-bottom:8px;">
+          <input type="number" id="stepsManualInput" placeholder="Введи точное число шагов..." style="flex:1;" />
+          <button class="btn" onclick="setManualSteps()">Сохранить</button>
+        </div>
+        <div class="row">
+          <button class="btn-soft" onclick="addSteps(1000)">+1 000</button>
+          <button class="btn-soft" onclick="addSteps(2500)">+2 500</button>
+          <button class="btn-soft" onclick="addSteps(5000)">+5 000</button>
+          <button class="btn-soft" onclick="resetSteps()">Сброс</button>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;">
+        <label style="font-size:0.78rem; font-weight:700; color:var(--muted);">💧 Вода (цель 8 стаканов по 250 мл = 2 л):</label>
+        <div class="water-cups" id="waterCups"></div>
+      </div>
+
+      <div class="row" style="margin-top:14px; justify-content:space-between;">
+        <label style="font-size:0.85rem; font-weight:700; display:flex; align-items:center; gap:8px; cursor:pointer;">
+          <input type="checkbox" id="rule8020Check" style="width:18px; height:18px; accent-color:var(--pink-600);" onchange="toggle8020()" />
+          Баланс питания 80/20 соблюден
+        </label>
+        <div class="row">
+          <span style="font-size:0.8rem; color:var(--muted);">Тренировки (нед):</span>
+          <button class="btn-soft" onclick="changeWorkouts(-1)">-</button>
+          <strong id="workoutsCount" style="color:var(--pink-600);">0</strong>
+          <button class="btn-soft" onclick="changeWorkouts(1)">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart & Measurements -->
+    <div class="card">
+      <div class="card-title">
+        <span>📈 График снижения веса</span>
+        <span class="badge">План vs Факт</span>
+      </div>
+      <canvas id="weightChart"></canvas>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>📏 Замеры тела (см)</span>
+        <button class="btn-soft" onclick="openReportModal()">Обновить</button>
+      </div>
+      <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom:0;">
+        <div class="stat-box">
+          <div class="stat-label">Грудь</div>
+          <div class="stat-val" id="mChest">—</div>
+          <div class="stat-sub" id="mChestDiff">Старт</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Талия</div>
+          <div class="stat-val" id="mWaist">—</div>
+          <div class="stat-sub" id="mWaistDiff">Старт</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Бедра</div>
+          <div class="stat-val" id="mHips">—</div>
+          <div class="stat-sub" id="mHipsDiff">Старт</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: MEAL PLAN & SHOPPING -->
+  <div id="tab-meals" class="tab-pane">
+    <div class="card">
+      <div class="card-title">
+        <span>🥗 Умное меню 80/20</span>
+        <span class="badge" id="mealTargetBadge">1700 ккал</span>
+      </div>
+      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
+        80% сытных цельных продуктов (белок + сложные углеводы + овощи) и 20% вкусняшка для души в рамках твоей нормы.
+      </p>
+      <div class="field">
+        <label>Пожелания или исключения (например: «без рыбы», «хочу сырники»):</label>
+        <input type="text" id="mealPrefInput" placeholder="Любые продукты (по умолчанию)..." />
+      </div>
+      <div class="row">
+        <button class="btn" style="flex:1;" onclick="generateMenu(1)">Обновить на 1 день</button>
+        <button class="btn-soft" style="flex:1;" onclick="generateMenu(7)">План на 7 дней</button>
+      </div>
+    </div>
+
+    <div id="menuContainer"></div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>🛒 Список покупок по меню</span>
+        <button class="btn-soft" onclick="copyShoppingList()">📋 Скопировать</button>
+      </div>
+      <div id="shoppingListContainer"></div>
+    </div>
+  </div>
+
+  <!-- TAB 3: ADVENT CALENDAR -->
+  <div id="tab-advent" class="tab-pane">
+    <div class="card">
+      <div class="card-title">
+        <span>🎁 Адвент-календарь удовольствий</span>
+        <span class="badge" id="adventUnlockedBadge">Доступно: 0 / 38</span>
+      </div>
+      <p style="font-size:0.82rem; color:var(--muted); margin-bottom:12px;">
+        За каждый сброшенный килограмм (от 91 до 57 кг) открывается одно окошко с наградой для себя. Нажми на любое окошко, чтобы открыть сюрприз или вписать свою мечту!
+      </p>
+      <div class="advent-grid" id="adventGrid"></div>
+    </div>
+  </div>
+
+  <!-- TAB 4: ROADMAP & BACKUP -->
+  <div id="tab-roadmap" class="tab-pane">
+    <div class="card">
+      <div class="card-title">
+        <span>🗺️ Этапы снижения веса (1700 → 1425 ккал)</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Этап</th>
+            <th>Вес</th>
+            <th>Ккал</th>
+            <th>Б / Ж / У</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Старт</strong></td>
+            <td>92 → 82 кг</td>
+            <td>1700</td>
+            <td>120 / 55 / 180</td>
+          </tr>
+          <tr>
+            <td><strong>2. Темп</strong></td>
+            <td>82 → 72 кг</td>
+            <td>1600</td>
+            <td>115 / 53 / 165</td>
+          </tr>
+          <tr>
+            <td><strong>3. Форма</strong></td>
+            <td>72 → 64 кг</td>
+            <td>1500</td>
+            <td>110 / 50 / 152</td>
+          </tr>
+          <tr>
+            <td><strong>4. Финиш</strong></td>
+            <td>64 → 57 кг</td>
+            <td>1425</td>
+            <td>105 / 48 / 143</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:12px; padding:10px; background:var(--pink-50); border-radius:12px; font-size:0.8rem; line-height:1.4;">
+        <strong>💡 Диетические каникулы:</strong> каждые 10–12 недель делай перерыв на 7–14 дней, добавляя +300 ккал за счет круп, фруктов и полезных жиров. Это защитит обмен веществ и убережет от срывов.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>📲 Резервная копия и перенос данных</span>
+      </div>
+      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
+        Все твои данные хранятся прямо в памяти приложения. Скопируй код резервной копии, чтобы сохранить прогресс или отправить мне в чат для анализа.
+      </p>
+      <div class="row" style="margin-bottom:8px;">
+        <button class="btn" onclick="exportBackup()">Скопировать код прогресса</button>
+        <button class="btn-soft" onclick="importBackup()">Восстановить из кода</button>
+      </div>
+      <textarea id="backupArea" rows="3" placeholder="Здесь появится код резервной копии или вставь сюда код для восстановления..."></textarea>
+    </div>
+  </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="switchTab('dashboard', this)">
+    <span class="nav-icon">🌸</span>
+    <span>Дашборд</span>
+  </button>
+  <button class="nav-btn" onclick="switchTab('meals', this)">
+    <span class="nav-icon">🥗</span>
+    <span>Меню 80/20</span>
+  </button>
+  <button class="nav-btn" onclick="switchTab('advent', this)">
+    <span class="nav-icon">🎁</span>
+    <span>Адвент</span>
+  </button>
+  <button class="nav-btn" onclick="switchTab('roadmap', this)">
+    <span class="nav-icon">🗺️</span>
+    <span>План и Бэкап</span>
+  </button>
+</nav>
+
+<!-- REPORT MODAL -->
+<div class="modal-backdrop" id="reportModal">
+  <div class="modal">
+    <div class="card-title">
+      <span>📝 Новый отчет прогресса</span>
+      <button class="btn-soft" onclick="closeReportModal()">✕</button>
+    </div>
+    <div class="field">
+      <label>Дата взвешивания:</label>
+      <input type="date" id="repDate" />
+    </div>
+    <div class="field">
+      <label>Текущий вес (кг):</label>
+      <input type="number" step="0.1" id="repWeight" placeholder="Например: 91.2" />
+    </div>
+    <div class="row">
+      <div class="field" style="flex:1;">
+        <label>Грудь (см):</label>
+        <input type="number" step="0.5" id="repChest" placeholder="104" />
+      </div>
+      <div class="field" style="flex:1;">
+        <label>Талия (см):</label>
+        <input type="number" step="0.5" id="repWaist" placeholder="88" />
+      </div>
+      <div class="field" style="flex:1;">
+        <label>Бедра (см):</label>
+        <input type="number" step="0.5" id="repHips" placeholder="114" />
+      </div>
+    </div>
+    <button class="btn" style="width:100%; margin-top:8px;" onclick="saveReport()">Сохранить отчет</button>
+  </div>
+</div>
+
+<!-- ADVENT EDIT MODAL -->
+<div class="modal-backdrop" id="adventModal">
+  <div class="modal">
+    <div class="card-title">
+      <span id="adventModalTitle">🎁 Окошко #1</span>
+      <button class="btn-soft" onclick="closeAdventModal()">✕</button>
+    </div>
+    <p id="adventModalStatus" style="font-size:0.82rem; color:var(--pink-600); font-weight:700; margin-bottom:10px;"></p>
+    <div class="field">
+      <label>Твоя награда за этот этап (можешь изменить на любую свою мечту):</label>
+      <input type="text" id="adventRewardInput" />
+    </div>
+    <div class="row">
+      <button class="btn" style="flex:1;" onclick="saveAdventReward()">Сохранить и открыть</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const START_WEIGHT = 92.0;
+  const GOAL_WEIGHT = 57.0;
+
+  const DEFAULT_REWARDS = [
+    "Ароматная бомбочка для ванны и вечер при свечах",
+    "Новая красивая кружка или термостакан для воды",
+    "Маска для лица и домашний SPA-вечер",
+    "Поход в кино на вечерний сеанс",
+    "Букет свежих цветов просто так для себя",
+    "Новая помада или блеск для губ",
+    "Вкусный авторский кофе или матча в кофейне",
+    "Уютные носочки или шелковая резинка для волос",
+    "Книга, которую давно хотела прочитать",
+    "Минус 10 кг! Поход на маникюр или педикюр с новым дизайном",
+    "Красивый блокнот или планер",
+    "Массаж воротниковой зоны или расслабляющий массаж",
+    "Новая спортивная бутылка или коврик для йоги",
+    "Прогулка в новом красивом парке с любимым плейлистом",
+    "Минус 15 кг! Новая уютная пижама или домашний костюм",
+    "Набор тканевых масок или патчи под глаза",
+    "Поход на выставку, в музей или на мастер-класс",
+    "Вкусный ужин в красивом кафе (в рамках 80/20)",
+    "Новый ароматный гель для душа или скраб для тела",
+    "Минус 20 кг! Обновление гардероба: красивая блузка или джинсы",
+    "Сеанс флоатинга или сауна/бассейн",
+    "Набор вкусного листового чая",
+    "Стильный аксессуар: серьги, подвеска или ремень",
+    "Фотопрогулка на телефон с подругой",
+    "Минус 25 кг! Профессиональный уход для волос",
+    "Аромасвеча с запахом ванили или пиона",
+    "Билет на концерт, стендап или в театр",
+    "Красивое нижнее белье",
+    "День полного отдыха без дел и спешки",
+    "Минус 30 кг! Новое платье мечты",
+    "Парфюм или миниатюра нишевого аромата",
+    "Поход в боулинг, на каток или картинг",
+    "Стильная сумка или рюкзак",
+    "Спа-день в термальном комплексе",
+    "ФИНИШ 57 КГ! Профессиональная фотосессия «Новая Я» 👑",
+    "Бонус: 7 дней подряд норма шагов — любимый десерт без угрызений совести",
+    "Бонус: 14 дней норме воды — уходовый крем для тела",
+    "Бонус: 8 тренировок за месяц — новая спортивная форма"
+  ];
+
+  const RECIPES_DB = {
+    breakfast: [
+      {
+        name: "Нежные творожные сырники с ягодами",
+        kcal: 420, p: 32, f: 12, c: 45,
+        ingredients: ["Творог 5% — 180 г", "Яйцо куриное — 1 шт", "Мука рисовая — 25 г", "Ягоды (клубника/голубика) — 80 г", "Подсластитель или мед — 10 г"],
+        steps: "Смешай творог, яйцо, муку и подсластитель. Сформируй 3–4 сырника, обжарь на антипригарной сковороде по 3 минуты с каждой стороны под крышкой. Подавай с ягодами."
+      },
+      {
+        name: "Овсяноблин с сыром и индейкой",
+        kcal: 440, p: 30, f: 16, c: 42,
+        ingredients: ["Овсяные хлопья — 45 г", "Яйца — 2 шт", "Молоко 2.5% — 40 мл", "Сыр легкий — 25 г", "Филе индейки (ветчина) — 40 г", "Огурец/зелень — 50 г"],
+        steps: "Взбей яйца с молоком и овсянкой, вылей на разогретую сковороду. Через 2 минуты переверни, на одну половину выложи тертый сыр и индейку, сложи пополам и прогрей 1 минуту."
+      },
+      {
+        name: "Шакшука с цельнозерновым тостом",
+        kcal: 410, p: 24, f: 18, c: 36,
+        ingredients: ["Яйца — 2 шт", "Томаты в собственном соку — 150 г", "Перец болгарский — 60 г", "Хлеб цельнозерновой — 50 г", "Масло оливковое — 5 г"],
+        steps: "Потуши нарезанный перец и томаты 5 минут на сковороде. Сделай два углубления, вбей яйца, посоли и готовь под крышкой 4 минуты. Подавай с подсушенным тостом."
+      }
+    ],
+    lunch: [
+      {
+        name: "Куриное филе в сливочно-грибном соусе с гречкой",
+        kcal: 540, p: 44, f: 14, c: 58,
+        ingredients: ["Куриное филе — 150 г", "Гречка (сухая) — 60 г", "Шампиньоны — 100 г", "Сливки 10% — 50 мл", "Салат из свежих овощей — 120 г"],
+        steps: "Отвари гречку. Курицу нарежь кусочками, обжарь с грибами 7 минут, влей сливки, посоли и туши еще 5 минут. Подавай с гречкой и свежими овощами."
+      },
+      {
+        name: "Паста с креветками или курицей в томатном соусе",
+        kcal: 530, p: 40, f: 12, c: 64,
+        ingredients: ["Макароны из твердых сортов (сухие) — 65 г", "Куриная грудка / креветки — 150 г", "Томатный соус — 80 г", "Сыр пармезан — 15 г", "Руккола/черри — 80 г"],
+        steps: "Отвари пасту аль денте. На сковороде обжарь филе или креветки 4 минуты, добавь томатный соус и пасту, перемешай и посыпь сыром."
+      },
+      {
+        name: "Запеченный картофель с индейкой и овощным салатом",
+        kcal: 520, p: 42, f: 13, c: 56,
+        ingredients: ["Филе бедра индейки — 150 г", "Картофель — 180 г", "Огурцы и помидоры — 150 г", "Масло растительное — 8 г", "Специи (паприка, чеснок)"],
+        steps: "Нарежь картофель дольками, индейку кусочками, сбрызни маслом со специями и запекай в духовке при 190°C 25–30 минут. Подавай со свежим салатом."
+      }
+    ],
+    dinner: [
+      {
+        name: "Теплый салат с курицей, яйцом и авокадо",
+        kcal: 410, p: 36, f: 19, c: 22,
+        ingredients: ["Куриное филе — 130 г", "Листья салата / микс — 80 г", "Авокадо — 40 г", "Яйцо вареное — 1 шт", "Помидоры черри — 80 г", "Йогурт греческий (для заправки) — 30 г"],
+        steps: "Обжарь куриное филе на гриле или сухой сковоророде, нарежь ломтиками. Смешай с зеленью, черри, авокадо и яйцом, заправь греческим йогуртом с горчицей."
+      },
+      {
+        name: "Творожная запеканка с грушей",
+        kcal: 390, p: 34, f: 11, c: 38,
+        ingredients: ["Творог 5% — 200 г", "Яйцо — 1 шт", "Манка или кукурузная мука — 20 г", "Груша — 100 г", "Сметана 10% — 25 г"],
+        steps: "Смешай творог, яйцо и муку, выложи в небольшую форму, сверху разложи тонкие ломтики груши. Запекай 25 минут при 180°C."
+      },
+      {
+        name: "Треска или куриные котлеты на пару с овощами",
+        kcal: 380, p: 38, f: 10, c: 32,
+        ingredients: ["Филе белой рыбы / куриный фарш — 160 г", "Брокколи и цветная капуста — 200 г", "Сыр легкий — 20 г", "Сметана 10% — 30 г"],
+        steps: "Выложи рыбу или котлетки и соцветия капусты в форму, смажь сметаной, посыпь тертым сыром и запекай 20 минут при 180°C."
+      }
+    ],
+    treat20: [
+      {
+        name: "Вкусняшка 20%: Зефир + капучино без сахара",
+        kcal: 220, p: 4, f: 4, c: 42,
+        ingredients: ["Зефир классический — 1 шт (45 г)", "Молоко 2.5% для капучино — 120 мл", "Кофе эспрессо — 50 мл"],
+        steps: "Сделай ароматный капучино и насладись целым зефиром без чувства вины — это твои законные 20% радости!"
+      },
+      {
+        name: "Вкусняшка 20%: Темный шоколад (25 г) и банан",
+        kcal: 230, p: 3, f: 9, c: 34,
+        ingredients: ["Шоколад темный/молочный — 25 г (3 дольки)", "Банан — 90 г", "Чай травяной или черный"],
+        steps: "Раздели на перекус днем или после обеда вместе с любимым чаем."
+      },
+      {
+        name: "Вкусняшка 20%: Протеиновый батончик или мороженое пломбир",
+        kcal: 215, p: 12, f: 8, c: 24,
+        ingredients: ["Мороженое пломбир в стаканчике (70 г) или протеиновый батончик (50 г)"],
+        steps: "Отличный сладкий перекус, который легко вписывается в 1700 ккал."
+      }
+    ]
+  };
+
+  let state = JSON.parse(localStorage.getItem('novayaYaState')) || {
+    history: [
+      { date: '2026-11-12', weight: 92.0, chest: 105, waist: 89, hips: 115 }
+    ],
+    stepGoal: 9500,
+    stepsToday: 0,
+    waterCups: 0,
+    rule8020: false,
+    workoutsWeek: 0,
+    rewards: [...DEFAULT_REWARDS],
+    openedAdvent: [],
+    currentMenu: [],
+    checkedShopping: {}
+  };
+
+  let editingAdventIdx = null;
+
+  function saveState() {
+    localStorage.setItem('novayaYaState', JSON.stringify(state));
+  }
+
+  function getKcalPlan(weight) {
+    if (weight > 82) return { kcal: 1700, p: 120, f: 55, c: 180 };
+    if (weight > 72) return { kcal: 1600, p: 115, f: 53, c: 165 };
+    if (weight > 64) return { kcal: 1500, p: 110, f: 50, c: 152 };
+    return { kcal: 1425, p: 105, f: 48, c: 143 };
+  }
+
+  function renderAll() {
+    const latest = state.history[state.history.length - 1];
+    const start = state.history[0];
+    const currentW = latest.weight;
+    const lost = Math.max(0, +(START_WEIGHT - currentW).toFixed(1));
+    const left = Math.max(0, +(currentW - GOAL_WEIGHT).toFixed(1));
+    const pct = Math.min(100, Math.max(0, Math.round((lost / (START_WEIGHT - GOAL_WEIGHT)) * 100)));
+    const plan = getKcalPlan(currentW);
+
+    document.getElementById('headerSubtitle').textContent = `Цель: 57.0 кг • Сейчас: ${plan.kcal} ккал/день`;
+    document.getElementById('statWeight').textContent = `${currentW.toFixed(1)} кг`;
+    document.getElementById('statLost').textContent = `Сброшено: ${lost.toFixed(1)} кг`;
+    document.getElementById('statLeft').textContent = `${left.toFixed(1)} кг`;
+    document.getElementById('statPercent').textContent = `Прогресс: ${pct}%`;
+    document.getElementById('statKcal').textContent = plan.kcal;
+    document.getElementById('statMacros').textContent = `Б ${plan.p} / Ж ${plan.f} / У ${plan.c}`;
+    document.getElementById('mealTargetBadge').textContent = `${plan.kcal} ккал`;
+
+    const weeksLeft = Math.ceil(left / 0.65);
+    const etaDate = new Date();
+    etaDate.setDate(etaDate.getDate() + weeksLeft * 7);
+    const months = ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'];
+    document.getElementById('statEta').textContent = left <= 0 ? 'Цель достигнута!' : `${months[etaDate.getMonth()]} ${etaDate.getFullYear()}`;
+
+    const wholeKg = Math.floor(lost);
+    document.getElementById('stepCounterBadge').textContent = `${wholeKg} / 35 кг`;
+    document.getElementById('mainProgressBar').style.width = `${pct}%`;
+
+    const bubblesEl = document.getElementById('kgBubbles');
+    bubblesEl.innerHTML = '';
+    for (let i = 1; i <= 35; i++) {
+      const div = document.createElement('div');
+      div.className = 'kg-dot' + (i <= wholeKg ? ' done' : '');
+      div.textContent = 92 - i;
+      div.title = `Отметка ${92 - i} кг`;
+      bubblesEl.appendChild(div);
+    }
+
+    document.getElementById('stepGoalInput').value = state.stepGoal;
+    document.getElementById('stepsCurrentLabel').textContent = state.stepsToday.toLocaleString('ru-RU');
+    const stepPct = Math.min(100, Math.round((state.stepsToday / Math.max(1, state.stepGoal)) * 100));
+    document.getElementById('stepsPercentBadge').textContent = `${stepPct}% цели`;
+
+    const waterEl = document.getElementById('waterCups');
+    waterEl.innerHTML = '';
+    for (let i = 1; i <= 8; i++) {
+      const cup = document.createElement('div');
+      cup.className = 'cup' + (i <= state.waterCups ? ' filled' : '');
+      cup.textContent = '💧';
+      cup.onclick = () => {
+        state.waterCups = (state.waterCups === i) ? i - 1 : i;
+        saveState();
+        renderAll();
+      };
+      waterEl.appendChild(cup);
+    }
+
+    document.getElementById('rule8020Check').checked = state.rule8020;
+    document.getElementById('workoutsCount').textContent = state.workoutsWeek;
+
+    document.getElementById('mChest').textContent = latest.chest ? `${latest.chest}` : '—';
+    document.getElementById('mWaist').textContent = latest.waist ? `${latest.waist}` : '—';
+    document.getElementById('mHips').textContent = latest.hips ? `${latest.hips}` : '—';
+    if (start.chest && latest.chest) {
+      const d = +(latest.chest - start.chest).toFixed(1);
+      document.getElementById('mChestDiff').textContent = d === 0 ? 'Старт' : `${d > 0 ? '+' : ''}${d} см`;
+    }
+    if (start.waist && latest.waist) {
+      const d = +(latest.waist - start.waist).toFixed(1);
+      document.getElementById('mWaistDiff').textContent = d === 0 ? 'Старт' : `${d > 0 ? '+' : ''}${d} см`;
+    }
+    if (start.hips && latest.hips) {
+      const d = +(latest.hips - start.hips).toFixed(1);
+      document.getElementById('mHipsDiff').textContent = d === 0 ? 'Старт' : `${d > 0 ? '+' : ''}${d} см`;
+    }
+
+    renderChart();
+    renderAdvent();
+    if (!state.currentMenu || state.currentMenu.length === 0) {
+      generateMenu(1, false);
+    } else {
+      renderMenuAndShopping();
+    }
+  }
+
+  function renderChart() {
+    const canvas = document.getElementById('weightChart');
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width) return;
+    canvas.width = rect.width * dpr;
+    canvas.height = 190 * dpr;
+    ctx.scale(dpr, dpr);
+    const w = rect.width;
+    const h = 190;
+    ctx.clearRect(0, 0, w, h);
+
+    const pad = { top: 20, right: 20, bottom: 28, left: 38 };
+    const plotW = w - pad.left - pad.right;
+    const plotH = h - pad.top - pad.bottom;
+
+    ctx.strokeStyle = '#fce7f3';
+    ctx.lineWidth = 1;
+    ctx.font = '11px sans-serif';
+    ctx.fillStyle = '#8c5a70';
+    for (let wt = 55; wt <= 95; wt += 10) {
+      const y = pad.top + plotH - ((wt - 55) / 40) * plotH;
+      ctx.beginPath();
+      ctx.moveTo(pad.left, y);
+      ctx.lineTo(w - pad.right, y);
+      ctx.stroke();
+      ctx.fillText(wt, 6, y + 4);
+    }
+
+    ctx.strokeStyle = '#f9a8d4';
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, pad.top + plotH - ((92 - 55) / 40) * plotH);
+    ctx.lineTo(w - pad.right, pad.top + plotH - ((57 - 55) / 40) * plotH);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    const pts = state.history;
+    ctx.strokeStyle = '#db2777';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    pts.forEach((p, idx) => {
+      const x = pad.left + (pts.length === 1 ? 0 : (idx / Math.max(pts.length - 1, 1)) * (plotW * 0.7));
+      const y = pad.top + plotH - ((p.weight - 55) / 40) * plotH;
+      if (idx === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    pts.forEach((p, idx) => {
+      const x = pad.left + (pts.length === 1 ? 0 : (idx / Math.max(pts.length - 1, 1)) * (plotW * 0.7));
+      const y = pad.top + plotH - ((p.weight - 55) / 40) * plotH;
+      ctx.fillStyle = '#db2777';
+      ctx.beginPath();
+      ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#3b1d2a';
+      ctx.fillText(p.weight.toFixed(1), x - 10, y - 8);
+    });
+  }
+
+  function updateStepGoal() {
+    const val = parseInt(document.getElementById('stepGoalInput').value, 10);
+    if (val > 0) { state.stepGoal = val; saveState(); renderAll(); }
+  }
+
+  function setManualSteps() {
+    const val = parseInt(document.getElementById('stepsManualInput').value, 10);
+    if (!isNaN(val) && val >= 0) {
+      state.stepsToday = val;
+      document.getElementById('stepsManualInput').value = '';
+      saveState();
+      renderAll();
+    }
+  }
+
+  function addSteps(delta) { state.stepsToday += delta; saveState(); renderAll(); }
+  function resetSteps() { state.stepsToday = 0; saveState(); renderAll(); }
+  function toggle8020() { state.rule8020 = document.getElementById('rule8020Check').checked; saveState(); }
+  function changeWorkouts(delta) { state.workoutsWeek = Math.max(0, state.workoutsWeek + delta); saveState(); renderAll(); }
+
+  function switchTab(tabId, btn) {
+    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    btn.classList.add('active');
+    if (tabId === 'dashboard') renderChart();
+  }
+
+  function openReportModal() {
+    const latest = state.history[state.history.length - 1];
+    document.getElementById('repDate').value = new Date().toISOString().split('T')[0];
+    document.getElementById('repWeight').value = latest.weight;
+    document.getElementById('repChest').value = latest.chest || '';
+    document.getElementById('repWaist').value = latest.waist || '';
+    document.getElementById('repHips').value = latest.hips || '';
+    document.getElementById('reportModal').classList.add('open');
+  }
+
+  function closeReportModal() { document.getElementById('reportModal').classList.remove('open'); }
+
+  function saveReport() {
+    const date = document.getElementById('repDate').value || new Date().toISOString().split('T')[0];
+    const weight = parseFloat(document.getElementById('repWeight').value);
+    const chest = parseFloat(document.getElementById('repChest').value) || null;
+    const waist = parseFloat(document.getElementById('repWaist').value) || null;
+    const hips = parseFloat(document.getElementById('repHips').value) || null;
+    if (!weight || weight < 35 || weight > 200) { alert('Введи корректный вес!'); return; }
+    state.history.push({ date, weight, chest, waist, hips });
+    saveState();
+    closeReportModal();
+    renderAll();
+  }
+
+  function generateMenu(days = 1, shouldSave = true) {
+    const pref = (document.getElementById('mealPrefInput')?.value || '').toLowerCase();
+    const pick = (arr, idx) => {
+      let filtered = arr;
+      if (pref.includes('без рыбы')) {
+        filtered = arr.filter(x => !x.name.toLowerCase().includes('треск') && !x.name.toLowerCase().includes('рыб'));
+      }
+      if (pref.includes('сырник')) {
+        const found = arr.find(x => x.name.toLowerCase().includes('сырник'));
+        if (found) return found;
+      }
+      const list = filtered.length ? filtered : arr;
+      return list[idx % list.length];
+    };
+
+    const menu = [];
+    for (let d = 1; d <= days; d++) {
+      const shift = d + Math.floor(Math.random() * 3);
+      const b = pick(RECIPES_DB.breakfast, shift);
+      const l = pick(RECIPES_DB.lunch, shift + 1);
+      const dn = pick(RECIPES_DB.dinner, shift + 2);
+      const t = pick(RECIPES_DB.treat20, shift);
+      menu.push({
+        day: days === 1 ? 'Меню на сегодня' : `День ${d}`,
+        totalKcal: b.kcal + l.kcal + dn.kcal + t.kcal,
+        items: [
+          { type: 'Завтрак', ...b },
+          { type: 'Обед', ...l },
+          { type: 'Ужин', ...dn },
+          { type: 'Радость 20%', ...t }
+        ]
+      });
+    }
+    state.currentMenu = menu;
+    state.checkedShopping = {};
+    if (shouldSave) saveState();
+    renderMenuAndShopping();
+  }
+
+  function renderMenuAndShopping() {
+    const container = document.getElementById('menuContainer');
+    container.innerHTML = '';
+    const shopSet = new Set();
+
+    state.currentMenu.forEach((dayObj, dIdx) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      let html = `<div class="card-title"><span>🍽️ ${dayObj.day}</span><span class="badge">${dayObj.totalKcal} ккал</span></div>`;
+      dayObj.items.forEach((meal, mIdx) => {
+        const recId = `rec-${dIdx}-${mIdx}`;
+        meal.ingredients.forEach(ing => shopSet.add(ing));
+        html += `
+          <div class="meal-card">
+            <div class="meal-header">
+              <span>${meal.type}: ${meal.name}</span>
+              <span class="meal-kcal">${meal.kcal} ккал</span>
+            </div>
+            <div class="meal-desc">Б: ${meal.p}г • Ж: ${meal.f}г • У: ${meal.c}г</div>
+            <button class="btn-soft" onclick="document.getElementById('${recId}').classList.toggle('open')">📖 Рецепт и граммовки</button>
+            <div class="meal-recipe" id="${recId}">
+              <strong>Ингредиенты:</strong> ${meal.ingredients.join(', ')}.<br/>
+              <strong>Приготовление:</strong> ${meal.steps}
+            </div>
+          </div>
+        `;
+      });
+      card.innerHTML = html;
+      container.appendChild(card);
+    });
+
+    const shopContainer = document.getElementById('shoppingListContainer');
+    shopContainer.innerHTML = '';
+    Array.from(shopSet).forEach((item) => {
+      const row = document.createElement('div');
+      const checked = !!state.checkedShopping[item];
+      row.className = 'shop-item' + (checked ? ' checked' : '');
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.checked = checked;
+      cb.onchange = () => toggleShopItem(item);
+      const sp = document.createElement('span');
+      sp.textContent = item;
+      row.appendChild(cb);
+      row.appendChild(sp);
+      shopContainer.appendChild(row);
+    });
+  }
+
+  function toggleShopItem(item) {
+    state.checkedShopping[item] = !state.checkedShopping[item];
+    saveState();
+    renderMenuAndShopping();
+  }
+
+  function copyShoppingList() {
+    const allSpans = Array.from(document.querySelectorAll('#shoppingListContainer span')).map(s => '• ' + s.textContent);
+    navigator.clipboard.writeText('🛒 Список покупок «Новая Я»:\n' + allSpans.join('\n'));
+    alert('Список покупок скопирован в буфер обмена!');
+  }
+
+  function renderAdvent() {
+    const latest = state.history[state.history.length - 1];
+    const lost = Math.max(0, START_WEIGHT - latest.weight);
+    const wholeKg = Math.floor(lost);
+    const grid = document.getElementById('adventGrid');
+    grid.innerHTML = '';
+
+    let unlockedCount = 0;
+    state.rewards.forEach((reward, idx) => {
+      const isBonus = idx >= 35;
+      const targetKg = 91 - idx;
+      const isUnlocked = isBonus ? (wholeKg >= (idx - 34) * 5) : (idx < wholeKg);
+      if (isUnlocked) unlockedCount++;
+      const isOpened = state.openedAdvent.includes(idx);
+
+      const box = document.createElement('div');
+      box.className = 'advent-box' + (isUnlocked ? ' unlocked' : '') + (isOpened ? ' opened' : '');
+      const label = isBonus ? `Бонус #${idx - 34}` : `Отметка ${targetKg} кг`;
+      box.innerHTML = `
+        <div class="advent-num">${label}</div>
+        <div class="advent-emoji">${isOpened ? '💖' : (isUnlocked ? '🎁' : '🔒')}</div>
+        <div class="advent-text">${isOpened || isUnlocked ? reward : 'Сбрось до ' + targetKg + ' кг'}</div>
+      `;
+      box.onclick = () => openAdventModal(idx, label, isUnlocked);
+      grid.appendChild(box);
+    });
+
+    document.getElementById('adventUnlockedBadge').textContent = `Доступно: ${unlockedCount} / 38`;
+  }
+
+  function openAdventModal(idx, label, isUnlocked) {
+    editingAdventIdx = idx;
+    document.getElementById('adventModalTitle').textContent = `🎁 ${label}`;
+    document.getElementById('adventModalStatus').textContent = isUnlocked
+      ? '✨ Ура! Эта награда уже разблокирована — можешь забрать ее!'
+      : '🔒 Пока закрыто, но ты уже можешь отредактировать награду под свою мечту.';
+    document.getElementById('adventRewardInput').value = state.rewards[idx];
+    document.getElementById('adventModal').classList.add('open');
+  }
+
+  function closeAdventModal() { document.getElementById('adventModal').classList.remove('open'); }
+
+  function saveAdventReward() {
+    if (editingAdventIdx !== null) {
+      const val = document.getElementById('adventRewardInput').value.trim();
+      if (val) state.rewards[editingAdventIdx] = val;
+      if (!state.openedAdvent.includes(editingAdventIdx)) state.openedAdvent.push(editingAdventIdx);
+      saveState();
+      renderAdvent();
+    }
+    closeAdventModal();
+  }
+
+  function exportBackup() {
+    const code = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+    document.getElementById('backupArea').value = code;
+    navigator.clipboard.writeText(code);
+    alert('Код прогресса скопирован! Сохрани его в заметках или отправь мне в чат.');
+  }
+
+  function importBackup() {
+    try {
+      const code = document.getElementById('backupArea').value.trim();
+      const parsed = JSON.parse(decodeURIComponent(escape(atob(code))));
+      if (parsed && parsed.history) {
+        state = parsed;
+        saveState();
+        renderAll();
+        alert('Данные успешно восстановлены!');
+      }
+    } catch (e) {
+      alert('Неверный код резервной копии.');
+    }
+  }
+
+  renderAll();
+</script>
+</body>
+</html>
