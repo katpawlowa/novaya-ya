@@ -3997,7 +3997,7 @@
             </div>
             <div class="meal-desc">Б: ${meal.p}г • Ж: ${meal.f}г • У: ${meal.c}г</div>
             <div class="row">
-              <button class="btn-soft" style="background:var(--primary); color:#fff; border:none;" onclick="eatMealFromMenu(${dIdx}, ${mIdx})">✅ Съела (+${meal.kcal})</button>
+              <button class="btn-soft" style="background:var(--primary); color:#fff; border:none;" onclick="eatMealFromMenu(${dIdx}, ${mIdx})">✅ Добавить (+${meal.kcal})</button>
               <button class="btn-soft" onclick="document.getElementById('${recId}').classList.toggle('open')">📖 Рецепт</button>
               <button class="btn-soft" onclick="swapSingleMeal(${dIdx}, ${mIdx})">🔄 Заменить</button>
               <button class="btn-soft" onclick="toggleFavoriteMeal('${meal.id}')">${isFav ? '❤️' : '🤍'}</button>
