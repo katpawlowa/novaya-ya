@@ -992,7 +992,7 @@
     <div class="field">
       <label>Выбери пол:</label>
       <div class="yn-group">
-        <button type="button" class="yn-btn" id="onbGenderF" onclick="selectOnboardingGender('female')">👩 Женский</button>
+        <button type="button" class="yn-btn active-gender" id="onbGenderF" onclick="selectOnboardingGender('female')">👩 Женский</button>
         <button type="button" class="yn-btn" id="onbGenderM" onclick="selectOnboardingGender('male')">👨 Мужской</button>
       </div>
     </div>
@@ -2145,7 +2145,11 @@
       const y = pad.top + plotH - barH;
       ctx.fillStyle = d.val >= goal ? success : primary;
       ctx.beginPath();
-      ctx.roundRect ? ctx.roundRect(cx - barW / 2, y, barW, barH, 6) : ctx.rect(cx - barW / 2, y, barW, barH);
+      if (ctx.roundRect) {
+        ctx.roundRect(cx - barW / 2, y, barW, barH, 6);
+      } else {
+        ctx.rect(cx - barW / 2, y, barW, barH);
+      }
       ctx.fill();
 
       ctx.fillStyle = muted;
@@ -2307,7 +2311,6 @@
     alert('Профиль, калораж, дорожная карта и адвент-календарь обновлены!');
   }
 
-  // Enhanced Menu Generator with 38 recipes, non-repeating shuffle across 7 days, and smart tag filters
   function shuffleArray(arr) {
     const copy = [...arr];
     for (let i = copy.length - 1; i > 0; i--) {
@@ -2463,6 +2466,7 @@
     }
   }
 
+  window.addEventListener('DOMContentLoaded', renderAll);
   renderAll();
 </script>
 </body>
