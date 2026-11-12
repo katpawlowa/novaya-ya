@@ -315,6 +315,31 @@
       color: #fff;
     }
 
+    /* Avatar Picker Grid */
+    .avatar-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 7px;
+      margin-top: 6px;
+    }
+    .avatar-pill {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 14px;
+      padding: 8px 4px;
+      font-size: 1.35rem;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.15s;
+      user-select: none;
+    }
+    .avatar-pill.active {
+      border-color: var(--primary);
+      background: var(--surface-2);
+      transform: scale(1.06);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+
     .water-cups { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
     .cup {
       width: 36px;
@@ -542,7 +567,7 @@
 <header>
   <div class="header-top">
     <div class="brand">
-      <h1 id="headerGreeting">✨ Привет!</h1>
+      <h1 id="headerGreeting">🌸 Привет!</h1>
       <p id="headerSubtitle">Цель: — кг • Норма: — ккал/день</p>
     </div>
     <button class="btn-header" onclick="openReportModal()">+ Отчет</button>
@@ -796,8 +821,8 @@
         Генератор подбирает разнообразные блюда без повторов под твой текущий калораж (80% цельной еды + 20% вкусняшка).
       </p>
       <div class="field">
-        <label>Фильтр / пожелания (например: «без рыбы», «без мяса», «без молочки», «сырники»):</label>
-        <input type="text" id="mealPrefInput" placeholder="Любые продукты (оставь пустым для полного разнообразия)..." />
+        <label>Фильтр / пожелания (без рыбы, без мяса, без молочки, сырники и т.д.):</label>
+        <input type="text" id="mealPrefInput" placeholder="Любые продукты..." />
       </div>
       <div class="row">
         <button class="btn" style="flex:1;" onclick="generateMenu(1)">Новое меню на 1 день</button>
@@ -816,7 +841,7 @@
     </div>
   </div>
 
-  <!-- TAB 5: ADVENT CALENDAR (STRICTLY HIDDEN UNTIL UNLOCKED, GENDER-TAILORED) -->
+  <!-- TAB 5: ADVENT CALENDAR -->
   <div id="tab-advent" class="tab-pane">
     <div class="card">
       <div class="card-title">
@@ -847,8 +872,12 @@
 
     <div class="card">
       <div class="card-title">
-        <span>👤 Мой профиль и калораж</span>
+        <span><span id="profileCardIcon">🌸</span> Мой профиль и калораж</span>
         <span class="bmi-pill" id="profileBmiBadge">ИМТ: —</span>
+      </div>
+      <div class="field">
+        <label>Твоя иконка профиля:</label>
+        <div class="avatar-grid" id="profAvatarGrid"></div>
       </div>
       <div class="field">
         <label>Твое имя:</label>
@@ -935,7 +964,7 @@
 
 </div>
 
-<!-- BOTTOM NAV -->
+<!-- BOTTOM NAV (No black silhouette icon — uses user's chosen colorful avatar icon!) -->
 <nav class="bottom-nav">
   <button class="nav-btn active" onclick="switchTab('dashboard', this)">
     <span class="nav-icon">🏠</span>
@@ -958,19 +987,19 @@
     <span>Адвент</span>
   </button>
   <button class="nav-btn" onclick="switchTab('profile', this)">
-    <span class="nav-icon">👤</span>
+    <span class="nav-icon" id="navProfileIcon">🌸</span>
     <span>Профиль</span>
   </button>
 </nav>
 
-<!-- ONBOARDING MODAL (FIRST LAUNCH - ALL FIELDS EMPTY INITIALLY) -->
+<!-- ONBOARDING MODAL (FIRST LAUNCH - NO EXAMPLES IN INPUTS, AVATAR PICKER INCLUDED) -->
 <div class="modal-backdrop" id="onboardingModal">
   <div class="modal">
     <div class="card-title">
       <span>✨ Создание личного профиля</span>
     </div>
     <p style="font-size:0.82rem; color:var(--muted); margin-bottom:12px;">
-      Заполни свои параметры — я рассчитаю индекс массы тела (ИМТ), дневной калораж, дату достижения цели и подготовлю секретный адвент-календарь.
+      Выбери оформление, иконку и заполни свои параметры — я рассчитаю ИМТ, дневной калораж, дату достижения цели и подготовлю секретный адвент-календарь.
     </p>
 
     <div class="field">
@@ -985,8 +1014,13 @@
     </div>
 
     <div class="field">
+      <label>Выбери свою иконку:</label>
+      <div class="avatar-grid" id="onbAvatarGrid"></div>
+    </div>
+
+    <div class="field">
       <label>Твое имя:</label>
-      <input type="text" id="onbName" value="" placeholder="Например: Алина или Максим" />
+      <input type="text" id="onbName" value="" />
     </div>
 
     <div class="field">
@@ -1000,22 +1034,22 @@
     <div class="row">
       <div class="field" style="flex:1;">
         <label>Возраст (лет):</label>
-        <input type="number" id="onbAge" value="" placeholder="Например: 24" oninput="recalcOnboardingDefaultKcal()" />
+        <input type="number" id="onbAge" value="" oninput="recalcOnboardingDefaultKcal()" />
       </div>
       <div class="field" style="flex:1;">
         <label>Рост (см):</label>
-        <input type="number" id="onbHeight" value="" placeholder="Например: 167" oninput="recalcOnboardingDefaultKcal()" />
+        <input type="number" id="onbHeight" value="" oninput="recalcOnboardingDefaultKcal()" />
       </div>
     </div>
 
     <div class="row">
       <div class="field" style="flex:1;">
         <label>Текущий вес (кг):</label>
-        <input type="number" step="0.1" id="onbWeight" value="" placeholder="Например: 92" oninput="recalcOnboardingDefaultKcal()" />
+        <input type="number" step="0.1" id="onbWeight" value="" oninput="recalcOnboardingDefaultKcal()" />
       </div>
       <div class="field" style="flex:1;">
         <label>Цель по весу (кг):</label>
-        <input type="number" step="0.1" id="onbGoalWeight" value="" placeholder="Например: 57" oninput="previewOnboardingSummary()" />
+        <input type="number" step="0.1" id="onbGoalWeight" value="" oninput="previewOnboardingSummary()" />
       </div>
     </div>
 
@@ -1032,12 +1066,12 @@
 
     <div class="field">
       <label>Начальные калории в день (рассчитаются сами или впиши свои):</label>
-      <input type="number" step="10" id="onbStartKcal" value="" placeholder="Например: 1700" oninput="previewOnboardingSummary()" />
+      <input type="number" step="10" id="onbStartKcal" value="" oninput="previewOnboardingSummary()" />
     </div>
 
     <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:10px; margin-bottom:12px; font-size:0.8rem; line-height:1.45;">
-      <div>📊 Индекс массы тела (ИМТ): <strong id="onbBmiPreview">заполни рост и вес</strong></div>
-      <div>🗓️ Прогноз достижения цели: <strong id="onbEtaPreview">заполни вес и цель</strong></div>
+      <div>📊 Индекс массы тела (ИМТ): <strong id="onbBmiPreview">—</strong></div>
+      <div>🗓️ Прогноз достижения цели: <strong id="onbEtaPreview">—</strong></div>
     </div>
 
     <button class="btn" style="width:100%;" onclick="completeOnboarding()">Создать профиль и начать 🚀</button>
@@ -1057,20 +1091,20 @@
     </div>
     <div class="field">
       <label>Текущий вес (кг):</label>
-      <input type="number" step="0.1" id="repWeight" placeholder="Введи текущий вес" />
+      <input type="number" step="0.1" id="repWeight" />
     </div>
     <div class="row">
       <div class="field" style="flex:1;">
         <label>Грудь (см):</label>
-        <input type="number" step="0.5" id="repChest" placeholder="см" />
+        <input type="number" step="0.5" id="repChest" />
       </div>
       <div class="field" style="flex:1;">
         <label>Талия (см):</label>
-        <input type="number" step="0.5" id="repWaist" placeholder="см" />
+        <input type="number" step="0.5" id="repWaist" />
       </div>
       <div class="field" style="flex:1;">
         <label>Бедра (см):</label>
-        <input type="number" step="0.5" id="repHips" placeholder="см" />
+        <input type="number" step="0.5" id="repHips" />
       </div>
     </div>
     <button class="btn" style="width:100%; margin-top:8px;" onclick="saveReport()">Сохранить отчет</button>
@@ -1090,13 +1124,15 @@
     </div>
     <div class="field">
       <label>Хочешь заменить этот подарок на свою личную мечту?</label>
-      <input type="text" id="adventCustomInput" placeholder="Впиши свой вариант награды..." />
+      <input type="text" id="adventCustomInput" />
     </div>
     <button class="btn" style="width:100%;" onclick="saveCustomAdvent()">Сохранить награду</button>
   </div>
 </div>
 
 <script>
+  const AVATAR_OPTIONS = ["🌸", "🦋", "👑", "🐱", "🦊", "🦄", "👩", "👱‍♀️", "🧕", "👨", "🧔", "💪"];
+
   const FEMALE_REWARDS = [
     "Ароматная бомбочка для ванны и вечер при свечах",
     "Новая красивая кружка или термостакан для воды",
@@ -1416,11 +1452,12 @@
     return new Date().toISOString().split('T')[0];
   }
 
-  let state = JSON.parse(localStorage.getItem('novayaYaV4')) || {
+  let state = JSON.parse(localStorage.getItem('novayaYaV5')) || {
     onboarded: false,
     theme: 'pink',
     profile: {
       name: '',
+      avatar: '🌸',
       gender: 'female',
       age: null,
       height: null,
@@ -1441,10 +1478,45 @@
   };
 
   let onbSelectedGender = 'female';
+  let onbSelectedAvatar = '🌸';
   let editingAdventIdx = null;
 
   function saveState() {
-    localStorage.setItem('novayaYaV4', JSON.stringify(state));
+    localStorage.setItem('novayaYaV5', JSON.stringify(state));
+  }
+
+  function renderAvatarGrids() {
+    const onbGrid = document.getElementById('onbAvatarGrid');
+    if (onbGrid) {
+      onbGrid.innerHTML = '';
+      AVATAR_OPTIONS.forEach(ico => {
+        const div = document.createElement('div');
+        div.className = 'avatar-pill' + (onbSelectedAvatar === ico ? ' active' : '');
+        div.textContent = ico;
+        div.onclick = () => {
+          onbSelectedAvatar = ico;
+          renderAvatarGrids();
+        };
+        onbGrid.appendChild(div);
+      });
+    }
+
+    const profGrid = document.getElementById('profAvatarGrid');
+    if (profGrid) {
+      const currentAv = state.profile.avatar || '🌸';
+      profGrid.innerHTML = '';
+      AVATAR_OPTIONS.forEach(ico => {
+        const div = document.createElement('div');
+        div.className = 'avatar-pill' + (currentAv === ico ? ' active' : '');
+        div.textContent = ico;
+        div.onclick = () => {
+          state.profile.avatar = ico;
+          saveState();
+          renderAll();
+        };
+        profGrid.appendChild(div);
+      });
+    }
   }
 
   function setTheme(themeName) {
@@ -1589,14 +1661,14 @@
       const bmiObj = calcBmiInfo(w, h);
       document.getElementById('onbBmiPreview').textContent = `${bmiObj.bmi} (${bmiObj.cat})`;
     } else {
-      document.getElementById('onbBmiPreview').textContent = 'заполни рост и вес';
+      document.getElementById('onbBmiPreview').textContent = '—';
     }
 
     if (w && gw && w > gw) {
       const eta = calcEtaInfo(w, gw, kcal);
       document.getElementById('onbEtaPreview').textContent = `${eta.fullStr} (~${eta.weeksLeft} нед.)`;
     } else {
-      document.getElementById('onbEtaPreview').textContent = 'заполни вес и цель';
+      document.getElementById('onbEtaPreview').textContent = '—';
     }
   }
 
@@ -1631,6 +1703,7 @@
 
     state.profile = {
       name,
+      avatar: onbSelectedAvatar || '🌸',
       gender: onbSelectedGender,
       age,
       height,
@@ -1657,12 +1730,13 @@
 
   function resetFullProfile() {
     if (confirm('Точно сбросить текущий профиль и удалить все записи? Откроется окно создания нового пользователя.')) {
-      localStorage.removeItem('novayaYaV4');
+      localStorage.removeItem('novayaYaV5');
       state = {
         onboarded: false,
         theme: state.theme || 'pink',
         profile: {
           name: '',
+          avatar: '🌸',
           gender: 'female',
           age: null,
           height: null,
@@ -1689,6 +1763,7 @@
       document.getElementById('onbActivity').value = '';
       document.getElementById('onbStartKcal').value = '';
       onbSelectedGender = 'female';
+      onbSelectedAvatar = '🌸';
       document.getElementById('onbGenderF').className = 'yn-btn active-gender';
       document.getElementById('onbGenderM').className = 'yn-btn';
       previewOnboardingSummary();
@@ -1728,10 +1803,12 @@
 
   function renderAll() {
     setTheme(state.theme);
+    renderAvatarGrids();
     const totalRecipesCount = RECIPES_DB.breakfast.length + RECIPES_DB.lunch.length + RECIPES_DB.dinner.length + RECIPES_DB.treat20.length;
     document.getElementById('recipeCountBadge').textContent = `${totalRecipesCount} блюд`;
 
     if (!state.onboarded) {
+      document.getElementById('navProfileIcon').textContent = onbSelectedAvatar || '🌸';
       document.getElementById('onbGenderF').className = 'yn-btn' + (onbSelectedGender === 'female' ? ' active-gender' : '');
       document.getElementById('onbGenderM').className = 'yn-btn' + (onbSelectedGender === 'male' ? ' active-gender' : '');
       document.getElementById('onboardingModal').classList.add('open');
@@ -1742,6 +1819,11 @@
     const p = state.profile;
     if (!p.startKcal) p.startKcal = 1700;
     if (!p.gender) p.gender = 'female';
+    if (!p.avatar) p.avatar = '🌸';
+
+    document.getElementById('navProfileIcon').textContent = p.avatar;
+    document.getElementById('profileCardIcon').textContent = p.avatar;
+
     const latest = state.history[state.history.length - 1] || { weight: p.startWeight, date: getTodayStr() };
     const start = state.history[0] || { weight: p.startWeight, date: getTodayStr() };
     const currentW = latest.weight;
@@ -1754,8 +1836,7 @@
     const bmiObj = calcBmiInfo(currentW, p.height);
     const eta = calcEtaInfo(currentW, p.goalWeight, p.startKcal);
 
-    const greetEmoji = p.gender === 'male' ? '💪' : '🌸';
-    document.getElementById('headerGreeting').textContent = `${greetEmoji} Привет, ${p.name}!`;
+    document.getElementById('headerGreeting').textContent = `${p.avatar} Привет, ${p.name}!`;
     document.getElementById('headerSubtitle').textContent = `Цель: ${p.goalWeight} кг • Этап ${currentStage.index}: ${currentStage.kcal} ккал`;
 
     document.getElementById('statWeight').textContent = `${currentW.toFixed(1)} кг`;
