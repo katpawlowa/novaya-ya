@@ -932,7 +932,10 @@
             </div>
             <div style="font-size:0.74rem; font-weight:800; color:var(--primary); margin-top:2px;" id="portionPreviewText">0 ккал • Б 0 / Ж 0 / У 0</div>
           </div>
-          <input type="number" id="foodGramsInput" value="100" min="1" max="3000" style="width:88px;" oninput="updatePortionPreview()" placeholder="Граммы" />
+          <select id="foodUnitSelect" style="width:135px; min-height:42px; padding:6px 8px; font-size:0.8rem; font-weight:700;" onchange="onFoodUnitChange()">
+           <option value="grams">В граммах (г)</option>
+          </select>
+          <input type="number" id="foodGramsInput" value="100" min="0.5" max="3000" step="any" style="width:82px;" oninput="updatePortionPreview()" placeholder="Кол-во" />
           <button class="btn" onclick="addSelectedProductToLog()">+ Добавить</button>
         </div>
       </div>
@@ -1688,6 +1691,10 @@
         <label>Углеводы (г):</label>
         <input type="number" step="0.1" id="npC" placeholder="1.8" />
       </div>
+    </div>
+    <div class="field">
+      <label>Вес 1 порции / штуки в граммах (необязательно):</label>
+      <input type="number" step="1" id="npPortion" placeholder="Например: 55 (оставь пустым, если только на граммы)" />
     </div>
     <button class="btn" style="width:100%;" id="btnSaveSharedProd" onclick="saveNewSharedProduct()">☁️ Сохранить и выгрузить в облако</button>
     <button class="btn-danger" style="margin-top:8px; display:none;" id="btnDeleteSharedProd" onclick="deleteSharedProductFromCloud()">🗑️ Удалить этот продукт из облака</button>
@@ -2817,51 +2824,87 @@
 
   const FIREBASE_DB_URL = "https://novaya-ya-food-default-rtdb.europe-west1.firebasedatabase.app";
 
-  const DEFAULT_PRODUCTS_DB = [
+ const DEFAULT_PRODUCTS_DB = [
     { id: "p1", name: "Куриная грудка (филе сырое)", kcal: 113, p: 23.6, f: 1.9, c: 0.4 },
-    { id: "p2", name: "Куриная грудка отварная / запеченная", kcal: 150, p: 29.0, f: 3.2, c: 0.5 },
+    { id: "p2", name: "Куриная грудка отварная / запеченная", kcal: 150, p: 29.0, f: 3.2, c: 0.5, portionGrams: 150 },
     { id: "p3", name: "Филе бедра индейки", kcal: 144, p: 19.5, f: 7.0, c: 0.0 },
-    { id: "p4", name: "Яйцо куриное (1 шт ≈ 55 г)", kcal: 157, p: 12.7, f: 11.5, c: 0.7 },
-    { id: "p5", name: "Творог 5%", kcal: 121, p: 17.2, f: 5.0, c: 1.8 },
-    { id: "p6", name: "Творог обезжиренный 0–1%", kcal: 88, p: 18.0, f: 0.6, c: 1.8 },
-    { id: "p7", name: "Йогурт греческий 2%", kcal: 66, p: 8.0, f: 2.0, c: 4.0 },
-    { id: "p8", name: "Молоко 2.5%", kcal: 54, p: 2.9, f: 2.5, c: 4.8 },
-    { id: "p9", name: "Сыр легкий 15–20%", kcal: 230, p: 28.0, f: 12.0, c: 0.0 },
-    { id: "p10", name: "Сыр российский / моцарелла", kcal: 330, p: 24.0, f: 25.0, c: 0.5 },
+    { id: "p4", name: "Яйцо куриное", kcal: 157, p: 12.7, f: 11.5, c: 0.7, portionGrams: 55 },
+    { id: "p5", name: "Творог 5%", kcal: 121, p: 17.2, f: 5.0, c: 1.8, portionGrams: 180 },
+    { id: "p6", name: "Творог обезжиренный 0–1%", kcal: 88, p: 18.0, f: 0.6, c: 1.8, portionGrams: 180 },
+    { id: "p7", name: "Йогурт греческий 2%", kcal: 66, p: 8.0, f: 2.0, c: 4.0, portionGrams: 140 },
+    { id: "p8", name: "Молоко 2.5%", kcal: 54, p: 2.9, f: 2.5, c: 4.8, portionGrams: 200 },
+    { id: "p9", name: "Сыр легкий 15–20%", kcal: 230, p: 28.0, f: 12.0, c: 0.0, portionGrams: 30 },
+    { id: "p10", name: "Сыр российский / моцарелла", kcal: 330, p: 24.0, f: 25.0, c: 0.5, portionGrams: 30 },
     { id: "p11", name: "Гречка (сухая крупа)", kcal: 313, p: 12.6, f: 3.3, c: 62.1 },
-    { id: "p12", name: "Гречка вареная", kcal: 110, p: 4.2, f: 1.1, c: 21.3 },
+    { id: "p12", name: "Гречка вареная", kcal: 110, p: 4.2, f: 1.1, c: 21.3, portionGrams: 150 },
     { id: "p13", name: "Рис басмати / бурый (сухой)", kcal: 340, p: 7.5, f: 1.5, c: 74.0 },
-    { id: "p14", name: "Рис отварной", kcal: 116, p: 2.4, f: 0.4, c: 25.0 },
-    { id: "p15", name: "Овсяные хлопья Геркулес (сухие)", kcal: 352, p: 12.3, f: 6.2, c: 61.8 },
+    { id: "p14", name: "Рис отварной", kcal: 116, p: 2.4, f: 0.4, c: 25.0, portionGrams: 150 },
+    { id: "p15", name: "Овсяные хлопья Геркулес (сухие)", kcal: 352, p: 12.3, f: 6.2, c: 61.8, portionGrams: 50 },
     { id: "p16", name: "Макароны из твердых сортов (сухие)", kcal: 344, p: 12.0, f: 1.5, c: 70.5 },
-    { id: "p17", name: "Картофель отварной / запеченный", kcal: 82, p: 2.0, f: 0.4, c: 17.0 },
-    { id: "p18", name: "Хлеб цельнозерновой", kcal: 225, p: 8.5, f: 2.2, c: 43.0 },
-    { id: "p19", name: "Хлебцы хрустящие (1 шт ≈ 10 г)", kcal: 310, p: 9.0, f: 2.0, c: 62.0 },
+    { id: "p17", name: "Картофель отварной / запеченный", kcal: 82, p: 2.0, f: 0.4, c: 17.0, portionGrams: 150 },
+    { id: "p18", name: "Хлеб цельнозерновой", kcal: 225, p: 8.5, f: 2.2, c: 43.0, portionGrams: 35 },
+    { id: "p19", name: "Хлебцы хрустящие", kcal: 310, p: 9.0, f: 2.0, c: 62.0, portionGrams: 10 },
     { id: "p20", name: "Лаваш тонкий армянский", kcal: 236, p: 7.9, f: 1.0, c: 48.0 },
     { id: "p21", name: "Треска / Минтай (филе)", kcal: 78, p: 17.5, f: 0.7, c: 0.0 },
-    { id: "p22", name: "Форель / Лосось слабосоленый", kcal: 205, p: 20.0, f: 13.5, c: 0.0 },
+    { id: "p22", name: "Форель / Лосось слабосоленый", kcal: 205, p: 20.0, f: 13.5, c: 0.0, portionGrams: 50 },
     { id: "p23", name: "Креветки очищенные вареные", kcal: 95, p: 20.5, f: 1.2, c: 0.0 },
-    { id: "p24", name: "Тунец консервированный в с/с", kcal: 96, p: 22.0, f: 0.8, c: 0.0 },
-    { id: "p25", name: "Авокадо", kcal: 160, p: 2.0, f: 14.7, c: 1.8 },
-    { id: "p26", name: "Огурец свежий", kcal: 15, p: 0.8, f: 0.1, c: 2.8 },
-    { id: "p27", name: "Помидоры свежие / черри", kcal: 20, p: 1.1, f: 0.2, c: 3.8 },
+    { id: "p24", name: "Тунец консервированный в с/с", kcal: 96, p: 22.0, f: 0.8, c: 0.0, portionGrams: 130 },
+    { id: "p25", name: "Авокадо", kcal: 160, p: 2.0, f: 14.7, c: 1.8, portionGrams: 100 },
+    { id: "p26", name: "Огурец свежий", kcal: 15, p: 0.8, f: 0.1, c: 2.8, portionGrams: 100 },
+    { id: "p27", name: "Помидоры свежие / черри", kcal: 20, p: 1.1, f: 0.2, c: 3.8, portionGrams: 120 },
     { id: "p28", name: "Брокколи / Цветная капуста", kcal: 32, p: 2.8, f: 0.4, c: 5.2 },
-    { id: "p29", name: "Банан (без кожуры)", kcal: 96, p: 1.5, f: 0.5, c: 21.0 },
-    { id: "p30", name: "Яблоко свежее", kcal: 47, p: 0.4, f: 0.4, c: 9.8 },
-    { id: "p31", name: "Ягоды (клубника / голубика / малина)", kcal: 42, p: 0.8, f: 0.4, c: 8.5 },
-    { id: "p32", name: "Масло оливковое / растительное", kcal: 898, p: 0.0, f: 99.8, c: 0.0 },
-    { id: "p33", name: "Сметана 10%", kcal: 115, p: 3.0, f: 10.0, c: 2.9 },
-    { id: "p34", name: "Арахисовая паста без сахара", kcal: 588, p: 25.0, f: 50.0, c: 12.0 },
-    { id: "p35", name: "Орехи (миндаль / грецкий / фундук)", kcal: 620, p: 18.0, f: 55.0, c: 13.0 },
-    { id: "p36", name: "Зефир классический (1 шт ≈ 45 г)", kcal: 326, p: 0.8, f: 0.1, c: 79.8 },
-    { id: "p37", name: "Шоколад темный / молочный", kcal: 545, p: 6.2, f: 33.0, c: 52.0 },
-    { id: "p38", name: "Мороженое пломбир", kcal: 227, p: 3.7, f: 15.0, c: 20.4 },
-    { id: "p39", name: "Капучино без сахара (200 мл)", kcal: 65, p: 3.2, f: 3.0, c: 5.2 },
-    { id: "p40", name: "Протеиновый батончик", kcal: 340, p: 28.0, f: 11.0, c: 25.0 }
+    { id: "p29", name: "Банан (без кожуры)", kcal: 96, p: 1.5, f: 0.5, c: 21.0, portionGrams: 120 },
+    { id: "p30", name: "Яблоко свежее", kcal: 47, p: 0.4, f: 0.4, c: 9.8, portionGrams: 160 },
+    { id: "p31", name: "Ягоды (клубника / голубика / малина)", kcal: 42, p: 0.8, f: 0.4, c: 8.5, portionGrams: 100 },
+    { id: "p32", name: "Масло оливковое / растительное", kcal: 898, p: 0.0, f: 99.8, c: 0.0, portionGrams: 10 },
+    { id: "p33", name: "Сметана 10%", kcal: 115, p: 3.0, f: 10.0, c: 2.9, portionGrams: 30 },
+    { id: "p34", name: "Арахисовая паста без сахара", kcal: 588, p: 25.0, f: 50.0, c: 12.0, portionGrams: 20 },
+    { id: "p35", name: "Орехи (миндаль / грецкий / фундук)", kcal: 620, p: 18.0, f: 55.0, c: 13.0, portionGrams: 30 },
+    { id: "p36", name: "Зефир классический", kcal: 326, p: 0.8, f: 0.1, c: 79.8, portionGrams: 45 },
+    { id: "p37", name: "Шоколад темный / молочный", kcal: 545, p: 6.2, f: 33.0, c: 52.0, portionGrams: 25 },
+    { id: "p38", name: "Мороженое пломбир", kcal: 227, p: 3.7, f: 15.0, c: 20.4, portionGrams: 80 },
+    { id: "p39", name: "Капучино без сахара", kcal: 65, p: 3.2, f: 3.0, c: 5.2, portionGrams: 200 },
+    { id: "p40", name: "Протеиновый батончик", kcal: 340, p: 28.0, f: 11.0, c: 25.0, portionGrams: 60 }
   ];
 
   let selectedProductObj = DEFAULT_PRODUCTS_DB[0];
   let editingProductTarget = null;
+
+  function syncUnitSelectorForProduct(prod) {
+    const unitSel = document.getElementById('foodUnitSelect');
+    const valInput = document.getElementById('foodGramsInput');
+    if (!unitSel || !valInput || !prod) return;
+
+    const pGrams = parseFloat(prod.portionGrams);
+    if (pGrams && pGrams > 0) {
+      unitSel.innerHTML = `
+        <option value="grams">В граммах (г)</option>
+        <option value="portion">Порция (${pGrams} г)</option>
+      `;
+      unitSel.value = 'portion';
+      valInput.value = 1;
+      valInput.placeholder = 'Порций';
+    } else {
+      unitSel.innerHTML = `<option value="grams">В граммах (г)</option>`;
+      unitSel.value = 'grams';
+      valInput.value = 100;
+      valInput.placeholder = 'Граммы';
+    }
+  }
+
+  function onFoodUnitChange() {
+    const unitSel = document.getElementById('foodUnitSelect');
+    const valInput = document.getElementById('foodGramsInput');
+    if (!unitSel || !valInput) return;
+    if (unitSel.value === 'portion') {
+      valInput.value = 1;
+      valInput.placeholder = 'Порций';
+    } else {
+      valInput.value = 100;
+      valInput.placeholder = 'Граммы';
+    }
+    updatePortionPreview();
+  }
 
   function getAllProductsList() {
     const shared = Array.isArray(appStore.sharedProducts) ? appStore.sharedProducts : [];
@@ -2923,6 +2966,7 @@
     const titleEl = document.getElementById('productModalTitle');
     const btnSave = document.getElementById('btnSaveSharedProd');
     const btnDel = document.getElementById('btnDeleteSharedProd');
+    const npPortionEl = document.getElementById('npPortion');
 
     if (prodToEdit) {
       titleEl.textContent = '✏️ Редактировать продукт (на 100 г)';
@@ -2932,11 +2976,13 @@
       document.getElementById('npP').value = prodToEdit.p ?? '';
       document.getElementById('npF').value = prodToEdit.f ?? '';
       document.getElementById('npC').value = prodToEdit.c ?? '';
+      if (npPortionEl) npPortionEl.value = prodToEdit.portionGrams ?? '';
       btnDel.style.display = (prodToEdit.firebaseKey && !String(prodToEdit.firebaseKey).startsWith('local_')) ? 'block' : 'none';
     } else {
       titleEl.textContent = '🥗 Создать продукт (на 100 г)';
       btnSave.textContent = '☁️ Сохранить и выгрузить в облако';
       ['npName', 'npKcal', 'npP', 'npF', 'npC'].forEach(id => document.getElementById(id).value = '');
+      if (npPortionEl) npPortionEl.value = '';
       btnDel.style.display = 'none';
     }
     document.getElementById('productModal').classList.add('open');
@@ -2961,6 +3007,8 @@
     const p = parseFloat(document.getElementById('npP').value) || 0;
     const f = parseFloat(document.getElementById('npF').value) || 0;
     const c = parseFloat(document.getElementById('npC').value) || 0;
+    const portionGramsRaw = parseFloat(document.getElementById('npPortion')?.value);
+    const portionGrams = (!isNaN(portionGramsRaw) && portionGramsRaw > 0) ? Math.round(portionGramsRaw) : null;
 
     if (!name || isNaN(kcal) || kcal < 0) {
       showAppAlert('Ошибка', 'Введите название продукта и калорийность на 100 г!');
@@ -2973,6 +3021,7 @@
       p: +p.toFixed(1),
       f: +f.toFixed(1),
       c: +c.toFixed(1),
+      portionGrams,
       author: state.profile.name || 'Пользователь',
       updatedAt: getTodayStr()
     };
@@ -3003,6 +3052,7 @@
     state.sharedProducts = appStore.sharedProducts;
     saveState();
     closeProductModal();
+    syncUnitSelectorForProduct(selectedProductObj);
     renderProductSearchResults();
     updatePortionPreview();
 
@@ -3035,6 +3085,7 @@
     selectedProductObj = DEFAULT_PRODUCTS_DB[0];
     saveState();
     closeProductModal();
+    syncUnitSelectorForProduct(selectedProductObj);
     renderProductSearchResults();
     updatePortionPreview();
 
@@ -3075,10 +3126,13 @@
       const row = document.createElement('div');
       const isSel = selectedProductObj && selectedProductObj.name === prod.name;
       row.className = 'food-search-row' + (isSel ? ' selected' : '');
+      const portionInfo = prod.portionGrams
+        ? ` • 1 порц. (${prod.portionGrams} г) = ${Math.round(prod.kcal * prod.portionGrams / 100)} ккал`
+        : '';
       row.innerHTML = `
-        <span style="flex:1; padding-right:6px;">${prod.name}</span>
+        <span style="flex:1; padding-right:6px;">${prod.name} <span style="color:var(--muted); font-size:0.7rem;">${prod.portionGrams ? `(${prod.portionGrams} г/порц.)` : ''}</span></span>
         <div class="row" style="gap:6px; flex-wrap:nowrap;">
-          <span style="color:var(--muted); font-size:0.72rem; white-space:nowrap;">${prod.kcal} ккал</span>
+          <span style="color:var(--muted); font-size:0.72rem; white-space:nowrap;">${prod.kcal} ккал/100г${portionInfo}</span>
           <button class="btn-soft" style="padding:2px 6px; min-height:24px; font-size:0.7rem;" title="Редактировать продукт">✏️</button>
         </div>
       `;
@@ -3090,6 +3144,7 @@
       };
       row.onclick = () => {
         selectedProductObj = prod;
+        syncUnitSelectorForProduct(prod);
         renderProductSearchResults();
         updatePortionPreview();
       };
@@ -3098,21 +3153,44 @@
     updatePortionPreview();
   }
 
+  function getSelectedFoodGramsAndLabel() {
+    const rawVal = parseFloat(document.getElementById('foodGramsInput')?.value) || 0;
+    const unitMode = document.getElementById('foodUnitSelect')?.value || 'grams';
+    const pGrams = parseFloat(selectedProductObj?.portionGrams) || 0;
+
+    if (unitMode === 'portion' && pGrams > 0) {
+      const totalGrams = Math.round(rawVal * pGrams);
+      return {
+        grams: totalGrams,
+        portions: rawVal,
+        portionLabel: `${rawVal} порц. (${totalGrams} г)`
+      };
+    }
+    return {
+      grams: Math.round(rawVal),
+      portions: null,
+      portionLabel: `${Math.round(rawVal)} г`
+    };
+  }
+
   function updatePortionPreview() {
-    const grams = parseFloat(document.getElementById('foodGramsInput')?.value) || 0;
     const lbl = document.getElementById('selectedProductLabel');
     const prev = document.getElementById('portionPreviewText');
     if (!selectedProductObj || !lbl || !prev) return;
-    lbl.textContent = selectedProductObj.name;
+
+    const { grams, portionLabel } = getSelectedFoodGramsAndLabel();
+    const pGrams = selectedProductObj.portionGrams;
+    lbl.textContent = pGrams ? `${selectedProductObj.name} (порция ${pGrams} г)` : selectedProductObj.name;
+
     const ratio = grams / 100;
     const k = Math.round(selectedProductObj.kcal * ratio);
     const p = +(selectedProductObj.p * ratio).toFixed(1);
     const f = +(selectedProductObj.f * ratio).toFixed(1);
     const c = +(selectedProductObj.c * ratio).toFixed(1);
-    prev.textContent = `${k} ккал • Б ${p} / Ж ${f} / У ${c}`;
+    prev.textContent = `${portionLabel}: ${k} ккал • Б ${p} / Ж ${f} / У ${c}`;
   }
 
-  function logFoodEntry(name, grams, kcal, p, f, c, mealSlot) {
+  function logFoodEntry(name, grams, kcal, p, f, c, mealSlot, portionText = null) {
     const todayLog = ensureTodayLog();
     if (!todayLog.foods) todayLog.foods = [];
     const mealsCount = state.profile.mealsPerDay || 4;
@@ -3123,6 +3201,7 @@
       meal: validSlot,
       name,
       grams,
+      portionText,
       kcal: Math.round(kcal),
       p: +p.toFixed(1),
       f: +f.toFixed(1),
@@ -3149,9 +3228,9 @@
 
   function addSelectedProductToLog() {
     if (!selectedProductObj) return;
-    const grams = parseFloat(document.getElementById('foodGramsInput').value);
+    const { grams, portionLabel } = getSelectedFoodGramsAndLabel();
     if (!grams || grams <= 0) {
-      showAppAlert('Внимание', 'Укажите вес порции в граммах!');
+      showAppAlert('Внимание', 'Укажите количество граммов или порций!');
       return;
     }
     const slotKey = document.getElementById('foodMealSlotSelect')?.value || activeMealSlotKey;
@@ -3163,7 +3242,8 @@
       selectedProductObj.p * ratio,
       selectedProductObj.f * ratio,
       selectedProductObj.c * ratio,
-      slotKey
+      slotKey,
+      portionLabel
     );
   }
 
@@ -3277,7 +3357,7 @@
           itemsHtml += `
             <div class="food-log-item" style="background:var(--card);">
               <div>
-                <strong>${it.name}</strong> ${it.grams ? `(${it.grams} г)` : ''}
+                <strong>${it.name}</strong> ${it.portionText ? `(${it.portionText})` : (it.grams ? `(${it.grams} г)` : '')}
                 <div style="font-size:0.68rem; color:var(--muted);">Б ${it.p}г • Ж ${it.f}г • У ${it.c}г</div>
               </div>
               <div class="row" style="gap:6px; flex-wrap:nowrap;">
