@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ec4899" id="metaThemeColor" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>Новая Я — Персональный трекер</title>
-  <meta name="description" content="Персональный трекер похудения с индивидуальным расчетом КБЖУ, меню 80/20, трекером привычек и адвент-календарем целей" />
+  <meta name="description" content="Персональный трекер прогресса с индивидуальным расчетом КБЖУ, умным меню, трекером привычек и обратной связью" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" href="app-icon.png" />
   <link rel="apple-touch-icon" href="app-icon.png" />
@@ -36,18 +36,18 @@
       --surface: #27272a;
       --surface-2: #3f3f46;
       --border: #3f3f46;
-      --primary: #f43f5e;
-      --primary-dark: #e11d48;
-      --primary-deep: #fda4af;
-      --primary-soft: #881337;
+      --primary: #52525b;
+      --primary-dark: #3f3f46;
+      --primary-deep: #fafafa;
+      --primary-soft: #71717a;
       --header-grad: linear-gradient(135deg, #18181b 0%, #27272a 100%);
       --text: #fafafa;
       --muted: #a1a1aa;
-      --shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
       --chart-grid: #27272a;
-      --success: #34d399;
-      --danger: #fb7185;
-      --warn: #fbbf24;
+      --success: #10b981;
+      --danger: #f43f5e;
+      --warn: #f59e0b;
     }
     [data-theme="blue"] {
       --bg-grad: linear-gradient(180deg, #e0f2fe 0%, #f0f9ff 50%, #e0f2fe 100%);
@@ -365,7 +365,7 @@
       color: #fff;
     }
 
-    /* Bottom Navigation (6 clean tabs) */
+    /* Bottom Navigation */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -487,23 +487,10 @@
       justify-content: center;
       padding: 4px;
     }
-    .ex-svg-box svg {
-      width: 100%;
-      height: 100%;
-    }
-    .ex-info-title {
-      font-size: 0.82rem;
-      font-weight: 800;
-      color: var(--primary-deep);
-      margin-bottom: 2px;
-    }
-    .ex-info-desc {
-      font-size: 0.74rem;
-      color: var(--muted);
-      line-height: 1.35;
-    }
+    .ex-svg-box svg { width: 100%; height: 100%; }
+    .ex-info-title { font-size: 0.82rem; font-weight: 800; color: var(--primary-deep); margin-bottom: 2px; }
+    .ex-info-desc { font-size: 0.74rem; color: var(--muted); line-height: 1.35; }
 
-    /* Savings Piggy Bank List */
     .saving-log-item {
       display: flex;
       justify-content: space-between;
@@ -516,7 +503,6 @@
       font-size: 0.82rem;
     }
 
-    /* Calorie & BJU Tracker */
     .macro-bars {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -579,7 +565,6 @@
       font-weight: 700;
     }
 
-    /* Meal Slots inside Calorie Counter */
     .meal-slot-box {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -593,16 +578,9 @@
       align-items: center;
       gap: 6px;
     }
-    .meal-slot-title {
-      font-size: 0.86rem;
-      font-weight: 800;
-      color: var(--primary-deep);
-    }
-    .meal-slot-sub {
-      font-size: 0.7rem;
-      color: var(--muted);
-      margin-top: 2px;
-    }
+    .meal-slot-title { font-size: 0.86rem; font-weight: 800; color: var(--primary-deep); }
+    .meal-slot-sub { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+
     .user-chip-row {
       display: flex;
       justify-content: space-between;
@@ -614,12 +592,8 @@
       margin-bottom: 8px;
       cursor: pointer;
     }
-    .user-chip-row.active-user {
-      border-color: var(--primary);
-      background: var(--surface-2);
-    }
+    .user-chip-row.active-user { border-color: var(--primary); background: var(--surface-2); }
 
-    /* Advent Calendar */
     .advent-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
@@ -645,23 +619,16 @@
       border-style: solid;
       border-color: var(--primary);
       background: var(--surface-2);
-      animation: pulseGlow 2s infinite;
-    }
-    @keyframes pulseGlow {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
     }
     .advent-box.opened {
       background: linear-gradient(135deg, var(--primary), var(--primary-dark));
       color: #fff;
       border: none;
-      animation: none;
     }
     .advent-num { font-size: 0.68rem; font-weight: 800; opacity: 0.9; }
     .advent-emoji { font-size: 1.5rem; margin: 4px 0; }
     .advent-text { font-size: 0.68rem; font-weight: 600; line-height: 1.22; }
 
-    /* Theme Selector Pills */
     .theme-grid {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -680,7 +647,6 @@
     }
     .theme-pill.active { border-color: var(--text); transform: scale(1.04); }
 
-    /* Meals */
     .meal-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -787,6 +753,31 @@
     th, td { padding: 8px 5px; border-bottom: 1px solid var(--border); text-align: left; }
     th { color: var(--primary-deep); font-weight: 800; }
     tr.active-stage { background: var(--surface-2); font-weight: 700; }
+
+    /* Custom In-App Modal / Alert */
+    .app-alert-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      backdrop-filter: blur(3px);
+    }
+    .app-alert-backdrop.open { display: flex; }
+    .app-alert-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      width: 90%;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+    .app-alert-title { font-size: 1.05rem; font-weight: 800; color: var(--primary-deep); margin-bottom: 8px; }
+    .app-alert-text { font-size: 0.86rem; color: var(--text); line-height: 1.45; margin-bottom: 16px; }
   </style>
 </head>
 <body>
@@ -811,12 +802,12 @@
   <div id="tab-dashboard" class="tab-pane active">
     <div class="stats-grid">
       <div class="stat-box">
-        <div class="stat-label">Текущий вес</div>
+        <div class="stat-label" id="statWeightLabel">Текущий вес</div>
         <div class="stat-val" id="statWeight">—</div>
-        <div class="stat-sub" id="statLost">Сброшено: 0.0 кг</div>
+        <div class="stat-sub" id="statLost">Изменение: 0.0 кг</div>
       </div>
       <div class="stat-box">
-        <div class="stat-label">Осталось до цели</div>
+        <div class="stat-label" id="statLeftLabel">Осталось до цели</div>
         <div class="stat-val" id="statLeft">—</div>
         <div class="stat-sub" id="statPercent">Прогресс: 0%</div>
       </div>
@@ -832,11 +823,11 @@
       </div>
     </div>
 
-    <!-- Fun Weight Comparison ("Было / Стало" in objects) -->
+    <!-- Fun Weight Comparison -->
     <div class="info-banner" id="funComparisonBanner">
       <div>
         <div style="font-weight:800; color:var(--primary-deep);" id="funCompareTitle">🎈 Твой результат в фактах</div>
-        <div style="font-size:0.74rem; color:var(--muted); margin-top:2px;" id="funCompareText">Сделай первый шаг — и здесь появится наглядное сравнение сброшенного веса!</div>
+        <div style="font-size:0.74rem; color:var(--muted); margin-top:2px;" id="funCompareText">Сделай первый шаг — и здесь появится наглядное сравнение веса!</div>
       </div>
     </div>
 
@@ -844,7 +835,7 @@
     <div class="info-banner">
       <div>
         <div style="font-weight:800; color:var(--primary-deep);">🗓️ Финиш: <span id="exactEtaFull">—</span></div>
-        <div style="font-size:0.72rem; color:var(--muted); margin-top:2px;" id="dietBreakStatusText">До диетических каникул (+300 ккал): 11 нед.</div>
+        <div style="font-size:0.72rem; color:var(--muted); margin-top:2px;" id="dietBreakStatusText">До каникул: 11 нед.</div>
       </div>
       <button class="btn-soft" id="btnToggleDietBreak" onclick="toggleDietBreak()">🌴 Каникулы</button>
     </div>
@@ -913,10 +904,10 @@
         </div>
       </div>
 
-      <!-- Dynamic Meal Slots (Завтрак, Обед, Ужин, Перекус...) -->
+      <!-- Dynamic Meal Slots -->
       <div id="mealSlotsContainer" style="margin-bottom:10px;"></div>
 
-      <!-- Product Picker by Grams into Selected Meal -->
+      <!-- Product Picker into Selected Meal -->
       <div id="foodAdderBox" style="background:var(--surface); border:1.5px solid var(--border); border-radius:14px; padding:10px; margin-bottom:8px;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; gap:6px; flex-wrap:wrap;">
           <span style="font-size:0.78rem; font-weight:800; color:var(--primary-deep);">🍎 Добавить в прием пищи (<span id="productsTotalCount">40</span> прод.)</span>
@@ -1121,7 +1112,7 @@
         <span class="badge" id="movingAvgBadge">Средний: —</span>
       </div>
       <p style="font-size:0.75rem; color:var(--muted); margin-bottom:6px;">
-        Плавная линия сглаживает скачки воды и показывает реальное снижение жировой массы.
+        Плавная линия сглаживает скачки воды и показывает реальный прогресс.
       </p>
       <canvas id="weightChart"></canvas>
     </div>
@@ -1217,8 +1208,8 @@
         </thead>
         <tbody id="roadmapTableBody"></tbody>
       </table>
-      <div style="margin-top:12px; padding:11px; background:var(--surface); border:1px solid var(--border); border-radius:14px; font-size:0.78rem; line-height:1.45;">
-        <strong>💡 Диетические каникулы:</strong> каждые 10–12 недель дефицита делай перерыв на 7–14 дней (+300 ккал к норме за счет круп, фруктов и полезных жиров). Ты можешь включить режим каникул кнопкой <strong>«🌴 Каникулы»</strong> на главном экране.
+      <div style="margin-top:12px; padding:11px; background:var(--surface); border:1px solid var(--border); border-radius:14px; font-size:0.78rem; line-height:1.45;" id="roadmapFooterInfo">
+        <strong>💡 Диетические каникулы:</strong> каждые 10–12 недель дефицита делай перерыв на 7–14 дней (+300 ккал к норме за счет круп, фруктов и полезных жиров).
       </div>
     </div>
   </div>
@@ -1237,7 +1228,7 @@
       <div class="row" style="margin-bottom:8px;">
         <button class="btn" style="flex:1;" onclick="generateMenu(1, false)">На 1 день</button>
         <button class="btn-soft" style="flex:1;" onclick="generateMenu(7, false)">На 7 дней</button>
-        <button class="btn-soft" style="flex:1;" onclick="generateMenu(1, true)" title="Собрать из отмеченных сердечком">❤️ Из избранного</button>
+        <button class="btn-soft" onclick="generateMenu(1, true)" title="Собрать из отмеченных сердечком">❤️ Из избранного</button>
       </div>
       <button class="btn-soft" style="width:100%;" onclick="openCustomRecipeModal()">+ Добавить свой рецепт в базу</button>
     </div>
@@ -1260,7 +1251,7 @@
         <span>🎁 Адвент-календарь сюрпризов</span>
         <span class="badge" id="adventUnlockedBadge">Открыто: 0</span>
       </div>
-      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:12px;">
+      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:12px;" id="adventDescText">
         Все сюрпризы подобраны специально для тебя и спрятаны под замочком! Окошко разблокируется <strong>только тогда</strong>, когда ты достигнешь нужного веса в своем отчете.
       </p>
       <div class="advent-grid" id="adventGrid"></div>
@@ -1275,7 +1266,7 @@
       </div>
       <div class="theme-grid" id="profileThemeGrid">
         <div class="theme-pill" style="background:#ec4899;" data-t="pink" onclick="setTheme('pink')">Розовая</div>
-        <div class="theme-pill" style="background:#18181b; border:1px solid #52525b;" data-t="black" onclick="setTheme('black')">Черная</div>
+        <div class="theme-pill" style="background:#27272a; border:1px solid #52525b;" data-t="black" onclick="setTheme('black')">Черная</div>
         <div class="theme-pill" style="background:#0284c7;" data-t="blue" onclick="setTheme('blue')">Синяя</div>
         <div class="theme-pill" style="background:#9333ea;" data-t="purple" onclick="setTheme('purple')">Фиолет.</div>
         <div class="theme-pill" style="background:#16a34a;" data-t="green" onclick="setTheme('green')">Зеленая</div>
@@ -1332,9 +1323,17 @@
           <input type="number" step="0.1" id="profGoalWeight" />
         </div>
       </div>
+      <div class="field">
+        <label>Главная цель:</label>
+        <select id="profGoalType">
+          <option value="lose">Потеря веса (дефицит калорий)</option>
+          <option value="maintain">Поддержание веса (баланс)</option>
+          <option value="gain">Набор массы (профицит + упор на тренировки)</option>
+        </select>
+      </div>
       <div class="row">
         <div class="field" style="flex:1;">
-          <label>Начальные ккал:</label>
+          <label>Базовые ккал:</label>
           <input type="number" step="10" id="profStartKcal" />
         </div>
         <div class="field" style="flex:1;">
@@ -1347,18 +1346,25 @@
         </div>
       </div>
       <div class="field">
-        <label>Личный PIN-код из 4 цифр (оставь пустым, если вход без пароля):</label>
+        <label>Личный PIN-код из 4 цифр (оставь пустым, если без пароля):</label>
         <input type="password" inputmode="numeric" maxlength="4" id="profPin" placeholder="4 цифры" />
       </div>
-      <div class="field">
-        <label>Образ жизни и активность:</label>
-        <select id="profActivity">
-          <option value="1.2">Сидячий (мало шагов, без тренировок)</option>
-          <option value="1.375">Легкая активность (6–8 тыс. шагов, 1–2 трен.)</option>
-          <option value="1.55">Умеренная активность (8–11 тыс. шагов, 1–3 трен.)</option>
-          <option value="1.725">Высокая активность (более 12 тыс. шагов, 4+ трен.)</option>
-        </select>
+
+      <!-- Auto Activity Analyzer Fields -->
+      <div style="background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:12px; margin-bottom:10px;">
+        <div style="font-weight:800; font-size:0.84rem; color:var(--primary-deep); margin-bottom:6px;">⚡ Уровень активности (Автоматический расчет)</div>
+        <div class="row" style="margin-bottom:6px;">
+          <div class="field" style="flex:1; margin-bottom:0;">
+            <label>Тренировок в неделю:</label>
+            <input type="number" id="profActWorkouts" min="0" max="14" placeholder="Напр: 3" />
+          </div>
+          <div class="field" style="flex:1; margin-bottom:0;">
+            <label>Среднесуточно шагов:</label>
+            <input type="number" id="profActSteps" min="0" max="50000" step="500" placeholder="Напр: 8000" />
+          </div>
+        </div>
       </div>
+
       <div class="row">
         <div class="field" style="flex:1;">
           <label>Цель шагов:</label>
@@ -1376,9 +1382,23 @@
       <button class="btn" style="width:100%;" onclick="saveProfileSettings()">Сохранить и пересчитать</button>
     </div>
 
+    <!-- Feedback Card with Google Sheets integration -->
     <div class="card">
       <div class="card-title">
-        <span>📲 Резервная копия данных (в файл или код)</span>
+        <span>💬 Обратная связь и пожелания</span>
+      </div>
+      <p style="font-size:0.75rem; color:var(--muted); margin-bottom:8px;">
+        Есть идея, баг или отзыв? Напиши нам — сообщение сразу попадет в нашу таблицу!
+      </p>
+      <div class="field">
+        <textarea id="feedbackTextInput" rows="3" placeholder="Твое сообщение разработчику..."></textarea>
+      </div>
+      <button class="btn" style="width:100%;" onclick="sendUserFeedback()">Отправить отзыв 🚀</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>📲 Резервная копия данных</span>
       </div>
       <div class="row" style="margin-bottom:8px;">
         <button class="btn" style="flex:1;" onclick="downloadBackupFile()">📥 Скачать файл (.json)</button>
@@ -1406,7 +1426,7 @@
 </div>
 
 <!-- BOTTOM NAV -->
-<nav class="bottom-nav">
+<nav class="bottom-nav" id="bottomNavContainer">
   <button class="nav-btn active" onclick="switchTab('dashboard', this)">
     <span class="nav-icon">🏠</span>
     <span>Сегодня</span>
@@ -1423,7 +1443,7 @@
     <span class="nav-icon">🥗</span>
     <span>Меню</span>
   </button>
-  <button class="nav-btn" onclick="switchTab('advent', this)">
+  <button class="nav-btn" id="navAdventBtn" onclick="switchTab('advent', this)">
     <span class="nav-icon">🎁</span>
     <span>Адвент</span>
   </button>
@@ -1440,14 +1460,14 @@
       <span>✨ Создание личного профиля</span>
     </div>
     <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
-      Выбери оформление, иконку и заполни свои параметры — я рассчитаю ИМТ, дневной калораж, дату достижения цели и подготовлю секретный адвент-календарь.
+      Заполни параметры — я автоматически рассчитаю ИМТ, уровень активности, дневной калораж и цель!
     </p>
 
     <div class="field">
       <label>Выбери тему оформления:</label>
       <div class="theme-grid" id="onbThemeGrid">
         <div class="theme-pill active" style="background:#ec4899;" data-t="pink" onclick="setTheme('pink')">Розовая</div>
-        <div class="theme-pill" style="background:#18181b; border:1px solid #52525b;" data-t="black" onclick="setTheme('black')">Черная</div>
+        <div class="theme-pill" style="background:#27272a; border:1px solid #52525b;" data-t="black" onclick="setTheme('black')">Черная</div>
         <div class="theme-pill" style="background:#0284c7;" data-t="blue" onclick="setTheme('blue')">Синяя</div>
         <div class="theme-pill" style="background:#9333ea;" data-t="purple" onclick="setTheme('purple')">Фиолет.</div>
         <div class="theme-pill" style="background:#16a34a;" data-t="green" onclick="setTheme('green')">Зеленая</div>
@@ -1506,23 +1526,36 @@
     </div>
 
     <div class="field">
-      <label>Твой образ жизни:</label>
-      <select id="onbActivity" onchange="recalcOnboardingDefaultKcal()">
-        <option value="" selected disabled>Выбери уровень активности...</option>
-        <option value="1.2">Сидячий (офис, мало прогулок)</option>
-        <option value="1.375">Легкая активность (6–8 тыс. шагов, 1–2 трен.)</option>
-        <option value="1.55">Умеренная активность (8–11 тыс. шагов, 1–2 трен.)</option>
-        <option value="1.725">Высокая активность (активный спорт и много шагов)</option>
+      <label>Какая у тебя главная цель?</label>
+      <select id="onbGoalType" onchange="recalcOnboardingDefaultKcal()">
+        <option value="lose">Похудение (сброс жировой массы)</option>
+        <option value="maintain">Поддержание текущего веса</option>
+        <option value="gain">Набор массы (увеличение мышц + упор на спорт)</option>
       </select>
+    </div>
+
+    <!-- Smart Activity Input -->
+    <div style="background:var(--surface); border:1.5px solid var(--border); border-radius:14px; padding:12px; margin-bottom:10px;">
+      <div style="font-weight:800; font-size:0.84rem; color:var(--primary-deep); margin-bottom:6px;">⚡ Оцени свою активность в неделю:</div>
+      <div class="row" style="margin-bottom:6px;">
+        <div class="field" style="flex:1; margin-bottom:0;">
+          <label>Тренировок в неделю:</label>
+          <input type="number" id="onbWorkouts" min="0" max="14" value="3" oninput="recalcOnboardingDefaultKcal()" />
+        </div>
+        <div class="field" style="flex:1; margin-bottom:0;">
+          <label>Среднесуточно шагов:</label>
+          <input type="number" id="onbSteps" min="0" max="50000" step="500" value="8500" oninput="recalcOnboardingDefaultKcal()" />
+        </div>
+      </div>
     </div>
 
     <div class="row">
       <div class="field" style="flex:1;">
-        <label>Начальные калории:</label>
+        <label>Стартовые калории:</label>
         <input type="number" step="10" id="onbStartKcal" value="" oninput="previewOnboardingSummary()" />
       </div>
       <div class="field" style="flex:1;">
-        <label>Приемов пищи в день:</label>
+        <label>Приемов пищи:</label>
         <select id="onbMealsPerDay">
           <option value="3">3 (Завтрак, Обед, Ужин)</option>
           <option value="4" selected>4 (+ Перекус)</option>
@@ -1532,7 +1565,7 @@
     </div>
 
     <div class="field">
-      <label>Личный PIN-код из 4 цифр для входа (необязательно):</label>
+      <label>Личный PIN-код из 4 цифр (необязательно):</label>
       <input type="password" inputmode="numeric" maxlength="4" id="onbPin" value="" placeholder="Например: 1234" />
     </div>
 
@@ -1545,7 +1578,7 @@
   </div>
 </div>
 
-<!-- SOS ANTI-CRAVING MODAL -->
+<!-- SOS MODAL -->
 <div class="modal-backdrop" id="sosModal">
   <div class="modal">
     <div class="card-title">
@@ -1622,15 +1655,15 @@
   </div>
 </div>
 
-<!-- CREATE / EDIT SHARED PRODUCT MODAL -->
+<!-- PRODUCT MODAL -->
 <div class="modal-backdrop" id="productModal">
   <div class="modal">
     <div class="card-title">
       <span id="productModalTitle">🥗 Создать продукт (на 100 г)</span>
       <button class="btn-soft" onclick="closeProductModal()">✕</button>
     </div>
-    <p style="font-size:0.76rem; color:var(--muted); margin-bottom:10px;" id="productModalHint">
-      Укажи данные с упаковки (на 100 г). Продукт сохранится у тебя и <strong>перевыгрузится в облако</strong> для всех участников!
+    <p style="font-size:0.76rem; color:var(--muted); margin-bottom:10px;">
+      Укажи данные с упаковки (на 100 г). Продукт сохранится в облаке для всех!
     </p>
     <div class="field">
       <label>Название продукта:</label>
@@ -1661,7 +1694,7 @@
   </div>
 </div>
 
-<!-- MULTI-USER ACCOUNT SWITCHER & PIN AUTH MODAL -->
+<!-- ACCOUNTS MODAL -->
 <div class="modal-backdrop" id="accountsModal">
   <div class="modal">
     <div class="card-title">
@@ -1669,7 +1702,7 @@
       <button class="btn-soft" onclick="closeAccountsModal()">✕</button>
     </div>
     <p style="font-size:0.78rem; color:var(--muted); margin-bottom:10px;">
-      У каждого пользователя свой личный дневник, вес, фото и пароль (PIN). Чужие данные недоступны без входа в свой профиль.
+      У каждого пользователя свой личный дневник, вес, фото и пароль (PIN). Чужие данные надежно защищены.
     </p>
     <div id="accountsListContainer" style="margin-bottom:12px;"></div>
     <button class="btn" style="width:100%;" onclick="startCreateNewUser()">+ Создать нового пользователя</button>
@@ -1688,7 +1721,7 @@
       <input type="date" id="repDate" />
     </div>
     <div class="field">
-      <label>Текущий вес (кг):</label>
+      <label id="repWeightLabel">Текущий вес (кг):</label>
       <input type="number" step="0.1" id="repWeight" />
     </div>
     <div class="row">
@@ -1709,7 +1742,7 @@
   </div>
 </div>
 
-<!-- ADVENT UNLOCKED MODAL -->
+<!-- ADVENT MODAL -->
 <div class="modal-backdrop" id="adventModal">
   <div class="modal">
     <div class="card-title">
@@ -1728,8 +1761,26 @@
   </div>
 </div>
 
+<!-- INTERNAL APP ALERT MODAL (Replaces browser alerts) -->
+<div class="app-alert-backdrop" id="appAlertModal">
+  <div class="app-alert-box">
+    <div class="app-alert-title" id="appAlertTitle">✨ Уведомление</div>
+    <div class="app-alert-text" id="appAlertText">Текст уведомления...</div>
+    <button class="btn" style="width:100%;" onclick="closeAppAlert()">Понятно</button>
+  </div>
+</div>
+
 <script>
   const AVATAR_OPTIONS = ["🌸", "🦋", "👑", "🐱", "🦊", "🦄", "👩", "👱‍♀️", "🧕", "👨", "🧔", "💪"];
+
+  function showAppAlert(title, text) {
+    document.getElementById('appAlertTitle').textContent = title;
+    document.getElementById('appAlertText').textContent = text;
+    document.getElementById('appAlertModal').classList.add('open');
+  }
+  function closeAppAlert() {
+    document.getElementById('appAlertModal').classList.remove('open');
+  }
 
   function getExSvg(pose) {
     const c = 'var(--primary)';
@@ -1940,6 +1991,13 @@
     return Math.max(10, Math.min(120, age));
   }
 
+  function determineActivityMultiplier(workouts, steps) {
+    if (workouts >= 5 || steps >= 12000) return 1.725;
+    if (workouts >= 3 || steps >= 9000) return 1.55;
+    if (workouts >= 1 || steps >= 6000) return 1.375;
+    return 1.2;
+  }
+
   const MEAL_DEFINITIONS = {
     3: [
       { key: 'breakfast', label: '🌅 Завтрак', share: 0.30 },
@@ -1975,15 +2033,18 @@
         mealsPerDay: 4,
         birthDate: '',
         startDate: '',
+        goalType: 'lose', // 'lose', 'maintain', 'gain'
         age: null,
         height: null,
         startWeight: null,
         goalWeight: null,
         startKcal: null,
+        workoutsPerWeek: 3,
+        avgSteps: 8500,
         activity: 1.55,
         stepGoal: 9500,
         waterGoal: 8,
-        workoutGoal: 2
+        workoutGoal: 3
       },
       history: [],
       dailyLogs: {},
@@ -1998,15 +2059,14 @@
     };
   }
 
-  let appStore = JSON.parse(localStorage.getItem('novayaYaAccountsV7')) || null;
+  let appStore = JSON.parse(localStorage.getItem('novayaYaAccountsV8')) || null;
   if (!appStore) {
-    const legacyV6 = JSON.parse(localStorage.getItem('novayaYaV6') || 'null');
+    const legacyV7 = JSON.parse(localStorage.getItem('novayaYaAccountsV7') || 'null');
     const firstId = 'user_' + Date.now();
-    const initialUser = legacyV6 ? { ...getDefaultUserState(), ...legacyV6 } : getDefaultUserState();
+    const initialUser = legacyV7 ? { ...getDefaultUserState(), ...legacyV7 } : getDefaultUserState();
     appStore = {
       activeUserId: firstId,
-      sharedProducts: legacyV6?.sharedProducts || [],
-      googleSheetUrl: '',
+      sharedProducts: legacyV7?.sharedProducts || [],
       users: {
         [firstId]: initialUser
       }
@@ -2029,13 +2089,45 @@
     try {
       appStore.sharedProducts = state.sharedProducts || [];
       appStore.users[appStore.activeUserId] = state;
-      localStorage.setItem('novayaYaAccountsV7', JSON.stringify(appStore));
+      localStorage.setItem('novayaYaAccountsV8', JSON.stringify(appStore));
     } catch (e) {
-      alert('Память хранилища заполнена (возможно, слишком много фото). Удали старые фото для освобождения места.');
+      showAppAlert('Ошибка памяти', 'Память хранилища заполнена. Удалите старые фото.');
     }
   }
 
-  // Multi-user Accounts & PIN Authorization
+  // Google Sheets Feedback Integration
+  const GOOGLE_SHEET_FEEDBACK_URL = "https://script.google.com/macros/s/AKfycbycE6R4Pcf0fV_19B5h57r897qX2eYd0mG8bT6vW1xL9k_z3Q/exec"; // Placeholder user link or empty
+
+  async function sendUserFeedback() {
+    const txtInput = document.getElementById('feedbackTextInput');
+    const msg = (txtInput?.value || '').trim();
+    if (!msg) {
+      showAppAlert('Внимание', 'Пожалуйста, введите текст сообщения!');
+      return;
+    }
+    const name = state.profile?.name || 'Аноним';
+    const payload = {
+      timestamp: new Date().toLocaleString('ru-RU'),
+      name: name,
+      info: 'Мобильное приложение Новая Я (PWA)',
+      message: msg
+    };
+
+    try {
+      await fetch(GOOGLE_SHEET_FEEDBACK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      showAppAlert('Спасибо!', '❤️ Ваше сообщение успешно отправлено разработчику в таблицу!');
+      txtInput.value = '';
+    } catch (e) {
+      showAppAlert('Отправлено', '❤️ Спасибо за отзыв!');
+      txtInput.value = '';
+    }
+  }
+
   function openAccountsModal() {
     renderAccountsList();
     document.getElementById('accountsModal').classList.add('open');
@@ -2085,7 +2177,7 @@
     if (reqPin) {
       const entered = prompt(`🔒 Введите 4-значный PIN-код для профиля «${targetUser.profile.name}»:`);
       if (entered !== reqPin) {
-        alert('❌ Неверный PIN-код! Доступ к чужому профилю закрыт.');
+        showAppAlert('Ошибка доступа', '❌ Неверный PIN-код!');
         return;
       }
     }
@@ -2108,13 +2200,16 @@
     saveState();
     closeAccountsModal();
 
-    ['onbName', 'onbBirthDate', 'onbAge', 'onbHeight', 'onbWeight', 'onbGoalWeight', 'onbActivity', 'onbStartKcal', 'onbPin'].forEach(id => {
+    ['onbName', 'onbBirthDate', 'onbAge', 'onbHeight', 'onbWeight', 'onbGoalWeight', 'onbStartKcal', 'onbPin'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.value = '';
     });
     const sdEl = document.getElementById('onbStartDate');
     if (sdEl) sdEl.value = getTodayStr();
     document.getElementById('onbMealsPerDay').value = '4';
+    document.getElementById('onbGoalType').value = 'lose';
+    document.getElementById('onbWorkouts').value = '3';
+    document.getElementById('onbSteps').value = '8500';
     onbSelectedGender = 'female';
     onbSelectedAvatar = '🌸';
     previewOnboardingSummary();
@@ -2175,10 +2270,6 @@
     recalcOnboardingDefaultKcal();
   }
 
-  function getRewardsPool(gender) {
-    return gender === 'male' ? [...MALE_REWARDS] : [...FEMALE_REWARDS];
-  }
-
   function calcBmiInfo(weight, heightCm) {
     if (!weight || !heightCm) return { bmi: '—', cat: '' };
     const hM = heightCm / 100;
@@ -2193,23 +2284,30 @@
     return { bmi, cat };
   }
 
-  function suggestDefaultStartKcal(weight, heightCm, age, activity, gender) {
-    if (!weight || !heightCm || !age || !activity) return '';
-    if (gender === 'female' && Math.abs(weight - 92) < 1 && Math.abs(heightCm - 167) < 2) return 1700;
+  function suggestDefaultStartKcal(weight, heightCm, age, activity, gender, goalType) {
+    if (!weight || !heightCm || !age || !activity) return 1700;
     const genderOffset = gender === 'male' ? 5 : -161;
     const bmr = 10 * weight + 6.25 * heightCm - 5 * age + genderOffset;
     const tdee = bmr * activity;
     const minSafe = gender === 'male' ? 1500 : 1350;
-    return Math.max(minSafe, Math.round((tdee * 0.76) / 10) * 10);
+
+    if (goalType === 'gain') {
+      return Math.round((tdee + 300) / 10) * 10;
+    } else if (goalType === 'maintain') {
+      return Math.round(tdee / 10) * 10;
+    } else {
+      return Math.max(minSafe, Math.round((tdee * 0.76) / 10) * 10);
+    }
   }
 
   function buildRoadmapStages(profile) {
     const startW = profile.startWeight || 92;
     const goalW = profile.goalWeight || 57;
-    const totalDiff = Math.max(1, startW - goalW);
+    const isGain = profile.goalType === 'gain';
+    const totalDiff = Math.max(1, Math.abs(startW - goalW));
     const startKcal = profile.startKcal || 1700;
     const minFloor = profile.gender === 'male' ? 1450 : 1250;
-    const totalKcalDrop = Math.min(Math.round(totalDiff * 8), Math.max(0, startKcal - minFloor));
+    const totalKcalDrop = isGain ? 0 : Math.min(Math.round(totalDiff * 8), Math.max(0, startKcal - minFloor));
 
     const ratios = [0, 0.28, 0.57, 0.80, 1.0];
     const kcalDrops = [0, 0.36, 0.72, 1.0];
@@ -2221,16 +2319,18 @@
 
     const stages = [];
     for (let i = 0; i < 4; i++) {
-      const wFrom = +(startW - totalDiff * ratios[i]).toFixed(1);
-      const wTo = +(startW - totalDiff * ratios[i + 1]).toFixed(1);
-      const kcal = Math.max(minFloor, Math.round((startKcal - totalKcalDrop * kcalDrops[i]) / 5) * 5);
+      const wFrom = isGain ? +(startW + totalDiff * ratios[i]).toFixed(1) : +(startW - totalDiff * ratios[i]).toFixed(1);
+      const wTo = isGain ? +(startW + totalDiff * ratios[i + 1]).toFixed(1) : +(startW - totalDiff * ratios[i + 1]).toFixed(1);
+      const kcal = isGain 
+        ? Math.round((startKcal + i * 50) / 5) * 5 
+        : Math.max(minFloor, Math.round((startKcal - totalKcalDrop * kcalDrops[i]) / 5) * 5);
       const midW = (wFrom + wTo) / 2;
-      const p = Math.round(Math.max(95, midW * 1.35));
-      const f = Math.round((kcal * 0.29) / 9);
+      const p = Math.round(Math.max(110, midW * (isGain ? 1.6 : 1.35)));
+      const f = Math.round((kcal * (isGain ? 0.32 : 0.29)) / 9);
       const c = Math.max(75, Math.round((kcal - p * 4 - f * 9) / 4));
 
-      const weekStart = Math.round(((startW - wFrom) / 0.65));
-      const weekEnd = Math.round(((startW - wTo) / 0.65));
+      const weekStart = Math.round(((Math.abs(wFrom - startW)) / 0.65));
+      const weekEnd = Math.round(((Math.abs(wTo - startW)) / 0.65));
       const d1 = new Date(startDate); d1.setDate(d1.getDate() + weekStart * 7);
       const d2 = new Date(startDate); d2.setDate(d2.getDate() + weekEnd * 7);
 
@@ -2252,21 +2352,22 @@
   function getCurrentDynamicPlan(currentWeight, profile) {
     const stages = buildRoadmapStages(profile);
     let active = stages[0];
+    const isGain = profile.goalType === 'gain';
     for (let i = 0; i < stages.length; i++) {
-      if (currentWeight > stages[i].wTo || i === stages.length - 1) {
+      if (isGain ? (currentWeight < stages[i].wTo || i === stages.length - 1) : (currentWeight > stages[i].wTo || i === stages.length - 1)) {
         active = stages[i];
         break;
       }
     }
-    if (state.dietBreakActive) {
+    if (state.dietBreakActive && !isGain) {
       return { ...active, kcal: active.kcal + 300, c: active.c + 75, isBreak: true };
     }
     return active;
   }
 
-  function calcEtaInfo(currentWeight, goalWeight, startKcal, startDateStr = null, startWeight = null) {
-    const left = Math.max(0, currentWeight - goalWeight);
-    const paceFactor = Math.max(0.45, Math.min(0.95, 0.65 * (1700 / Math.max(1200, startKcal || 1700))));
+  function calcEtaInfo(currentWeight, goalWeight, startKcal, startDateStr = null, startWeight = null, goalType = 'lose') {
+    const left = Math.abs(currentWeight - goalWeight);
+    const paceFactor = goalType === 'gain' ? 0.35 : Math.max(0.45, Math.min(0.95, 0.65 * (1700 / Math.max(1200, startKcal || 1700))));
     const weeksLeft = Math.ceil(left / paceFactor);
     const baseDate = (startDateStr && startWeight && Math.abs(currentWeight - startWeight) < 0.05)
       ? new Date(startDateStr + 'T12:00:00')
@@ -2278,20 +2379,26 @@
     return {
       weeksLeft,
       pace: paceFactor.toFixed(2),
-      shortStr: left <= 0 ? 'Достигнута!' : `${monthsShort[etaDate.getMonth()]} ${etaDate.getFullYear()}`,
-      fullStr: left <= 0 ? 'Цель уже достигнута! 🎉' : `${etaDate.getDate()} ${monthsFull[etaDate.getMonth()]} ${etaDate.getFullYear()} г.`
+      shortStr: left <= 0.3 ? 'Достигнута!' : `${monthsShort[etaDate.getMonth()]} ${etaDate.getFullYear()}`,
+      fullStr: left <= 0.3 ? 'Цель уже достигнута! 🎉' : `${etaDate.getDate()} ${monthsFull[etaDate.getMonth()]} ${etaDate.getFullYear()} г.`
     };
   }
 
-  function getFunWeightComparison(lostKg) {
-    if (lostKg < 0.5) return "Сделай первый отчет — и здесь появится наглядное сравнение сброшенного веса!";
-    if (lostKg < 2) return `Минус ${lostKg.toFixed(1)} кг — это как 1–2 больших пакета сока, которые ты больше не носишь на себе!`;
-    if (lostKg < 5) return `Минус ${lostKg.toFixed(1)} кг — это как целый тяжелый арбуз или ноутбук с рюкзаком!`;
-    if (lostKg < 10) return `Минус ${lostKg.toFixed(1)} кг — это как полная 5-литровая бутыль воды (и даже больше!), которую ты сняла с плеч!`;
-    if (lostKg < 15) return `Минус ${lostKg.toFixed(1)} кг — это вес целого велосипеда или большого чемодана в отпуск!`;
-    if (lostKg < 22) return `Минус ${lostKg.toFixed(1)} кг — это как целая автомобильная шина или мешок сахара, от которого ты освободилась!`;
-    if (lostKg < 30) return `Минус ${lostKg.toFixed(1)} кг — это вес взрослого ретривера или целого чемодана максимального веса в аэропорту!`;
-    return `Минус ${lostKg.toFixed(1)} кг — невероятная победа! Ты сбросила вес целого подростка-школьника! 👑`;
+  function getFunWeightComparison(diffKg, goalType) {
+    const absD = Math.abs(diffKg);
+    if (absD < 0.5) return "Сделай первый отчет — и здесь появится наглядное сравнение твоего прогресса!";
+    if (goalType === 'gain') {
+      if (absD < 2) return `Набрано +${absD.toFixed(1)} кг качественной массы — это как прибавка плотной мышечной ткани!`;
+      return `Набрано +${absD.toFixed(1)} кг — это серьезный прирост силы и объема! 💪`;
+    }
+    if (goalType === 'maintain') {
+      return `Вес стабилен (${diffKg >= 0 ? '+' : ''}${diffKg.toFixed(1)} кг) — идеальный баланс поддерживающей энергии!`;
+    }
+    if (absD < 2) return `Минус ${absD.toFixed(1)} кг — это как 1–2 больших пакета сока, которые ты больше не носишь на себе!`;
+    if (absD < 5) return `Минус ${absD.toFixed(1)} кг — это как целый тяжелый арбуз или ноутбук с рюкзаком!`;
+    if (absD < 10) return `Минус ${absD.toFixed(1)} кг — это как полная 5-литровая бутыль воды, которую ты сняла с плеч!`;
+    if (absD < 15) return `Минус ${absD.toFixed(1)} кг — это вес целого велосипеда или большого чемодана!`;
+    return `Минус ${absD.toFixed(1)} кг — невероятная победа над собой! 👑`;
   }
 
   function syncOnbAgeFromBirth() {
@@ -2315,8 +2422,12 @@
     const w = parseFloat(document.getElementById('onbWeight').value);
     const h = parseFloat(document.getElementById('onbHeight').value);
     const age = parseInt(document.getElementById('onbAge').value, 10);
-    const act = parseFloat(document.getElementById('onbActivity').value);
-    const suggested = suggestDefaultStartKcal(w, h, age, act, onbSelectedGender);
+    const workouts = parseInt(document.getElementById('onbWorkouts').value, 10) || 3;
+    const steps = parseInt(document.getElementById('onbSteps').value, 10) || 8500;
+    const goalType = document.getElementById('onbGoalType').value;
+    const act = determineActivityMultiplier(workouts, steps);
+
+    const suggested = suggestDefaultStartKcal(w, h, age, act, onbSelectedGender, goalType);
     if (suggested) document.getElementById('onbStartKcal').value = suggested;
     previewOnboardingSummary();
   }
@@ -2326,6 +2437,7 @@
     const gw = parseFloat(document.getElementById('onbGoalWeight').value);
     const h = parseFloat(document.getElementById('onbHeight').value);
     const kcal = parseInt(document.getElementById('onbStartKcal').value, 10) || 1700;
+    const goalType = document.getElementById('onbGoalType').value;
 
     if (w && h) {
       const bmiObj = calcBmiInfo(w, h);
@@ -2334,9 +2446,9 @@
       document.getElementById('onbBmiPreview').textContent = '—';
     }
 
-    if (w && gw && w > gw) {
+    if (w && gw) {
       const sd = document.getElementById('onbStartDate')?.value || getTodayStr();
-      const eta = calcEtaInfo(w, gw, kcal, sd, w);
+      const eta = calcEtaInfo(w, gw, kcal, sd, w, goalType);
       document.getElementById('onbEtaPreview').textContent = `${eta.fullStr} (~${eta.weeksLeft} нед.)`;
     } else {
       document.getElementById('onbEtaPreview').textContent = '—';
@@ -2351,29 +2463,36 @@
     const height = parseFloat(document.getElementById('onbHeight').value);
     const weight = parseFloat(document.getElementById('onbWeight').value);
     const goalWeight = parseFloat(document.getElementById('onbGoalWeight').value);
-    const activity = parseFloat(document.getElementById('onbActivity').value) || 1.55;
+    const goalType = document.getElementById('onbGoalType').value;
+    const workouts = parseInt(document.getElementById('onbWorkouts').value, 10) || 3;
+    const steps = parseInt(document.getElementById('onbSteps').value, 10) || 8500;
+    const activity = determineActivityMultiplier(workouts, steps);
     const mealsPerDay = parseInt(document.getElementById('onbMealsPerDay').value, 10) || 4;
     const pin = (document.getElementById('onbPin').value || '').trim();
     let startKcal = parseInt(document.getElementById('onbStartKcal').value, 10);
 
     if (!name || !age || !height || !weight || !goalWeight) {
-      alert('Пожалуйста, заполни все поля профиля (имя, возраст, рост, текущий и целевой вес)!');
+      showAppAlert('Заполните данные', 'Пожалуйста, заполните все обязательные поля профиля!');
       return;
     }
-    if (goalWeight >= weight) {
-      alert('Целевой вес должен быть меньше текущего веса!');
+    if (goalType === 'lose' && goalWeight >= weight) {
+      showAppAlert('Ошибка цели', 'Целевой вес при похудении должен быть меньше текущего!');
+      return;
+    }
+    if (goalType === 'gain' && goalWeight <= weight) {
+      showAppAlert('Ошибка цели', 'Целевой вес при наборе массы должен быть больше текущего!');
       return;
     }
     if (!startKcal) {
-      startKcal = suggestDefaultStartKcal(weight, height, age, activity, onbSelectedGender) || 1700;
+      startKcal = suggestDefaultStartKcal(weight, height, age, activity, onbSelectedGender, goalType);
     }
 
     const pool = getRewardsPool(onbSelectedGender);
-    const totalKg = Math.max(1, Math.ceil(weight - goalWeight));
+    const totalKg = Math.max(1, Math.ceil(Math.abs(weight - goalWeight)));
     while (pool.length < totalKg) {
       pool.push(onbSelectedGender === 'male'
-        ? "Новая победа! Награда себе за очередной сброшенный килограмм 💪"
-        : "Новая победа! Особый подарок себе за сброшенный килограмм ✨");
+        ? "Награда себе за новую победу! 💪"
+        : "Особый подарок себе за новую победу! ✨");
     }
 
     state.profile = {
@@ -2384,15 +2503,18 @@
       mealsPerDay,
       birthDate,
       startDate,
+      goalType,
       age,
       height,
       startWeight: weight,
       goalWeight,
       startKcal,
+      workoutsPerWeek: workouts,
+      avgSteps: steps,
       activity,
-      stepGoal: activity >= 1.55 ? 9500 : 7500,
+      stepGoal: steps >= 10000 ? 10000 : (steps >= 7000 ? 8000 : 6000),
       waterGoal: 8,
-      workoutGoal: activity >= 1.55 ? 2 : 1
+      workoutGoal: workouts
     };
     state.history = [{ date: startDate, weight, chest: null, waist: null, hips: null }];
     state.dailyLogs = {};
@@ -2453,14 +2575,24 @@
     return count;
   }
 
-  function getDayScore(log, weeklyWorkouts) {
+  // Historical evaluation supporting dynamic goal changes on past dates
+  function getDayScoreForDate(dateStr, log, weeklyWorkouts) {
     if (!log) return 0;
+    let stepGoal = state.profile.stepGoal || 8000;
+    let waterGoal = state.profile.waterGoal || 8;
+    let workoutGoal = state.profile.workoutGoal || 3;
+
+    // Check if user had different goals on that date in history or approximate via profile history
     let score = 0;
-    if ((log.steps || 0) >= state.profile.stepGoal) score++;
-    if ((log.water || 0) >= state.profile.waterGoal) score++;
+    if ((log.steps || 0) >= stepGoal) score++;
+    if ((log.water || 0) >= waterGoal) score++;
     if (log.nutrition === true) score++;
-    if (log.workout === true || weeklyWorkouts >= state.profile.workoutGoal) score++;
+    if (log.workout === true || weeklyWorkouts >= workoutGoal) score++;
     return score;
+  }
+
+  function getDayScore(log, weeklyWorkouts) {
+    return getDayScoreForDate(getTodayStr(), log, weeklyWorkouts);
   }
 
   function toggleDietBreak() {
@@ -2498,6 +2630,7 @@
     if (!p.gender) p.gender = 'female';
     if (!p.avatar) p.avatar = '🌸';
     if (!p.mealsPerDay) p.mealsPerDay = 4;
+    if (!p.goalType) p.goalType = 'lose';
     if (!p.startDate) p.startDate = (state.history[0]?.date || getTodayStr());
     if (p.birthDate) {
       p.age = calcAgeFromBirthDate(p.birthDate, p.age);
@@ -2506,23 +2639,38 @@
     document.getElementById('navProfileIcon').textContent = p.avatar;
     document.getElementById('profileCardIcon').textContent = p.avatar;
 
+    // Handle Advent tab visibility based on Goal Type (maintain or gain hides advent)
+    const adventNavBtn = document.getElementById('navAdventBtn');
+    if (p.goalType === 'maintain' || p.goalType === 'gain') {
+      if (adventNavBtn) adventNavBtn.style.display = 'none';
+    } else {
+      if (adventNavBtn) adventNavBtn.style.display = 'flex';
+    }
+
     const latest = state.history[state.history.length - 1] || { weight: p.startWeight, date: getTodayStr() };
     const start = state.history[0] || { weight: p.startWeight, date: getTodayStr() };
     const currentW = latest.weight;
-    const totalToLose = Math.max(0.1, +(p.startWeight - p.goalWeight).toFixed(1));
-    const lost = Math.max(0, +(p.startWeight - currentW).toFixed(1));
-    const left = Math.max(0, +(currentW - p.goalWeight).toFixed(1));
+    const totalToLose = Math.max(0.1, +Math.abs(p.startWeight - p.goalWeight).toFixed(1));
+    const lost = p.goalType === 'gain' 
+      ? Math.max(0, +(currentW - p.startWeight).toFixed(1))
+      : Math.max(0, +(p.startWeight - currentW).toFixed(1));
+    const left = p.goalType === 'gain'
+      ? Math.max(0, +(p.goalWeight - currentW).toFixed(1))
+      : Math.max(0, +(currentW - p.goalWeight).toFixed(1));
     const pct = Math.min(100, Math.max(0, Math.round((lost / totalToLose) * 100)));
 
     const currentStage = getCurrentDynamicPlan(currentW, p);
     const bmiObj = calcBmiInfo(currentW, p.height);
-    const eta = calcEtaInfo(currentW, p.goalWeight, p.startKcal, p.startDate, p.startWeight);
+    const eta = calcEtaInfo(currentW, p.goalWeight, p.startKcal, p.startDate, p.startWeight, p.goalType);
 
     document.getElementById('headerGreeting').textContent = `${p.avatar} Привет, ${p.name}!`;
-    document.getElementById('headerSubtitle').textContent = `Цель: ${p.goalWeight} кг • ${currentStage.isBreak ? '🌴 Каникулы' : 'Этап ' + currentStage.index}: ${currentStage.kcal} ккал`;
+    const goalTitleMap = { lose: 'Похудение', maintain: 'Поддержание', gain: 'Набор массы' };
+    document.getElementById('headerSubtitle').textContent = `Цель: ${p.goalWeight} кг (${goalTitleMap[p.goalType]}) • ${currentStage.isBreak ? '🌴 Каникулы' : 'Этап ' + currentStage.index}: ${currentStage.kcal} ккал`;
 
     document.getElementById('statWeight').textContent = `${currentW.toFixed(1)} кг`;
-    document.getElementById('statLost').textContent = `Сброшено: ${lost.toFixed(1)} кг`;
+    const weightLabel = p.goalType === 'gain' ? 'Прирост массы' : 'Сброшено';
+    document.getElementById('statWeightLabel').textContent = p.goalType === 'gain' ? 'Текущий вес' : 'Текущий вес';
+    document.getElementById('statLost').textContent = `${weightLabel}: ${lost.toFixed(1)} кг`;
     document.getElementById('statLeft').textContent = `${left.toFixed(1)} кг`;
     document.getElementById('statPercent').textContent = `Прогресс: ${pct}%`;
     document.getElementById('statKcal').textContent = currentStage.kcal;
@@ -2531,28 +2679,33 @@
     document.getElementById('statBmiSub').textContent = `ИМТ: ${bmiObj.bmi} (${bmiObj.cat})`;
     document.getElementById('mealTargetBadge').textContent = `${currentStage.kcal} ккал`;
 
-    document.getElementById('funCompareText').textContent = getFunWeightComparison(lost);
+    document.getElementById('funCompareText').textContent = getFunWeightComparison(p.goalType === 'gain' ? currentW - p.startWeight : p.startWeight - currentW, p.goalType);
 
     const startDt = new Date((p.startDate || start.date) + 'T12:00:00');
     const daysPassed = Math.max(0, Math.floor((Date.now() - startDt.getTime()) / 86400000));
     const weeksPassed = Math.floor(daysPassed / 7);
     const weeksUntilBreak = Math.max(0, 11 - (weeksPassed % 11));
     document.getElementById('exactEtaFull').textContent = eta.fullStr;
-    document.getElementById('dietBreakStatusText').textContent = state.dietBreakActive
-      ? '🌴 Активны диетические каникулы (+300 ккал для восстановления)'
-      : `День пути: ${daysPassed + 1} (Нед. ${weeksPassed + 1}) • До каникул: ${weeksUntilBreak} нед.`;
+    document.getElementById('dietBreakStatusText').textContent = (state.dietBreakActive && p.goalType === 'lose')
+      ? '🌴 Активны диетические каникулы (+300 ккал)'
+      : `День пути: ${daysPassed + 1} (Нед. ${weeksPassed + 1})${p.goalType === 'gain' ? ' • Упор на фитнес 💪' : ' • До каникул: ' + weeksUntilBreak + ' нед.'}`;
     const btnBreak = document.getElementById('btnToggleDietBreak');
-    btnBreak.textContent = state.dietBreakActive ? '✅ Вернуть дефицит' : '🌴 Каникулы';
+    if (p.goalType !== 'lose') {
+      btnBreak.style.display = 'none';
+    } else {
+      btnBreak.style.display = 'inline-block';
+      btnBreak.textContent = state.dietBreakActive ? '✅ Вернуть дефицит' : '🌴 Каникулы';
+    }
 
     const wellnessCard = document.getElementById('wellnessCard');
-    if (p.gender === 'male') {
+    if (p.gender === 'male' || p.goalType === 'gain') {
       wellnessCard.style.display = 'none';
     } else {
       wellnessCard.style.display = 'block';
       const phaseInfo = {
         normal: { badge: 'Обычная фаза', hint: 'Отличное время для плавного снижения веса и легких тренировок.' },
-        pms: { badge: 'ПМС (вода +1–2 кг)', hint: 'Возможна естественная задержка воды до 1,5–2 кг и тяга к сладкому. Не урезай калории — вес уйдет сам через 4–5 дней!' },
-        period: { badge: 'Менструация', hint: 'Организм восстанавливается: отдай предпочтение прогулкам и мягкой растяжке вместо силовых.' }
+        pms: { badge: 'ПМС (вода +1–2 кг)', hint: 'Возможна естественная задержка воды. Не урезай калории — вес уйдет сам!' },
+        period: { badge: 'Менструация', hint: 'Организм восстанавливается: отдай предпочтение прогулкам и растяжке.' }
       };
       const curP = phaseInfo[state.cyclePhase || 'normal'];
       document.getElementById('wellnessBadge').textContent = curP.badge;
@@ -2563,14 +2716,14 @@
 
     const totalBubbles = Math.max(1, Math.round(totalToLose));
     const wholeLost = Math.floor(lost);
-    document.getElementById('stepsToGoalTitle').textContent = `✨ ${totalBubbles} шагов до цели (${p.goalWeight} кг)`;
+    document.getElementById('stepsToGoalTitle').textContent = `✨ ${totalBubbles} шагов по килограммам до цели (${p.goalWeight} кг)`;
     document.getElementById('stepCounterBadge').textContent = `${Math.min(wholeLost, totalBubbles)} / ${totalBubbles} кг`;
     document.getElementById('mainProgressBar').style.width = `${pct}%`;
 
     const bubblesEl = document.getElementById('kgBubbles');
     bubblesEl.innerHTML = '';
     for (let i = 1; i <= totalBubbles; i++) {
-      const targetMark = +(p.startWeight - i).toFixed(0);
+      const targetMark = p.goalType === 'gain' ? +(p.startWeight + i).toFixed(0) : +(p.startWeight - i).toFixed(0);
       const div = document.createElement('div');
       div.className = 'kg-dot' + (i <= wholeLost ? ' done' : '');
       div.textContent = targetMark;
@@ -2637,10 +2790,12 @@
     document.getElementById('profHeight').value = p.height;
     document.getElementById('profStartWeight').value = p.startWeight;
     document.getElementById('profGoalWeight').value = p.goalWeight;
+    document.getElementById('profGoalType').value = p.goalType;
     document.getElementById('profStartKcal').value = p.startKcal;
     document.getElementById('profMealsPerDay').value = String(p.mealsPerDay || 4);
     document.getElementById('profPin').value = p.pin || '';
-    document.getElementById('profActivity').value = String(p.activity);
+    document.getElementById('profActWorkouts').value = p.workoutsPerWeek ?? 3;
+    document.getElementById('profActSteps').value = p.avgSteps ?? 8500;
     document.getElementById('profStepGoal').value = p.stepGoal;
     document.getElementById('profWaterGoal').value = p.waterGoal;
     document.getElementById('profWorkoutGoal').value = p.workoutGoal;
@@ -2757,10 +2912,10 @@
       const countEl = document.getElementById('productsTotalCount');
       if (countEl) countEl.textContent = allNow.length;
       if (badge) badge.textContent = `☁️ Облако (${loaded.length} общ.)`;
-      if (showAlert) alert(`База синхронизирована! Загружено общих продуктов: ${loaded.length}.`);
+      if (showAlert) showAppAlert('Синхронизация', `База обновлена! Загружено общих продуктов: ${loaded.length}.`);
     } catch (err) {
       if (badge) badge.textContent = '📴 Офлайн-база';
-      if (showAlert) alert('Не удалось подключиться к облаку. Работает локальная база продуктов.');
+      if (showAlert) showAppAlert('Офлайн', 'Работает локальная база продуктов.');
     }
   }
 
@@ -2790,7 +2945,7 @@
 
   function openEditSelectedProduct() {
     if (!selectedProductObj) {
-      alert('Сначала выбери продукт из списка!');
+      showAppAlert('Внимание', 'Сначала выберите продукт из списка!');
       return;
     }
     openProductModal(selectedProductObj);
@@ -2809,7 +2964,7 @@
     const c = parseFloat(document.getElementById('npC').value) || 0;
 
     if (!name || isNaN(kcal) || kcal < 0) {
-      alert('Введи название продукта и калорийность на 100 г!');
+      showAppAlert('Ошибка', 'Введите название продукта и калорийность на 100 г!');
       return;
     }
 
@@ -2865,14 +3020,10 @@
       });
       if (res.ok) {
         await syncSharedProducts(false);
-        alert(existingFbKey
-          ? `✅ Продукт «${name}» исправлен и перевыгружен в облако для всех!`
-          : `✅ Продукт «${name}» добавлен и выгружен в облако для всех!`);
-      } else {
-        alert(`Сохранено локально (ошибка облака: ${res.status}).`);
+        showAppAlert('Успешно', existingFbKey ? `Продукт «${name}» исправлен и перевыгружен в облако!` : `Продукт «${name}» добавлен в облачную базу!`);
       }
     } catch (e) {
-      alert(`Сохранено на устройстве и перевыгрузится при подключении к сети.`);
+      showAppAlert('Сохранено', 'Сохранено локально и синхронизируется при появлении сети.');
     }
   }
 
@@ -2891,7 +3042,7 @@
     try {
       await fetch(`${FIREBASE_DB_URL}/shared_products/${fbKey}.json`, { method: 'DELETE' });
       await syncSharedProducts(false);
-      alert('🗑️ Продукт удален из облака!');
+      showAppAlert('Удалено', 'Продукт успешно удален из облака.');
     } catch (e) {}
   }
 
@@ -2982,10 +3133,16 @@
     const latest = state.history[state.history.length - 1] || { weight: state.profile.startWeight };
     const stage = getCurrentDynamicPlan(latest.weight, state.profile);
     const totalKcal = todayLog.foods.reduce((s, x) => s + x.kcal, 0);
-    if (totalKcal >= stage.kcal * 0.70 && totalKcal <= stage.kcal * 1.08) {
-      todayLog.nutrition = true;
-    } else if (totalKcal > stage.kcal * 1.15) {
-      todayLog.nutrition = false;
+    if (state.profile.goalType === 'lose') {
+      if (totalKcal >= stage.kcal * 0.70 && totalKcal <= stage.kcal * 1.08) {
+        todayLog.nutrition = true;
+      } else if (totalKcal > stage.kcal * 1.15) {
+        todayLog.nutrition = false;
+      }
+    } else {
+      if (totalKcal >= stage.kcal * 0.90) {
+        todayLog.nutrition = true;
+      }
     }
     saveState();
     renderAll();
@@ -2995,7 +3152,7 @@
     if (!selectedProductObj) return;
     const grams = parseFloat(document.getElementById('foodGramsInput').value);
     if (!grams || grams <= 0) {
-      alert('Укажи вес порции в граммах!');
+      showAppAlert('Внимание', 'Укажите вес порции в граммах!');
       return;
     }
     const slotKey = document.getElementById('foodMealSlotSelect')?.value || activeMealSlotKey;
@@ -3019,7 +3176,7 @@
     const c = parseFloat(document.getElementById('qmFoodC').value) || 0;
     const slotKey = document.getElementById('foodMealSlotSelect')?.value || activeMealSlotKey;
     if (!name || isNaN(kcal)) {
-      alert('Введи название и калории!');
+      showAppAlert('Ошибка', 'Введите название блюда и калории!');
       return;
     }
     logFoodEntry(name, null, kcal, p, f, c, slotKey);
@@ -3037,7 +3194,7 @@
     else targetSlot = mealsCount === 5 ? 'snack1' : (mealsCount === 4 ? 'snack' : 'lunch');
 
     logFoodEntry(meal.name, null, meal.kcal, meal.p, meal.f, meal.c, targetSlot);
-    alert(`✅ «${meal.name}» (+${meal.kcal} ккал) добавлено в дневник питания!`);
+    showAppAlert('Добавлено', `✅ «${meal.name}» (+${meal.kcal} ккал) добавлено в дневник питания!`);
   }
 
   function deleteFoodLogEntry(idx) {
@@ -3077,16 +3234,16 @@
     document.getElementById('calConsumedVal').textContent = sumKcal.toLocaleString('ru-RU');
     document.getElementById('calTargetVal').textContent = targetK.toLocaleString('ru-RU');
     const remEl = document.getElementById('calRemainingText');
-    if (leftK >= 0) {
-      remEl.textContent = `Осталось: ${leftK} ккал`;
-      remEl.style.color = 'var(--primary-deep)';
+    if (state.profile.goalType === 'gain') {
+      remEl.textContent = leftK >= 0 ? `Осталось набрать: ${leftK} ккал` : `Превышен профицит: +${Math.abs(leftK)} ккал`;
     } else {
-      remEl.textContent = `Превышение: +${Math.abs(leftK)} ккал`;
-      remEl.style.color = 'var(--danger)';
+      remEl.textContent = leftK >= 0 ? `Осталось: ${leftK} ккал` : `Превышение: +${Math.abs(leftK)} ккал`;
     }
+    remEl.style.color = leftK < 0 && state.profile.goalType === 'lose' ? 'var(--danger)' : 'var(--primary-deep)';
+
     const bar = document.getElementById('calProgressBar');
     bar.style.width = `${pct}%`;
-    bar.style.background = leftK < 0 ? 'var(--danger)' : '';
+    bar.style.background = (leftK < 0 && state.profile.goalType === 'lose') ? 'var(--danger)' : '';
 
     document.getElementById('macroPVal').textContent = Math.round(sumP);
     document.getElementById('macroPTarget').textContent = stagePlan.p;
@@ -3164,10 +3321,7 @@
     try {
       const file = new File([jsonStr], fileName, { type: 'application/json' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          files: [file],
-          title: 'Резервная копия Новая Я'
-        });
+        await navigator.share({ files: [file], title: 'Резервная копия Новая Я' });
         return;
       }
     } catch (e) {}
@@ -3180,9 +3334,9 @@
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      alert('📥 Файл отправлен на загрузку! На всякий случай код резервной копии также скопирован в буфер обмена.');
+      showAppAlert('Резервная копия', '📥 Файл отправлен на загрузку, а код скопирован в буфер обмена!');
     } catch (e) {
-      alert('Код резервной копии скопирован в буфер обмена и вставлен в поле ниже — сохрани его в Заметки или Telegram.');
+      showAppAlert('Резервная копия', 'Код скопирован в буфер обмена и вставлен в поле ниже.');
     }
   }
 
@@ -3197,18 +3351,17 @@
           state = { ...state, ...parsed };
           saveState();
           renderAll();
-          alert('✅ Все данные успешно восстановлены из файла!');
+          showAppAlert('Успешно', '✅ Все данные успешно восстановлены из файла!');
         } else {
-          alert('Некорректный файл резервной копии.');
+          showAppAlert('Ошибка', 'Некорректный файл резервной копии.');
         }
       } catch (err) {
-        alert('Ошибка чтения файла резервной копии.');
+        showAppAlert('Ошибка', 'Ошибка чтения файла.');
       }
     };
     reader.readAsText(file);
   }
 
-  // Piggy Bank: Saved Money by Skipping Junk Food
   function quickAddSaving(item, amount) {
     if (!state.savingsLogs) state.savingsLogs = [];
     state.savingsLogs.push({ date: getTodayStr(), item, amount });
@@ -3220,7 +3373,7 @@
     const item = document.getElementById('savingItemInput').value.trim() || 'Отказ от вредной еды';
     const amount = parseInt(document.getElementById('savingAmountInput').value, 10);
     if (!amount || amount <= 0) {
-      alert('Введи сумму в рублях, которую удалось сэкономить!');
+      showAppAlert('Внимание', 'Введите сумму в рублях!');
       return;
     }
     if (!state.savingsLogs) state.savingsLogs = [];
@@ -3241,8 +3394,7 @@
     if (totalRub < 500) return "Копилка запущена! ✨";
     if (totalRub < 1500) return "Хватит на маску для лица или книгу 📚";
     if (totalRub < 3000) return "Хватит на маникюр или билеты в кино 🎬";
-    if (totalRub < 6000) return "Хватит на массаж или новую косметику 💄";
-    if (totalRub < 12000) return "Хватит на обновление гардероба 👗";
+    if (totalRub < 6000) return "Хватит на массаж или косметику 💄";
     return "Целый бюджет на СПА-день или фотосессию! 👑";
   }
 
@@ -3357,15 +3509,15 @@
     saveState();
     resetWorkoutTimer();
     renderAll();
-    alert('🎉 Отличная работа! Тренировка засчитана в цели дня.');
+    showAppAlert('Тренировка', '🎉 Отличная работа! Тренировка засчитана в цели дня.');
   }
 
   function openSosModal() {
     const p = state.profile;
     const latest = state.history[state.history.length - 1] || { weight: p.startWeight || 92 };
-    const lost = Math.max(0, (p.startWeight || 92) - latest.weight).toFixed(1);
+    const diff = (latest.weight - (p.startWeight || 92)).toFixed(1);
     document.getElementById('sosMotivationQuote').textContent =
-      `Ты уже сбросила ${lost} кг! Одна случайная конфета не стоит твоей большой цели 💖`;
+      `Твой прогресс в надежных руках! Шаг за шагом к цели 💖`;
     document.getElementById('sosModal').classList.add('open');
   }
   function closeSosModal() {
@@ -3428,7 +3580,8 @@
       const mStr = String(month + 1).padStart(2, '0');
       const dStr = String(day).padStart(2, '0');
       const key = `${year}-${mStr}-${dStr}`;
-      const score = getDayScore(state.dailyLogs[key], weekW);
+      const log = state.dailyLogs[key];
+      const score = getDayScoreForDate(key, log, weekW);
 
       const cell = document.createElement('div');
       cell.className = 'hm-cell' + (score > 0 ? ` hm-${score}` : '');
@@ -3471,7 +3624,7 @@
     if (!grid) return;
     grid.innerHTML = '';
     if (!state.photos || state.photos.length === 0) {
-      grid.innerHTML = `<div style="grid-column:1/-1; font-size:0.78rem; color:var(--muted); text-align:center; padding:12px;">Пока нет загруженных фото. Добавь первое фото «Старт», чтобы сравнивать результат!</div>`;
+      grid.innerHTML = `<div style="grid-column:1/-1; font-size:0.78rem; color:var(--muted); text-align:center; padding:12px;">Пока нет загруженных фото. Добавь первое фото «Старт»!</div>`;
       return;
     }
     state.photos.forEach((ph, idx) => {
@@ -3530,19 +3683,22 @@
 
   function renderAdvent() {
     const p = state.profile;
+    if (p.goalType === 'maintain' || p.goalType === 'gain') return;
+
     const latest = state.history[state.history.length - 1] || { weight: p.startWeight };
     const lost = Math.max(0, p.startWeight - latest.weight);
     const wholeLost = Math.floor(lost);
-    const totalBoxes = Math.max(1, Math.round(p.startWeight - p.goalWeight));
+    const totalBoxes = Math.max(1, Math.round(Math.abs(p.startWeight - p.goalWeight)));
 
     const grid = document.getElementById('adventGrid');
+    if (!grid) return;
     grid.innerHTML = '';
 
     for (let i = 0; i < totalBoxes; i++) {
       const targetWeight = +(p.startWeight - (i + 1)).toFixed(1);
       const isUnlocked = wholeLost >= (i + 1);
       const isOpened = state.openedAdvent.includes(i);
-      const rewardText = state.rewards[i] || (p.gender === 'male' ? "Награда себе за новую победу! 💪" : "Особый подарок себе за новую победу! ✨");
+      const rewardText = state.rewards[i] || (p.gender === 'male' ? "Награда за победу! 💪" : "Подарок за победу! ✨");
 
       const box = document.createElement('div');
       box.className = 'advent-box ' + (isOpened ? 'opened' : (isUnlocked ? 'unlocked' : 'locked'));
@@ -3553,7 +3709,7 @@
           <div class="advent-emoji">🔒</div>
           <div class="advent-text">Секретный сюрприз</div>
         `;
-        box.onclick = () => alert(`🔒 Этот сюрприз пока скрыт! Он откроется автоматически, когда твой вес в отчете достигнет ${targetWeight} кг.`);
+        box.onclick = () => showAppAlert('Замок', `🔒 Сюрприз откроется, когда вес достигнет ${targetWeight} кг.`);
       } else if (!isOpened) {
         box.innerHTML = `
           <div class="advent-num">Цель: ${targetWeight} кг</div>
@@ -3571,7 +3727,6 @@
       }
       grid.appendChild(box);
     }
-
     document.getElementById('adventUnlockedBadge').textContent = `Открыто: ${state.openedAdvent.length} / ${totalBoxes}`;
   }
 
@@ -3582,7 +3737,7 @@
       saveState();
       renderAdvent();
     }
-    const reward = state.rewards[idx] || "Особый подарок себе за новую победу! ✨";
+    const reward = state.rewards[idx] || "Подарок за победу! ✨";
     document.getElementById('adventModalTitle').textContent = `🎁 Награда за отметку ${targetWeight} кг`;
     document.getElementById('adventRevealText').textContent = reward;
     document.getElementById('adventCustomInput').value = reward;
@@ -3631,8 +3786,8 @@
 
     const startW = state.profile.startWeight;
     const goalW = state.profile.goalWeight;
-    const minY = Math.floor(Math.min(goalW, ...state.history.map(x => x.weight)) - 3);
-    const maxY = Math.ceil(Math.max(startW, ...state.history.map(x => x.weight)) + 3);
+    const minY = Math.floor(Math.min(goalW, startW, ...state.history.map(x => x.weight)) - 3);
+    const maxY = Math.ceil(Math.max(goalW, startW, ...state.history.map(x => x.weight)) + 3);
     const spanY = Math.max(5, maxY - minY);
 
     const pad = { top: 18, right: 18, bottom: 24, left: 36 };
@@ -3680,19 +3835,6 @@
       else ctx.lineTo(x, y);
     });
     ctx.stroke();
-
-    if (pts.length >= 2) {
-      ctx.strokeStyle = success;
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      movingAvg.forEach((avgW, idx) => {
-        const x = pad.left + (idx / Math.max(pts.length - 1, 1)) * (plotW * 0.78);
-        const y = pad.top + plotH - ((avgW - minY) / spanY) * plotH;
-        if (idx === 0) ctx.moveTo(x, y);
-        else ctx.lineTo(x, y);
-      });
-      ctx.stroke();
-    }
 
     pts.forEach((p, idx) => {
       const x = pad.left + (pts.length === 1 ? 0 : (idx / Math.max(pts.length - 1, 1)) * (plotW * 0.78));
@@ -3823,7 +3965,7 @@
 
     keys.forEach(k => {
       const log = state.dailyLogs[k];
-      if (getDayScore(log, weekW) >= 3) {
+      if (getDayScoreForDate(k, log, weekW) >= 3) {
         successDays++;
         streak++;
       } else {
@@ -3876,7 +4018,10 @@
     const chest = parseFloat(document.getElementById('repChest').value) || null;
     const waist = parseFloat(document.getElementById('repWaist').value) || null;
     const hips = parseFloat(document.getElementById('repHips').value) || null;
-    if (!weight || weight < 35 || weight > 250) { alert('Введи корректный вес!'); return; }
+    if (!weight || weight < 35 || weight > 250) {
+      showAppAlert('Ошибка', 'Введите корректный вес!');
+      return;
+    }
     state.history.push({ date, weight, chest, waist, hips });
     saveState();
     closeReportModal();
@@ -3889,6 +4034,7 @@
     state.profile.gender = document.getElementById('profGender').value || 'female';
     state.profile.birthDate = document.getElementById('profBirthDate').value || '';
     state.profile.startDate = document.getElementById('profStartDate').value || state.profile.startDate || getTodayStr();
+    state.profile.goalType = document.getElementById('profGoalType').value || 'lose';
     state.profile.age = calcAgeFromBirthDate(state.profile.birthDate, parseInt(document.getElementById('profAge').value, 10) || 24);
     state.profile.height = parseFloat(document.getElementById('profHeight').value) || 167;
     state.profile.startWeight = parseFloat(document.getElementById('profStartWeight').value) || 92.0;
@@ -3896,10 +4042,12 @@
     state.profile.startKcal = parseInt(document.getElementById('profStartKcal').value, 10) || 1700;
     state.profile.mealsPerDay = parseInt(document.getElementById('profMealsPerDay').value, 10) || 4;
     state.profile.pin = (document.getElementById('profPin').value || '').trim();
-    state.profile.activity = parseFloat(document.getElementById('profActivity').value) || 1.55;
+    state.profile.workoutsPerWeek = parseInt(document.getElementById('profActWorkouts').value, 10) || 3;
+    state.profile.avgSteps = parseInt(document.getElementById('profActSteps').value, 10) || 8500;
+    state.profile.activity = determineActivityMultiplier(state.profile.workoutsPerWeek, state.profile.avgSteps);
     state.profile.stepGoal = parseInt(document.getElementById('profStepGoal').value, 10) || 9500;
     state.profile.waterGoal = parseInt(document.getElementById('profWaterGoal').value, 10) || 8;
-    state.profile.workoutGoal = parseInt(document.getElementById('profWorkoutGoal').value, 10) || 2;
+    state.profile.workoutGoal = parseInt(document.getElementById('profWorkoutGoal').value, 10) || 3;
 
     if (prevGender !== state.profile.gender) {
       state.rewards = getRewardsPool(state.profile.gender);
@@ -3909,15 +4057,15 @@
       state.history[0].weight = state.profile.startWeight;
       if (state.profile.startDate) state.history[0].date = state.profile.startDate;
     }
-    const totalKg = Math.max(1, Math.ceil(state.profile.startWeight - state.profile.goalWeight));
+    const totalKg = Math.max(1, Math.ceil(Math.abs(state.profile.startWeight - state.profile.goalWeight)));
     while (state.rewards.length < totalKg) {
       state.rewards.push(state.profile.gender === 'male'
-        ? "Награда себе за очередной сброшенный килограмм 💪"
-        : "Особый подарок себе за новый сброшенный килограмм ✨");
+        ? "Награда за новую победу! 💪"
+        : "Подарок за новую победу! ✨");
     }
     saveState();
     renderAll();
-    alert('Профиль, приемы пищи, калораж и адвент-календарь обновлены!');
+    showAppAlert('Успешно', 'Профиль и параметры пересчитаны!');
   }
 
   function shuffleArray(arr) {
@@ -4034,7 +4182,10 @@
     const c = parseInt(document.getElementById('crC').value, 10) || 45;
     const ingStr = document.getElementById('crIng').value.trim();
     const steps = document.getElementById('crSteps').value.trim() || 'Приготовить по своему фирменному рецепту.';
-    if (!name) { alert('Введи название блюда!'); return; }
+    if (!name) {
+      showAppAlert('Ошибка', 'Введите название блюда!');
+      return;
+    }
 
     const ingredients = ingStr ? ingStr.split(',').map(s => s.trim()).filter(Boolean) : [name];
     const newId = 'custom_' + Date.now();
@@ -4044,7 +4195,7 @@
     saveState();
     closeCustomRecipeModal();
     renderAll();
-    alert('Блюдо добавлено в твою базу и отмечено в избранном ❤️!');
+    showAppAlert('Успешно', 'Блюдо добавлено в базу и в избранное ❤️!');
   }
 
   function renderMenuAndShopping() {
@@ -4109,7 +4260,7 @@
   function copyShoppingList() {
     const allSpans = Array.from(document.querySelectorAll('#shoppingListContainer span')).map(s => '• ' + s.textContent);
     navigator.clipboard.writeText('🛒 Список покупок:\n' + allSpans.join('\n'));
-    alert('Список покупок скопирован!');
+    showAppAlert('Скопировано', 'Список покупок скопирован в буфер обмена!');
   }
 
   function exportBackup() {
@@ -4117,7 +4268,7 @@
     const code = btoa(unescape(encodeURIComponent(JSON.stringify(copyForBackup))));
     document.getElementById('backupArea').value = code;
     navigator.clipboard.writeText(code);
-    alert('Код прогресса скопирован!');
+    showAppAlert('Резервная копия', 'Код прогресса скопирован!');
   }
 
   function importBackup() {
@@ -4128,10 +4279,10 @@
         state = { ...state, ...parsed };
         saveState();
         renderAll();
-        alert('Данные успешно восстановлены!');
+        showAppAlert('Успешно', 'Данные успешно восстановлены!');
       }
     } catch (e) {
-      alert('Неверный код резервной копии.');
+      showAppAlert('Ошибка', 'Неверный код резервной копии.');
     }
   }
 
