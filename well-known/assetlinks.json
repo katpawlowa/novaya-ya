@@ -1,1 +1,8 @@
-
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.katpawlowa.twa",
+        "sha256_cert_fingerprints": ["A1:5D:91:B9:42:CF:E6:B7:43:68:25:31:84:65:9E:7B:B8:6E:05:02:B6:E7:C9:5A:2D:6A:D0:41:2F:81:46:54"]
+      }
+    }]
