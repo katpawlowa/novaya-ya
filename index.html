@@ -1918,6 +1918,10 @@
     "ГЛАВНЫЙ ПРИЗ! Новая форма и крутая фотосессия в новом образе 🏆"
   ];
 
+  function getRewardsPool(gender) {
+    return gender === 'male' ? [...MALE_REWARDS] : [...FEMALE_REWARDS];
+  }
+
   const DEFAULT_RECIPES_DB = {
     breakfast: [
       { id: "b1", name: "Нежные творожные сырники с ягодами", kcal: 420, p: 32, f: 12, c: 45, tags: ["творог", "сладкое", "сырники", "без мяса", "без рыбы"], ingredients: ["Творог 5% — 180 г", "Яйцо куриное — 1 шт", "Мука рисовая — 25 г", "Ягоды — 80 г", "Мед/подсластитель — 10 г"], steps: "Смешай творог, яйцо и муку. Сформируй сырники, обжарь по 3 мин с каждой стороны под крышкой. Подавай с ягодами." },
@@ -2033,7 +2037,7 @@
         mealsPerDay: 4,
         birthDate: '',
         startDate: '',
-        goalType: 'lose', // 'lose', 'maintain', 'gain'
+        goalType: 'lose',
         age: null,
         height: null,
         startWeight: null,
@@ -2095,8 +2099,7 @@
     }
   }
 
-  // Google Sheets Feedback Integration
-  const GOOGLE_SHEET_FEEDBACK_URL = "https://script.google.com/macros/s/AKfycbycE6R4Pcf0fV_19B5h57r897qX2eYd0mG8bT6vW1xL9k_z3Q/exec"; // Placeholder user link or empty
+  const GOOGLE_SHEET_FEEDBACK_URL = "https://script.google.com/macros/s/AKfycbycE6R4Pcf0fV_19B5h57r897qX2eYd0mG8bT6vW1xL9k_z3Q/exec";
 
   async function sendUserFeedback() {
     const txtInput = document.getElementById('feedbackTextInput');
@@ -2575,14 +2578,12 @@
     return count;
   }
 
-  // Historical evaluation supporting dynamic goal changes on past dates
   function getDayScoreForDate(dateStr, log, weeklyWorkouts) {
     if (!log) return 0;
     let stepGoal = state.profile.stepGoal || 8000;
     let waterGoal = state.profile.waterGoal || 8;
     let workoutGoal = state.profile.workoutGoal || 3;
 
-    // Check if user had different goals on that date in history or approximate via profile history
     let score = 0;
     if ((log.steps || 0) >= stepGoal) score++;
     if ((log.water || 0) >= waterGoal) score++;
@@ -2639,7 +2640,6 @@
     document.getElementById('navProfileIcon').textContent = p.avatar;
     document.getElementById('profileCardIcon').textContent = p.avatar;
 
-    // Handle Advent tab visibility based on Goal Type (maintain or gain hides advent)
     const adventNavBtn = document.getElementById('navAdventBtn');
     if (p.goalType === 'maintain' || p.goalType === 'gain') {
       if (adventNavBtn) adventNavBtn.style.display = 'none';
@@ -2669,7 +2669,7 @@
 
     document.getElementById('statWeight').textContent = `${currentW.toFixed(1)} кг`;
     const weightLabel = p.goalType === 'gain' ? 'Прирост массы' : 'Сброшено';
-    document.getElementById('statWeightLabel').textContent = p.goalType === 'gain' ? 'Текущий вес' : 'Текущий вес';
+    document.getElementById('statWeightLabel').textContent = 'Текущий вес';
     document.getElementById('statLost').textContent = `${weightLabel}: ${lost.toFixed(1)} кг`;
     document.getElementById('statLeft').textContent = `${left.toFixed(1)} кг`;
     document.getElementById('statPercent').textContent = `Прогресс: ${pct}%`;
@@ -2815,7 +2815,6 @@
     }
   }
 
-  // Shared Products & Meal-Split Calorie Tracker
   const FIREBASE_DB_URL = "https://novaya-ya-food-default-rtdb.europe-west1.firebasedatabase.app";
 
   const DEFAULT_PRODUCTS_DB = [
