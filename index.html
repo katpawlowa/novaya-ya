@@ -6,9 +6,10 @@
   <meta name="theme-color" content="#ec4899" id="metaThemeColor" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>Новая Я — Персональный трекер</title>
+  <meta name="description" content="Персональный трекер похудения с индивидуальным расчетом КБЖУ, меню 80/20, трекером привычек и адвент-календарем целей" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/png" href="icon-512.png" />
-  <link rel="apple-touch-icon" href="icon-512.png" />
+  <link rel="icon" type="image/png" href="app-icon.png" />
+  <link rel="apple-touch-icon" href="app-icon.png" />
   <style>
     :root, [data-theme="pink"] {
       --bg-grad: linear-gradient(180deg, #ffeaf2 0%, #fff7fa 50%, #fff0f6 100%);
@@ -364,7 +365,7 @@
       color: #fff;
     }
 
-    /* Bottom Navigation (7 clean tabs) */
+    /* Bottom Navigation (6 clean tabs) */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -464,7 +465,6 @@
       margin-bottom: 10px;
     }
 
-
     /* Exercise Visual Cards */
     .ex-item-card {
       display: flex;
@@ -515,7 +515,6 @@
       margin-top: 6px;
       font-size: 0.82rem;
     }
-
 
     /* Calorie & BJU Tracker */
     .macro-bars {
@@ -579,7 +578,6 @@
       background: var(--surface-2);
       font-weight: 700;
     }
-
 
     /* Meal Slots inside Calorie Counter */
     .meal-slot-box {
@@ -867,7 +865,7 @@
       </div>
     </div>
 
-    <!-- 35 Steps Progress -->
+    <!-- Steps Progress -->
     <div class="card">
       <div class="card-title">
         <span id="stepsToGoalTitle">✨ Шаги по килограммам до цели</span>
@@ -878,8 +876,6 @@
       </div>
       <div class="kg-bubbles" id="kgBubbles"></div>
     </div>
-
-
 
     <!-- Live Daily Calorie & BJU Counter Split by Meals -->
     <div class="card">
@@ -1013,7 +1009,6 @@
         </div>
       </div>
     </div>
-
 
     <!-- Piggy Bank: Saved Money by Skipping Junk Food -->
     <div class="card">
@@ -1242,7 +1237,7 @@
       <div class="row" style="margin-bottom:8px;">
         <button class="btn" style="flex:1;" onclick="generateMenu(1, false)">На 1 день</button>
         <button class="btn-soft" style="flex:1;" onclick="generateMenu(7, false)">На 7 дней</button>
-        <button class="btn-soft" onclick="generateMenu(1, true)" title="Собрать из отмеченных сердечком">❤️ Из избранного</button>
+        <button class="btn-soft" style="flex:1;" onclick="generateMenu(1, true)" title="Собрать из отмеченных сердечком">❤️ Из избранного</button>
       </div>
       <button class="btn-soft" style="width:100%;" onclick="openCustomRecipeModal()">+ Добавить свой рецепт в базу</button>
     </div>
@@ -1558,7 +1553,7 @@
       <button class="btn-soft" onclick="closeSosModal()">✕</button>
     </div>
     <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;">
-      Сильный тяга к еде длится всего 3–5 минут. Выпей стакан воды, запусти 3-минутный таймер паузы и посмотри на свой прогресс!
+      Сильная тяга к еде длится всего 3–5 минут. Выпей стакан воды, запусти 3-минутный таймер паузы и посмотри на свой прогресс!
     </p>
     <div style="background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:12px; text-align:center; margin-bottom:10px;">
       <div style="font-size:0.78rem; color:var(--muted);">Таймер осознанной паузы</div>
@@ -1627,7 +1622,6 @@
   </div>
 </div>
 
-
 <!-- CREATE / EDIT SHARED PRODUCT MODAL -->
 <div class="modal-backdrop" id="productModal">
   <div class="modal">
@@ -1666,7 +1660,6 @@
     <button class="btn-danger" style="margin-top:8px; display:none;" id="btnDeleteSharedProd" onclick="deleteSharedProductFromCloud()">🗑️ Удалить этот продукт из облака</button>
   </div>
 </div>
-
 
 <!-- MULTI-USER ACCOUNT SWITCHER & PIN AUTH MODAL -->
 <div class="modal-backdrop" id="accountsModal">
@@ -1737,7 +1730,6 @@
 
 <script>
   const AVATAR_OPTIONS = ["🌸", "🦋", "👑", "🐱", "🦊", "🦄", "👩", "👱‍♀️", "🧕", "👨", "🧔", "💪"];
-
 
   function getExSvg(pose) {
     const c = 'var(--primary)';
@@ -2008,7 +2000,6 @@
 
   let appStore = JSON.parse(localStorage.getItem('novayaYaAccountsV7')) || null;
   if (!appStore) {
-    // Migrate from V6 if present
     const legacyV6 = JSON.parse(localStorage.getItem('novayaYaV6') || 'null');
     const firstId = 'user_' + Date.now();
     const initialUser = legacyV6 ? { ...getDefaultUserState(), ...legacyV6 } : getDefaultUserState();
@@ -2277,7 +2268,6 @@
     const left = Math.max(0, currentWeight - goalWeight);
     const paceFactor = Math.max(0.45, Math.min(0.95, 0.65 * (1700 / Math.max(1200, startKcal || 1700))));
     const weeksLeft = Math.ceil(left / paceFactor);
-    // Calculate ETA from today for remaining weight, or from startDate if no weight lost yet
     const baseDate = (startDateStr && startWeight && Math.abs(currentWeight - startWeight) < 0.05)
       ? new Date(startDateStr + 'T12:00:00')
       : new Date();
@@ -2725,11 +2715,9 @@
     DEFAULT_PRODUCTS_DB.forEach(p => map.set(p.id, { ...p, isBuiltIn: true }));
     shared.forEach(p => {
       if (p && p.name) {
-        // If this cloud product overrides a built-in product ID, replace it
         if (p.overridesId && map.has(p.overridesId)) {
           map.set(p.overridesId, { ...p, firebaseKey: p.id, isCloud: true });
         } else {
-          // Also remove any built-in with exact same name so no duplicates appear
           for (const [k, v] of map.entries()) {
             if (v.name.toLowerCase() === p.name.toLowerCase() && v.isBuiltIn) {
               map.delete(k);
@@ -2759,7 +2747,6 @@
       state.sharedProducts = loaded;
       saveState();
 
-      // Refresh selectedProductObj if it was updated
       const allNow = getAllProductsList();
       if (selectedProductObj) {
         const refreshed = allNow.find(x => x.id === selectedProductObj.id || x.name === selectedProductObj.name);
@@ -3068,7 +3055,6 @@
     const mealsCount = state.profile.mealsPerDay || 4;
     const slots = MEAL_DEFINITIONS[mealsCount] || MEAL_DEFINITIONS[4];
 
-    // Sync meal dropdown selector
     const slotSelect = document.getElementById('foodMealSlotSelect');
     if (slotSelect) {
       if (!slots.some(s => s.key === activeMealSlotKey)) activeMealSlotKey = slots[0].key;
@@ -3114,12 +3100,10 @@
     document.getElementById('macroCTarget').textContent = stagePlan.c;
     document.getElementById('macroCBar').style.width = `${Math.min(100, Math.round((sumC / Math.max(1, stagePlan.c)) * 100))}%`;
 
-    // Render each meal slot block
     const slotsContainer = document.getElementById('mealSlotsContainer');
     if (slotsContainer) {
       slotsContainer.innerHTML = '';
       slots.forEach((slot, sIdx) => {
-        // Assign items matching this slot (fallback older untagged items to breakfast)
         const slotItems = foods
           .map((item, globalIdx) => ({ ...item, globalIdx }))
           .filter(item => (item.meal === slot.key) || (!item.meal && sIdx === 0) || (!slots.some(x => x.key === item.meal) && sIdx === slots.length - 1));
@@ -3170,7 +3154,6 @@
     const jsonStr = JSON.stringify(copyForBackup, null, 2);
     const fileName = `novaya-ya-backup-${getTodayStr()}.json`;
 
-    // Also fill & copy text backup code so user ALWAYS has a working copy even if APK WebView blocks file downloads
     try {
       const code = btoa(unescape(encodeURIComponent(JSON.stringify(copyForBackup))));
       const area = document.getElementById('backupArea');
@@ -3178,7 +3161,6 @@
       if (navigator.clipboard) navigator.clipboard.writeText(code).catch(() => {});
     } catch (e) {}
 
-    // 1. Try native Android/iOS Share Sheet with File (works reliably inside APK WebViews!)
     try {
       const file = new File([jsonStr], fileName, { type: 'application/json' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -3190,7 +3172,6 @@
       }
     } catch (e) {}
 
-    // 2. Try Data URI download (supported by Android WebView DownloadListener, unlike blob: URLs)
     try {
       const dataUrl = 'data:application/json;charset=utf-8,' + encodeURIComponent(jsonStr);
       const a = document.createElement('a');
