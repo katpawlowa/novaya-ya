@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#ec4899" id="metaThemeColor" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <title>Новая Я — Персональный трекер</title>
+  <title>Прайм — Персональный трекер</title>
   <meta name="description" content="Персональный трекер прогресса с индивидуальным расчетом КБЖУ, умным меню, трекером привычек и обратной связью" />
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" type="image/png" href="app-icon.png" />
@@ -1989,7 +1989,7 @@
     "Поход в боулинг, на каток или картинг",
     "Стильная сумка или рюкзак",
     "Спа-день в термальном комплексе",
-    "ГЛАВНЫЙ ПРИЗ! Профессиональная фотосессия «Новая Я» 👑"
+    "ГЛАВНЫЙ ПРИЗ! Профессиональная фотосессия «Прайм» 👑"
   ];
 
   const MALE_REWARDS = [
@@ -2225,7 +2225,7 @@
     const payload = {
       timestamp: new Date().toLocaleString('ru-RU'),
       name: name,
-      info: 'Мобильное приложение Новая Я (PWA)',
+      info: 'Мобильное приложение Прайм (PWA)',
       message: msg
     };
 
@@ -3500,7 +3500,7 @@
   async function downloadBackupFile() {
     const copyForBackup = { ...state, photos: [] };
     const jsonStr = JSON.stringify(copyForBackup, null, 2);
-    const fileName = `novaya-ya-backup-${getTodayStr()}.json`;
+    const fileName = `prime-backup-${getTodayStr()}.json`;
 
     try {
       const code = btoa(unescape(encodeURIComponent(JSON.stringify(copyForBackup))));
@@ -3512,7 +3512,7 @@
     try {
       const file = new File([jsonStr], fileName, { type: 'application/json' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({ files: [file], title: 'Резервная копия Новая Я' });
+        await navigator.share({ files: [file], title: 'Резервная копия Прайм' });
         return;
       }
     } catch (e) {}
