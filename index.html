@@ -24,11 +24,11 @@
       --header-grad: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
       --text: #3b1d2a;
       --muted: #8c5a70;
+      --shadow: 0 8px 24px rgba(236, 72, 153, 0.12);
       --chart-grid: #fce7f3;
       --success: #10b981;
       --danger: #ef4444;
       --warn: #f59e0b;
-    }
     }
     [data-theme="black"] {
       --bg-grad: linear-gradient(180deg, #09090b 0%, #121216 50%, #09090b 100%);
@@ -285,15 +285,7 @@
       box-shadow: 0 6px 20px color-mix(in srgb, var(--primary) 40%, transparent), inset 0 1px 0 rgba(255,255,255,0.35);
       transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .btn:hover {
-      filter: brightness(1.06);
-      transform: translateY(-1px);
-      box-shadow: 0 8px 25px color-mix(in srgb, var(--primary) 50%, transparent), inset 0 1px 0 rgba(255,255,255,0.4);
-    }
-    .btn:active { 
-      transform: translateY(1px) scale(0.98); 
-      box-shadow: 0 2px 10px color-mix(in srgb, var(--primary) 30%, transparent), inset 0 1px 2px rgba(0,0,0,0.1);
-    }
+    
     .btn:hover {
       filter: brightness(1.06);
       transform: translateY(-1px);
@@ -325,7 +317,6 @@
       transform: translateY(1px) scale(0.98); 
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
     }
-    .btn-soft:active { opacity: 0.85; }
     .btn-danger {
       background: transparent;
       color: var(--danger);
@@ -400,19 +391,26 @@
       color: #fff;
     }
 
-    /* Bottom Navigation */
+/* Крупное плавающее меню и адаптация шрифтов для мобильных */
+    html { font-size: 16.5px; }
+    body { padding-bottom: calc(108px + env(safe-area-inset-bottom)); }
     .bottom-nav {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: var(--card);
-      border-top: 1px solid var(--border);
+      bottom: calc(10px + env(safe-area-inset-bottom));
+      left: 10px;
+      right: 10px;
+      max-width: 760px;
+      margin: 0 auto;
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      backdrop-filter: blur(16px);
+      border: 1.5px solid var(--border);
+      border-radius: 22px;
       display: flex;
       justify-content: space-around;
-      padding: 5px 1px calc(7px + env(safe-area-inset-bottom));
+      padding: 6px;
       z-index: 30;
-      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      gap: 4px;
     }
     .nav-btn {
       background: none;
@@ -420,17 +418,25 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 2px;
-      font-size: 0.58rem;
-      font-weight: 700;
+      justify-content: center;
+      gap: 3px;
+      font-size: 0.72rem;
+      font-weight: 800;
       color: var(--muted);
       cursor: pointer;
-      padding: 5px 2px;
-      border-radius: 10px;
+      padding: 8px 4px;
+      border-radius: 16px;
       flex: 1;
+      min-height: 54px;
+      transition: all 0.2s ease;
     }
-    .nav-btn.active { color: var(--primary); background: var(--surface); }
-    .nav-icon { font-size: 1.1rem; }
+    .nav-btn.active {
+      color: #fff;
+      background: linear-gradient(145deg, var(--primary), var(--primary-dark));
+      box-shadow: 0 4px 12px color-mix(in srgb, var(--primary) 38%, transparent);
+      transform: translateY(-2px);
+    }
+    .nav-icon { font-size: 1.35rem; line-height: 1; }
 
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
@@ -891,18 +897,6 @@
       </div>
     </div>
 
-    <!-- Steps Progress -->
-    <div class="card">
-      <div class="card-title">
-        <span id="stepsToGoalTitle">✨ Шаги по килограммам до цели</span>
-        <span class="badge" id="stepCounterBadge">0 / 0 кг</span>
-      </div>
-      <div class="progress-wrap">
-        <div class="progress-bar" id="mainProgressBar" style="width: 0%;"></div>
-      </div>
-      <div class="kg-bubbles" id="kgBubbles"></div>
-    </div>
-
     <!-- Live Daily Calorie & BJU Counter Split by Meals -->
     <div class="card">
       <div class="card-title">
@@ -919,6 +913,21 @@
       </div>
       <div class="progress-wrap">
         <div class="progress-bar" id="calProgressBar" style="width: 0%;"></div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:12px 0; background:var(--surface); border:1.5px solid var(--border); border-radius:16px; padding:10px; text-align:center;">
+        <div>
+          <div style="font-size:0.7rem; color:var(--muted); font-weight:700;">🍽️ Съедено</div>
+          <div style="font-size:1rem; font-weight:900; color:var(--primary);" id="energyEatenVal">0 ккал</div>
+        </div>
+        <div style="border-left:1px solid var(--border); border-right:1px solid var(--border);">
+          <div style="font-size:0.7rem; color:var(--muted); font-weight:700;">🔥 Потрачено (спорт)</div>
+          <div style="font-size:1rem; font-weight:900; color:var(--success);" id="energyBurnedVal">0 ккал</div>
+        </div>
+        <div>
+          <div style="font-size:0.7rem; color:var(--muted); font-weight:700;">⚖️ Чистый баланс</div>
+          <div style="font-size:1rem; font-weight:900; color:var(--primary-deep);" id="energyNetVal">0 ккал</div>
+        </div>
       </div>
 
       <div class="macro-bars">
@@ -1101,6 +1110,17 @@
 
   <!-- TAB 2: CHARTS, HEATMAP & PHOTO DIARY -->
   <div id="tab-analytics" class="tab-pane">
+<!-- Steps Progress -->
+    <div class="card">
+      <div class="card-title">
+        <span id="stepsToGoalTitle">✨ Шаги по килограммам до цели</span>
+        <span class="badge" id="stepCounterBadge">0 / 0 кг</span>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-bar" id="mainProgressBar" style="width: 0%;"></div>
+      </div>
+      <div class="kg-bubbles" id="kgBubbles"></div>
+    </div>
     <!-- Overall Donut -->
     <div class="card">
       <div class="card-title">
@@ -1205,6 +1225,45 @@
 
   <!-- TAB 3: ROADMAP & WORKOUT TIMER -->
   <div id="tab-roadmap" class="tab-pane">
+
+<!-- Калькулятор расхода калорий по видам тренировок -->
+    <div class="card">
+      <div class="card-title">
+        <span>🏋️‍♀️ Дневник тренировок и расход калорий</span>
+        <span class="badge" id="sportBurnedBadge">Потрачено сегодня: 0 ккал</span>
+      </div>
+      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
+        Выбери вид активности и длительность — расход калорий рассчитается автоматически с учетом твоего текущего веса.
+      </p>
+      <div class="field">
+        <label>Вид тренировки / активности:</label>
+        <select id="sportActivitySelect" onchange="updateSportBurnPreview()">
+          <option value="7.0|Силовая тренировка в зале">🏋️ Силовая тренировка с весами (интенсивная)</option>
+          <option value="5.0|Силовая тренировка (средняя)">💪 Силовая тренировка / Тренажерный зал (средняя)</option>
+          <option value="8.5|Бег (трусцой 8-9 км/ч)">🏃 Бег трусцой (8–9 км/ч)</option>
+          <option value="11.0|Бег (быстрый / интервальный)">⚡ Быстрый или интервальный бег / HIIT</option>
+          <option value="4.3|Быстрая ходьба">🚶 Быстрая ходьба (6 км/ч)</option>
+          <option value="6.8|Велосипед / Сайкл">🚴 Велосипед / Велотренажер</option>
+          <option value="7.5|Плавание в бассейне">🏊 Плавание в бассейне</option>
+          <option value="6.5|Танцы / Аэробика / Зумба">💃 Танцы / Зумба / Аэробика</option>
+          <option value="3.3|Пилатес / Йога / Растяжка">🧘‍♀️ Пилатес / Йога / Стретчинг</option>
+          <option value="6.0|Домашнее кардио / Фулбоди">🔥 Домашняя круговая тренировка (Фулбоди)</option>
+        </select>
+      </div>
+      <div class="row" style="margin-bottom:10px;">
+        <div class="field" style="flex:1; margin-bottom:0;">
+          <label>Длительность (мин):</label>
+          <input type="number" id="sportDurationInput" value="45" min="5" max="360" oninput="updateSportBurnPreview()" />
+        </div>
+        <div class="field" style="flex:1; margin-bottom:0;">
+          <label>Расчетный расход:</label>
+          <div id="sportBurnPreview" style="min-height:46px; display:flex; align-items:center; justify-content:center; background:var(--surface); border:1.5px solid var(--border); border-radius:12px; font-weight:900; color:var(--success); font-size:1rem;">~0 ккал</div>
+        </div>
+      </div>
+      <button class="btn" style="width:100%;" onclick="addSportWorkoutLog()">+ Записать тренировку и сжечь калории</button>
+      <div id="sportLogsContainer" style="margin-top:10px;"></div>
+    </div>
+
     <!-- Built-in Light Workout Timer -->
     <div class="card">
       <div class="card-title">
@@ -2005,7 +2064,7 @@
       { id: "t1", name: "Вкусняшка 20%: Зефир + капучино без сахара", kcal: 220, p: 4, f: 4, c: 42, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Зефир — 1 шт (45 г)", "Молоко 2.5% — 120 мл", "Кофе — 50 мл"], steps: "Насладись зефиром с капучино в рамках дневного калоража!" },
       { id: "t2", name: "Вкусняшка 20%: Шоколад (25 г) и банан", kcal: 230, p: 3, f: 9, c: 34, tags: ["сладкое", "без мяса", "без рыбы", "без молочки"], ingredients: ["Шоколад — 25 г", "Банан — 90 г"], steps: "Сладкий перекус к чаю." },
       { id: "t3", name: "Вкусняшка 20%: Мороженое пломбир в стаканчике", kcal: 215, p: 4, f: 11, c: 25, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Мороженое пломбир — 75 г"], steps: "Классический пломбир, вписанный в калории." },
-      { id: "t4", name: "Вкусняшка 20%: Протеиновый батончик или печенье", kcal: 210, p: 15, f: 7, c: 22, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Протеиновый батончик — 1 шт (55 г)"], steps: "Вкусно и дает +15 г белка." },
+      { id: "t4", name: "Вкусняшка 20%: Творог мягкий с бананом и орехами", kcal: 230, p: 16, f: 8, c: 24, tags: ["сладкое", "творог", "без мяса", "без рыбы"], ingredients: ["Творог мягкий 5% — 130 г", "Банан — 60 г", "Миндаль — 10 г"], steps: "Смешай мягкий творог с ломтиками банана и посыпь дробленым миндалем." },
       { id: "t5", name: "Вкусняшка 20%: Пастила яблочная и миндаль", kcal: 225, p: 5, f: 10, c: 29, tags: ["сладкое", "без мяса", "без рыбы", "без молочки"], ingredients: ["Пастила — 50 г", "Миндаль — 15 г"], steps: "Отличный перекус к вечернему чаю." },
       { id: "t6", name: "Вкусняшка 20%: Творожный сырок в глазури + ягоды", kcal: 235, p: 6, f: 12, c: 26, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Сырок глазированный — 1 шт (45 г)", "Ягоды — 70 г"], steps: "Маленькое удовольствие без чувства вины." },
       { id: "t7", name: "Вкусняшка 20%: Мармелад (40 г) и латте", kcal: 215, p: 4, f: 4, c: 41, tags: ["сладкое", "без мяса", "без рыбы"], ingredients: ["Мармелад — 40 г", "Молоко 2.5% — 150 мл", "Кофе — 50 мл"], steps: "Легкий десерт с минимальным содержанием жиров." },
@@ -2370,9 +2429,12 @@
         ? Math.round((startKcal + i * 50) / 5) * 5 
         : Math.max(minFloor, Math.round((startKcal - totalKcalDrop * kcalDrops[i]) / 5) * 5);
       const midW = (wFrom + wTo) / 2;
-      const p = Math.round(Math.max(110, midW * (isGain ? 1.6 : 1.35)));
-      const f = Math.round((kcal * (isGain ? 0.32 : 0.29)) / 9);
-      const c = Math.max(75, Math.round((kcal - p * 4 - f * 9) / 4));
+      const isMaintain = profile.goalType === 'maintain';
+      const pPerKg = isGain ? 2.0 : (isMaintain ? 1.6 : 1.5);
+      const fatShare = isGain ? 0.25 : 0.29;
+      const p = Math.round(Math.max(110, midW * pPerKg));
+      const f = Math.round((kcal * fatShare) / 9);
+      const c = Math.max(80, Math.round((kcal - p * 4 - f * 9) / 4));
 
       const weekStart = Math.round(((Math.abs(wFrom - startW)) / 0.65));
       const weekEnd = Math.round(((Math.abs(wTo - startW)) / 0.65));
@@ -3418,6 +3480,7 @@
     }
 
     renderProductSearchResults();
+renderSportAndEnergyBalance(sumKcal);
   }
 
   async function downloadBackupFile() {
@@ -4209,15 +4272,50 @@
     return res.length > 0 ? res : arr;
   }
 
-  function scaleMealObj(m, scale) {
-    return {
-      ...m,
-      kcal: Math.round(m.kcal * scale),
-      p: Math.round(m.p * scale),
-      f: Math.round(m.f * scale),
-      c: Math.round(m.c * scale)
-    };
-  }
+  function calcDishCookedGrams(ingredients) {
+  let total = 0;
+  (ingredients || []).forEach(ing => {
+    const low = ing.toLowerCase();
+    const mG = ing.match(/(\d+)\s*(г|мл)/i);
+    const mPcs = ing.match(/(\d+)\s*шт/i);
+    let g = mG ? parseInt(mG[1], 10) : (mPcs ? parseInt(mPcs[1], 10) * 55 : 80);
+
+    if ((low.includes('сух') || low.includes('крупа') || low.includes('гречка') || low.includes('рис') || low.includes('макарон') || low.includes('булгур') || low.includes('киноа') || low.includes('лапша') || low.includes('овсян')) && !low.includes('вар')) {
+      g = g * 2.4;
+    } else if (low.includes('филе') || low.includes('грудк') || low.includes('индейк') || low.includes('фарш') || low.includes('треск') || low.includes('горбуш') || low.includes('лосос') || low.includes('креветк') || low.includes('кальмар')) {
+      g = g * 0.82;
+    }
+    total += g;
+  });
+  return Math.max(120, Math.round(total / 10) * 10);
+}
+
+function scaleIngredientText(ing, scale) {
+  if (Math.abs(scale - 1) < 0.05) return ing;
+  return ing.replace(/(\d+)\s*(г|мл)/gi, (match, num, unit) => {
+    const scaled = Math.max(5, Math.round((parseInt(num, 10) * scale) / 5) * 5);
+    return `${scaled} ${unit}`;
+  }).replace(/(\d+)\s*шт/gi, (match, num) => {
+    const scaled = Math.max(1, Math.round(parseInt(num, 10) * scale));
+    return `${scaled} шт`;
+  });
+}
+
+function scaleMealObj(m, scale) {
+  const isGain = state.profile?.goalType === 'gain';
+  const pBoost = isGain ? 1.12 : 1.0;
+  const scaledIngredients = (m.ingredients || []).map(ing => scaleIngredientText(ing, scale));
+  const readyGrams = calcDishCookedGrams(scaledIngredients);
+  return {
+    ...m,
+    kcal: Math.round(m.kcal * scale),
+    p: Math.round(m.p * scale * pBoost),
+    f: Math.round(m.f * scale),
+    c: Math.round(m.c * scale),
+    ingredients: scaledIngredients,
+    readyGrams
+  };
+}
 
   function generateMenu(days = 1, onlyFavorites = false, shouldSave = true) {
     const pref = (document.getElementById('mealPrefInput')?.value || '').toLowerCase().trim();
@@ -4331,7 +4429,7 @@
               <span>${meal.type}: ${meal.name}</span>
               <span class="meal-kcal">${meal.kcal} ккал</span>
             </div>
-            <div class="meal-desc">Б: ${meal.p}г • Ж: ${meal.f}г • У: ${meal.c}г</div>
+<div class="meal-desc">⚖️ Выход блюда: <strong>~${meal.readyGrams || calcDishCookedGrams(meal.ingredients)} г</strong> • Б: ${meal.p}г • Ж: ${meal.f}г • У: ${meal.c}г</div>
             <div class="row">
               <button class="btn-soft" style="background:var(--primary); color:#fff; border:none;" onclick="eatMealFromMenu(${dIdx}, ${mIdx})">✅ Добавить (+${meal.kcal})</button>
               <button class="btn-soft" onclick="document.getElementById('${recId}').classList.toggle('open')">📖 Рецепт</button>
@@ -4339,6 +4437,7 @@
               <button class="btn-soft" onclick="toggleFavoriteMeal('${meal.id}')">${isFav ? '❤️' : '🤍'}</button>
             </div>
             <div class="meal-recipe" id="${recId}">
+              <strong>⚖️ Выход готового блюда:</strong> ~${meal.readyGrams || calcDishCookedGrams(meal.ingredients)} г.<br/>
               <strong>Ингредиенты:</strong> ${meal.ingredients.join(', ')}.<br/>
               <strong>Приготовление:</strong> ${meal.steps}
             </div>
@@ -4399,7 +4498,80 @@
       showAppAlert('Ошибка', 'Неверный код резервной копии.');
     }
   }
+function updateSportBurnPreview() {
+  const sel = document.getElementById('sportActivitySelect');
+  const dur = parseFloat(document.getElementById('sportDurationInput')?.value) || 0;
+  const prev = document.getElementById('sportBurnPreview');
+  if (!sel || !prev) return;
+  const met = parseFloat(sel.value.split('|')[0]) || 5;
+  const latest = state.history[state.history.length - 1] || { weight: state.profile.startWeight || 70 };
+  const w = latest.weight || 70;
+  const burned = Math.round(met * 3.5 * w / 200 * dur);
+  prev.textContent = `~${burned} ккал`;
+}
 
+function addSportWorkoutLog() {
+  const sel = document.getElementById('sportActivitySelect');
+  const dur = parseFloat(document.getElementById('sportDurationInput')?.value) || 0;
+  if (!sel || dur <= 0) {
+    showAppAlert('Внимание', 'Укажите длительность тренировки в минутах!');
+    return;
+  }
+  const [metStr, actName] = sel.value.split('|');
+  const met = parseFloat(metStr) || 5;
+  const latest = state.history[state.history.length - 1] || { weight: state.profile.startWeight || 70 };
+  const w = latest.weight || 70;
+  const burned = Math.round(met * 3.5 * w / 200 * dur);
+
+  const todayLog = ensureTodayLog();
+  if (!todayLog.sportLogs) todayLog.sportLogs = [];
+  todayLog.sportLogs.push({ name: actName, duration: dur, kcal: burned });
+  todayLog.workout = true;
+  saveState();
+  renderAll();
+  showAppAlert('Спорт записан!', `🔥 ${actName} (${dur} мин) — сожжено ~${burned} ккал!`);
+}
+
+function deleteSportWorkoutLog(idx) {
+  const todayLog = ensureTodayLog();
+  if (todayLog.sportLogs) {
+    todayLog.sportLogs.splice(idx, 1);
+    saveState();
+    renderAll();
+  }
+}
+
+function renderSportAndEnergyBalance(sumEatenKcal) {
+  updateSportBurnPreview();
+  const todayLog = ensureTodayLog();
+  const sLogs = todayLog.sportLogs || [];
+  const stepBurn = Math.round((todayLog.steps || 0) * 0.04);
+  const sportBurn = sLogs.reduce((acc, x) => acc + (x.kcal || 0), 0);
+  const totalBurn = sportBurn + stepBurn;
+
+  const eatenEl = document.getElementById('energyEatenVal') || document.getElementById(' energyEatenVal');
+  const burnedEl = document.getElementById('energyBurnedVal');
+  const netEl = document.getElementById('energyNetVal');
+  if (eatenEl) eatenEl.textContent = `${sumEatenKcal} ккал`;
+  if (burnedEl) burnedEl.textContent = `${totalBurn} ккал`;
+  if (netEl) netEl.textContent = `${sumEatenKcal - totalBurn} ккал`;
+
+  const badge = document.getElementById('sportBurnedBadge');
+  if (badge) badge.textContent = `Потрачено: ${sportBurn} ккал (+${stepBurn} за шаги)`;
+
+  const box = document.getElementById('sportLogsContainer');
+  if (box) {
+    box.innerHTML = sLogs.map((it, idx) => `
+      <div class="food-log-item">
+        <div><strong>${it.name}</strong> (${it.duration} мин)</div>
+        <div class="row" style="gap:6px;">
+          <strong style="color:var(--success);">-${it.kcal} ккал</strong>
+          <button class="btn-soft" style="padding:3px 7px; min-height:26px;" onclick="deleteSportWorkoutLog(${idx})">✕</button>
+        </div>
+      </div>
+    `).join('');
+  }
+}
   window.addEventListener('DOMContentLoaded', () => {
     renderAll();
     syncSharedProducts(false);
